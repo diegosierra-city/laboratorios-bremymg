@@ -1,0 +1,10 @@
+[05-Aug-2022 12:25:06 America/Chicago] PHP Warning:  include(/api/verot-upload/src/class.upload.php): Failed to open stream: No such file or directory in /home/ricacrem/public_html/api/verot-upload/test/upload-maker.php on line 7
+[05-Aug-2022 12:25:06 America/Chicago] PHP Warning:  include(): Failed opening '/api/verot-upload/src/class.upload.php' for inclusion (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/ricacrem/public_html/api/verot-upload/test/upload-maker.php on line 7
+[05-Aug-2022 12:25:06 America/Chicago] PHP Fatal error:  Uncaught Error: Class "Verot\Upload\Upload" not found in /home/ricacrem/public_html/api/verot-upload/test/upload-maker.php:77
+Stack trace:
+#0 {main}
+  thrown in /home/ricacrem/public_html/api/verot-upload/test/upload-maker.php on line 77
+[05-Aug-2022 16:09:55 America/Chicago] PHP Fatal error:  Uncaught Error: Call to undefined function Verot\Upload\TestProcess() in /home/ricacrem/public_html/api/verot-upload/test/upload-maker.php:27
+Stack trace:
+#0 {main}
+  thrown in /home/ricacrem/public_html/api/verot-upload/test/upload-maker.php on line 27

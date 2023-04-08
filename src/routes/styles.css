@@ -1,0 +1,308 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+    *, *::before, *::after {box-sizing: inherit}
+html{
+box-sizing:border-box;
+}
+	
+	.boton{
+	@apply bg-primary	
+	}
+	/* transition: 600ms all ease; */
+  
+
+  body{
+    
+    margin: 0px; padding: 0px; 
+    
+    font-family: -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+-moz-font-smoothing: antialiased;
+-moz-osx-font-smoothing: antialiased;
+ }
+
+ body{
+    @apply bg-secondary bg-opacity-40
+ }
+
+ header{
+    transition: 600ms all ease;
+ }
+ 
+
+ table td{
+    border-left: dotted 1px #ccc; border-bottom: solid 1px #ccc;
+    @apply p-1
+    
+}
+table{
+   @apply rounded-lg border border-primary text-sm text-left text-black w-full mb-2 
+}
+table thead{
+    @apply text-xs text-white uppercase bg-primary
+}
+table th{
+    @apply px-4 py-2
+}
+.tableA td{
+   @apply border-r border-r-primary text-center cursor-pointer hover:text-black
+}
+
+ .menu-top{
+@apply bg-primary sticky w-full sm:flex z-50 top-0 text-white
+ }
+
+ .menu-top-star{
+    background-color: rgba(31, 95, 31, 0.5);
+@apply fixed top-12 w-full sm:flex z-50 text-white
+ }
+ 
+
+ .menu_up{
+    @apply mx-auto m-2
+ }
+ .menu_up ul{
+    @apply flex items-center 
+ }
+ .menu-top .menu_up li{
+	transition: 600ms all;
+	@apply text-white px-3 py-2 text-sm font-medium hover:bg-opacity-80 bg-secondary bg-opacity-100 mr-1 rounded-lg
+}
+
+.menu-top-star .menu_up li{
+	transition: 600ms all;
+    border-color: rgba(0,0,0,0);
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.53);
+	@apply text-white px-3 py-2 text-sm font-medium border-b-4  hover:border-b-secondary hover:bg-lavender/10
+}
+
+/*
+.boton-principal-active, .boton-principal-movil-active, 
+*/
+.menu_up .active{
+	@apply !bg-dimgray 
+}
+
+.menu_up_movil{
+    @apply absolute top-6 right-2 bg-silver p-2 border border-gray rounded-lg
+}
+.menu_up_movil li{
+	transition: 600ms all;
+	@apply text-black pl-2 pr-5 py-2 text-sm font-medium border-l-4 border-primary hover:border-l-secondary hover:bg-lavender/10 
+}
+.menu_up_movil .active{
+	@apply  border-l-4 !border-l-secondary
+}
+
+footer{
+    @apply bg-darkgray text-silver text-sm p-2 w-full
+ }
+ 
+.menu_footer{
+    @apply grid grid-cols-1 gap-1
+}
+ .menu_footer li{
+	transition: 600ms all;
+	@apply text-silver px-3 py-0 m-0 text-sm font-medium hover:text-secondary 
+}
+.menu_footer .active{
+	@apply  text-secondary
+}
+
+.card_home{
+    transition: 600ms all;
+    @apply relative rounded-lg overflow-hidden cursor-pointer
+}
+.card_title{
+    @apply absolute top-2 left-0 w-full text-center text-white drop-shadow-2xl shadow-black
+}
+.card_titleB{
+    @apply absolute bottom-2 left-0 w-full text-center text-white drop-shadow-lg shadow-black bg-black opacity-70 p-3
+}
+.card_img{
+    transition: 600ms all;
+}
+
+.card_home:hover .card_img{
+    @apply scale-110 
+}
+
+.logo_down{
+    transition: 600ms all;
+    @apply grayscale hover:grayscale-0 cursor-pointer w-36 h-auto
+}
+ 
+ .menu_boton_footer{ @apply hover:text-secondary}
+ .menu_boton_footer_active{ @apply text-secondary}
+
+
+
+ .menu_boton{
+    @apply px-10 py-2 mx-2 cursor-pointer hover:bg-secondary hover:text-black
+}
+.menu_boton_active{
+    @apply px-10 py-2 mx-2 cursor-pointer hover:bg-secondary hover:text-black border-b-4 border-secondary
+}
+
+.cortina-carrouselx{
+    background-color: rgba(0,0,0,0.4);
+    @apply absolute z-10 top-0 w-full h-full 
+}
+.carrusel img{
+    filter: brightness(90%);
+}
+
+ #cookie{
+    @apply z-20
+ }
+ #menu-top{
+	@apply w-10/12 mx-auto
+ }
+
+ #logo{
+	
+	@apply mt-2 float-left w-10
+
+}
+
+
+
+.boton-principal-movil{
+
+	@apply text-black hover:text-primary focus:text-primary active:text-primary px-3 py-2 text-sm font-medium border border-secondary hover:border-b-black hover:bg-wheat block
+}
+
+
+
+.boton_admin li{
+    @apply flex w-full justify-between text-lightgray cursor-pointer items-center mb-2 hover:bg-white hover:bg-opacity-10 hover:text-white rounded-lg p-1 
+}
+.boton_admin_active{
+    @apply flex w-full justify-between text-lightgray cursor-pointer items-center mb-2  hover:text-white rounded-lg p-1 bg-black
+}
+
+.btn-min{
+    @apply flex text-white cursor-pointer items-center mx-1 hover:ring-1 hover:text-white rounded-md p-1 
+}
+
+.box_submenu{
+    @apply origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none
+}
+.boton_submenu{
+    @apply block px-4 py-2 text-sm text-darkgray hover:bg-aliceblue
+}
+
+.boton_alert{
+    @apply py-1 px-3 bg-silver rounded text-black flex items-center justify-center text-xs font-bold
+}
+
+.inputA{
+    @apply bg-ghostwhite border border-slategray rounded text-sm font-medium placeholder-slategray text-primary pl-2 py-1 w-full m-1 focus:border-primary 
+}
+
+/*
+focus:ring-2 focus:ring-offset-2 focus:ring-primary 
+*/
+.btn-primary-full{
+    @apply text-sm font-semibold leading-none text-white focus:outline-none bg-primary border rounded hover:bg-gray py-4 w-full
+}
+
+.btn-primary{
+    @apply transition duration-150 ease-in-out rounded text-white px-3 py-2 text-xs bg-primary mb-2 cursor-pointer hover:ring-1 
+}
+.btn-green{
+    @apply transition duration-150 ease-in-out rounded text-white px-3 py-2 text-sm bg-green mb-2  hover:ring-1
+}
+.btn-red{
+    @apply transition duration-150 ease-in-out rounded text-white px-3 py-2 text-sm bg-red mb-2  hover:ring-1 
+}
+.bg-edit{
+    @apply fixed w-full h-full bg-black/70 z-10 overflow-auto top-0 left-0 
+    
+}
+
+/* Message */
+.bg-message{
+    @apply fixed w-full h-full bg-black/70 z-40 overflow-auto top-0 left-0
+    
+}
+#znMessage{
+    @apply focus:outline-none w-11/12 mx-auto mb-4 my-6 md:w-5/12 shadow sm:px-10 sm:py-6 py-4 px-4 bg-white rounded-md ring-1 ring-inset z-20
+}
+.message-title{
+    @apply text-white mb-3 p-2 rounded-lg
+}
+
+.message-red{
+    @apply ring-red
+}
+.message-red .message-title{
+    @apply bg-red
+}
+.message-green{
+    @apply ring-green
+}
+.message-green .message-title{
+    @apply bg-green
+}
+/* The End Message */
+
+
+.message{
+    @apply focus:outline-none w-11/12 mx-auto mb-4 my-6 md:w-5/12 shadow sm:px-10 sm:py-6 py-4 px-4 bg-white rounded-md ring-2 ring-inset ring-primary z-50
+}
+
+
+.edit-page{
+    @apply w-10/12 mx-auto mb-4 my-6 shadow sm:px-10 sm:py-6 py-4 px-4 bg-white rounded-md ring-1 ring-inset ring-green z-20
+}
+ .center{   
+     width: 85%;
+     margin: 0px auto;/*centrar*/
+ }
+ .clearfix{
+     clear: both;
+     float: none;
+ }
+
+ .icono_admin{
+    @apply bg-white bg-opacity-0 hover:bg-opacity-20 p-2 rounded-lg mt-1
+ }
+ .card{
+    @apply bg-aliceblue border border-black rounded-lg m-2 overflow-hidden cursor-pointer hover:border-primary
+ }
+
+.link{
+    @apply cursor-pointer text-primary hover:text-black
+}
+
+.gallery{
+    width: 100%; height: 430px;
+    @apply flex
+}
+.gallery img{
+    width: 0px;
+    flex-grow:1;
+    object-fit: cover;
+    opacity: 0.8;
+    transition: 600ms all ease;
+}
+.gallery img:hover{
+cursor:crosshair;
+width: 300px;
+opacity: 1;
+filter: contrast(120%);
+}
+
+ h1{font-size: 40px; font-weight:bold}
+ h2{font-size: 30px; font-weight:bold}
+ h3{font-size: 20px; font-weight:bold} 
+ h4{font-size: 18px; font-weight:bold}
+h4{font-size: 15px; font-weight:bold}
+
+
+}
