@@ -74,8 +74,8 @@
 			.then((result) => {
 				
 					message = {
-						title: 'Save',
-						text: 'Save data',
+						title: 'Guardar',
+						text: 'Se han guardado los datos',
 						class: 'message-green',
 						accion: ''
 					};
@@ -113,12 +113,12 @@
 	}
 
 	const deleteCategory = (id: number) => {
-		if (confirm('Delete this Category?')) {
+		if (confirm('Borrar esta Categoria?')) {
 			category_list = category_list.filter((item) => item.id != id);
 			//mensaje("se borró la tarea", "text-bg-danger");
 			message = {
-				title: 'Delete Category',
-				text: 'Information was deleted',
+				title: 'Borrar Categoria',
+				text: 'Ha sido borrada',
 				class: 'message-red',
 				accion: ''
 			};
@@ -139,7 +139,7 @@
 		if (image_id > 1000000) {
 			message = {
 				title: 'Error',
-				text: 'First save this Category',
+				text: 'Primero haga click en el botón de guardar categorias',
 				class: 'message-red',
 				accion: ''
 			};
@@ -171,8 +171,8 @@
 
 						category_list[image_position] = result[0];
 						message = {
-							title: 'Upload',
-							text: 'File uploaded',
+							title: 'Subir archivo',
+							text: 'El archivo se subió con éxito',
 							class: 'message-green',
 							accion: ''
 						};
@@ -185,34 +185,34 @@
 </script>
 
 <svelte:head>
-	<title>Maker: Categories</title>
+	<title>Maker: Categorías</title>
 </svelte:head>
 
 {#if show_products == false}
 	<div class="p-3 w-full mt-14 ">
-		<h3>Categories</h3>
+		<h3>Categorías</h3>
 		<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 			<div class="flex">
 				<button class="btn-green mr-2 flex" on:click={saveCategory}>
 					<i class="fa fa-save mx-2 mt-1" />
-					Save</button
+					Guardar</button
 				>
 				<button class="btn-primary flex" on:click={add_category}>
 					<i class="fa fa-plus mx-2 mt-1" />
-					Add Category</button
+					Nueva Categoría</button
 				>
 			</div>
 			<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 				<thead class="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
 					<th scope="col" class="px-4 py-2" />
-					<th scope="col" class="px-4 py-2"> Category</th>
-					<th scope="col" class="px-4 py-2"> Description</th>
-					<th scope="col" class="px-4 py-2 text-center"> Position </th>
+					<th scope="col" class="px-4 py-2"> Categoría</th>
+					<th scope="col" class="px-4 py-2"> Descripción</th>
+					<th scope="col" class="px-4 py-2 text-center"> Posición </th>
 					<th scope="col" class="px-4 py-2 text-center">
-					<div>Image JPG-PNG</div>	 <small>1600-600px</small></th
+					<div>Imagen JPG-PNG</div>	 <small>1600-600px</small></th
 					>
-					<th scope="col" class="px-4 py-2 text-center"> Active </th>
-					<th scope="col" class="px-4 py-2 text-center"> Products </th>
+					<th scope="col" class="px-4 py-2 text-center"> Activa </th>
+					<th scope="col" class="px-4 py-2 text-center"> Productos </th>
 					<th scope="col" class="px-4 py-2" />
 				</thead>
 				<tbody>
@@ -310,7 +310,7 @@
 
 						<!---->
 					{:else}
-						Please Add the First Category
+						Agrege la primera Categoría
 					{/each}
 				</tbody>
 			</table>

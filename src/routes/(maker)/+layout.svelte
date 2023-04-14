@@ -1,8 +1,6 @@
 <script lang="ts">
 	import MenuAdmin from '$lib/components/MenuAdmin.svelte';
 	import { userNow } from '../../store';
-
-	
   
 </script>
 

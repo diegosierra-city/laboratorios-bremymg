@@ -22,7 +22,7 @@
 		if (action == 'Change Password' && login.pass2 != login.pass) {
 			message = {
 				title: 'Error',
-				text: 'Passwords do not match',
+				text: 'Las Claves no coinciden',
 				class: 'message-red',
 				accion: ''
 			};
@@ -65,7 +65,7 @@
 							console.log(cookie_info('user'));
 						} else {
 							message = {
-								title: 'Change Password',
+								title: 'Cambio de Clave',
 								text: result[0].ok,
 								class: 'message-green',
 								accion: ''
@@ -84,7 +84,7 @@
 		}
 	};
 
-	let forgot: string = 'Forgot your password?';
+	let forgot: string = 'Olvidaste la Clave?';
 	let action: string = 'Login';
 	let preP: string = '';
 
@@ -94,7 +94,7 @@
 			action = 'Change Password';
 			preP = 'New ';
 		} else {
-			forgot = 'Forgot your password?';
+			forgot = 'Olvidaste la Clave?';
 			action = 'Login';
 			login.pass2 = '';
 			preP = '';
@@ -104,7 +104,7 @@
 </script>
 
 <svelte:head>
-	<title>Site-Maker</title>
+	<title>KDAR</title>
 </svelte:head>
 
 <div class="w-full ">
@@ -146,7 +146,7 @@
 				</div>
 				<div class="mt-6 w-full">
 					<div class="text-sm font-medium leading-none text-dimgray grid grid-cols-2">
-						<div>{preP}Password</div>
+						<div>{preP}Clave</div>
 						<button class="text-right link" on:click={() => forgotP(true)}>{forgot}</button>
 					</div>
 
@@ -164,7 +164,7 @@
 				{#if forgot == ''}
 					<div class="mt-6 w-full">
 						<div class="text-sm font-medium leading-none text-dimgray grid grid-cols-2">
-							<div>Confirm Password</div>
+							<div>Confirma la Clave</div>
 						</div>
 						<div class="relative flex items-center justify-center">
 							<input
@@ -183,7 +183,7 @@
 				</div>
 
 				{#if forgot == ''}
-					<button class="text-right link" on:click={() => forgotP(false)}>Return Login</button>
+					<button class="text-right link" on:click={() => forgotP(false)}>Ir a Ingreso</button>
 				{/if}
 			</form>
 		</div>

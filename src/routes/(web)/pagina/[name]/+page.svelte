@@ -196,6 +196,7 @@
 	};
 
 	$: movil(innerWidth);
+	let galleryFolder: string 
 </script>
 
 <svelte:head>
@@ -231,7 +232,7 @@
 			<!--
 			<WebGalleryB {listGalleries} {urlFiles}/>
 		-->
-			<WebGalleryA {listGalleries} {urlFiles} />
+			<WebGalleryA {listGalleries} {urlFiles} {galleryFolder}/>
 		{/if}
 
 		{#if ContBase.type == 'Form'}

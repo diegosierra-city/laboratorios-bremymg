@@ -4,6 +4,7 @@ export interface Gallery {
     image: string;
     title: string,
     description: string,
+    linkURL: string,
     position: number;
      
 }

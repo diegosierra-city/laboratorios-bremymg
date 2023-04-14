@@ -131,6 +131,7 @@
 		image: '',
 		title: '',
 		description: '',
+		linkURL: '',
 		position: 0
 	};
 
@@ -146,6 +147,7 @@
 			image: '',
 			title: '',
 			description: '',
+			linkURL: '',
 			position: 0
 		};
 		//console.log('nuevo')
@@ -182,8 +184,8 @@
 						//content = result[0];
 
 						message = {
-							title: 'Save',
-							text: 'Save data',
+							title: 'Guardar',
+							text: 'Se han guardado los datos',
 							class: 'message-green',
 							accion: ''
 						};
@@ -225,8 +227,8 @@
 
 					content = result[0];
 					message = {
-						title: 'Upload',
-						text: 'File uploaded',
+						title: 'Cargar imagen',
+						text: 'Imagen cargada con éxito',
 						class: 'message-green',
 						accion: ''
 					};
@@ -263,8 +265,8 @@
 				
 					listGalleries[position] = result[0];
 					message = {
-						title: 'Upload',
-						text: 'File uploaded',
+						title: 'Cargar Imagen',
+						text: 'Imagen cargada con éxito',
 						class: 'message-green',
 						accion: ''
 					};
@@ -275,12 +277,12 @@
 	}
 
 	const deleteGallery = (id: number) => {
-		if (confirm('Delete this Item?')) {
+		if (confirm('Borrar this Item?')) {
 			listGalleries = listGalleries.filter((item) => item.id != id);
 			//mensaje("se borró la tarea", "text-bg-danger");
 			message = {
-				title: 'Delete Item',
-				text: 'Information was deleted',
+				title: 'Borrar Item',
+				text: 'Información borrada',
 				class: 'message-red',
 				accion: ''
 			};
@@ -359,7 +361,7 @@
 		{
 			id: time,
 			menu_id: cont_id,
-			name: 'Name',
+			name: 'Nombre',
 			type: 'text',
 			required: true,
 			response: '',
@@ -377,13 +379,24 @@
 		{
 			id: time + 2,
 			menu_id: cont_id,
-			name: 'Phone',
+			name: 'Teléfono',
 			type: 'phone', //text-longtext-number-email-phone-date-checkbox
+			required: true,
+			response: '',
+			position: 3
+		},
+		{
+			id: time + 2,
+			menu_id: cont_id,
+			name: 'Comentarios',
+			type: 'longtext', //text-longtext-number-email-phone-date-checkbox
 			required: true,
 			response: '',
 			position: 3
 		}
 	];
+
+
 
 	let newForm: Form = {
 		id: 0,
@@ -418,12 +431,12 @@
 	}
 
 	const deleteForm = (position: number) => {
-		if (confirm('Delete this Field?')) {
+		if (confirm('Borrar este Campo?')) {
 			listForm = listForm.filter((item) => item.position != position);
 			//mensaje("se borró la tarea", "text-bg-danger");
 			message = {
-				title: 'Delete Field',
-				text: 'Information was deleted',
+				title: 'Borrar Campo',
+				text: 'La información se borró',
 				class: 'message-red',
 				accion: ''
 			};
@@ -529,7 +542,7 @@
 
 <div class="bg-edit">
 	<div class="edit-page">
-		<h3 class="text-primary">Page: {page_name}</h3>
+		<h3 class="text-primary">Pagina: {page_name}</h3>
 
 		<div class="flex mt-3 bg-aliceblue p-3 rounded-lg">
 			{#if page_type == 'Form'}
@@ -540,19 +553,8 @@
 						saveForm();
 					}}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5 mr-1"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					Save</button
+				<i class="fa fa-save mx-2 mt-1" />
+					Guardar</button
 				>
 			{:else if page_type == 'Gallery'}
 				<button
@@ -562,19 +564,8 @@
 						saveGallery();
 					}}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5 mr-1"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					Save</button
+				<i class="fa fa-save mx-2 mt-1" />
+					Guardar</button
 				>
 			{:else}
 				<button
@@ -584,19 +575,8 @@
 						saveCont(content.id);
 					}}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5 mr-1"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					Save</button
+				<i class="fa fa-save mx-2 mt-1" />
+					Guardar</button
 				>
 			{/if}
 			<button
@@ -605,18 +585,7 @@
 					show_cont = false;
 				}}
 			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-5 w-5 mr-1"
-					viewBox="0 0 20 20"
-					fill="currentColor"
-				>
-					<path
-						fill-rule="evenodd"
-						d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-						clip-rule="evenodd"
-					/>
-				</svg>
+			<i class="fa fa-close mx-2 mt-1" />
 				Cancel</button
 			>
 		</div>
@@ -627,10 +596,10 @@
 					<div class="w-80">
 						<div class="flex items-center">
 							<h1 class="focus:outline-none text-xl font-medium pr-2 leading-5 text-dimgray">
-								Images
+								Imagenes
 							</h1>
 						</div>
-						<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">Upload the images</p>
+						<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">Cargar Imagenes</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
@@ -647,7 +616,7 @@
 										}}
 									>
 										<i class="fa fa-trash-o mx-2 mt-1" />
-										Delete
+										Borrar
 									</button>
 								{/if}
 								Image 1 JPG - PNG <br />
@@ -668,10 +637,10 @@
 										upload(content.id, 1);
 									}}
 								/>
-								<h5>Text:</h5>
+								<h5>Texto:</h5>
 								<input type="text" class="inputA" bind:value={content.image_text1} />
-								<h5>link:</h5>
-								<input type="text" class="inputA" bind:value={content.image_link1} />
+								<h5>link - URL:</h5>
+								<input type="text" class="inputA" bind:value={content.image_link1} placeholder="https://..." />
 							</div>
 
 							<div class="md:w-64 mx-2">
@@ -686,10 +655,10 @@
 										}}
 									>
 										<i class="fa fa-trash-o" />
-										Delete
+										Borrar
 									</button>
 								{/if}
-								Image 2 JPG - PNG <br />
+								Imagen 2 JPG - PNG <br />
 								{#if page_type == 'News/Events'}
 									<small>800 x 600 px</small>
 								{:else}
@@ -707,9 +676,9 @@
 										upload(content.id, 2);
 									}}
 								/>
-								<h5>Text:</h5>
+								<h5>Texto:</h5>
 								<input type="text" class="inputA" bind:value={content.image_text2} />
-								<h5>link:</h5>
+								<h5>link - URL:</h5>
 								<input type="text" class="inputA" bind:value={content.image_link2} />
 							</div>
 						</div>
@@ -726,10 +695,10 @@
 										}}
 									>
 									<i class="fa fa-trash-o" />
-										Delete
+										Borrar
 									</button>
 								{/if}
-								Image 3 JPG - PNG <br />
+								Imagen 3 JPG - PNG <br />
 								{#if page_type == 'News/Events'}
 									<small>800 x 600 px</small>
 								{:else}
@@ -747,9 +716,9 @@
 										upload(content.id, 3);
 									}}
 								/>
-								<h5>Text:</h5>
+								<h5>Texto:</h5>
 								<input type="text" class="inputA" bind:value={content.image_text3} />
-								<h5>link:</h5>
+								<h5>link - URL:</h5>
 								<input type="text" class="inputA" bind:value={content.image_link3} />
 							</div>
 
@@ -765,10 +734,10 @@
 										}}
 									>
 									<i class="fa fa-trash-o" />
-										Delete
+										Borrar
 									</button>
 								{/if}
-								Image 4 JPG - PNG <br />
+								Imagen 4 JPG - PNG <br />
 								{#if page_type == 'News/Events'}
 									<small>800 x 600 px</small>
 								{:else}
@@ -786,9 +755,9 @@
 										upload(content.id, 4);
 									}}
 								/>
-								<h5>Text:</h5>
+								<h5>Texto:</h5>
 								<input type="text" class="inputA" bind:value={content.image_text4} />
-								<h5>link:</h5>
+								<h5>link - URL:</h5>
 								<input type="text" class="inputA" bind:value={content.image_link4} />
 							</div>
 						</div>
@@ -801,23 +770,23 @@
 					<div class="w-80">
 						<div class="flex items-center">
 							<h1 class="focus:outline-none text-xl font-medium pr-2 leading-5 text-dimgray">
-								Title - Links
+								Título - Links
 							</h1>
 						</div>
 						<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">
-							Titles, Video and External Links
+							Títulos, Vídeo and Links
 						</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Title <br />
+								Título <br />
 
 								<input type="text" class="inputA" placeholder="Title" bind:value={content.title} />
 							</div>
 
 							<div class="md:w-64 mx-2">
-								Sub Title <br />
+								Subtítulo <br />
 
 								<input
 									type="text"
@@ -829,30 +798,30 @@
 						</div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Code Video Youtube <small>(only code)</small><br />
+								Código Video Youtube <small>(sólo el código)</small><br />
 								<input
 									type="text"
 									class="inputA"
-									placeholder="CODE Youtube"
+									placeholder="ej: odSr1hExCyo"
 									bind:value={content.video}
 								/>
 							</div>
 
 							<div class="md:w-64 mx-2">
 								{#if page_type != 'Form'}
-									URL External Link<br />
+									Link - URL<br />
 									<input
 										type="text"
 										class="inputA"
-										placeholder="URL External Link"
+										placeholder="URL Link"
 										bind:value={content.link}
 									/>
 								{:else}
-									Send Copy to Email: <br />
+									Enviar copia al Email: <br />
 									<input
 										type="email"
 										class="inputA"
-										placeholder="Send Copy to Email"
+										placeholder="Enviar a este email"
 										bind:value={content.link}
 									/>
 								{/if}
@@ -867,15 +836,15 @@
 					<div class="w-80">
 						<div class="flex items-center">
 							<h1 class="focus:outline-none text-xl font-medium pr-2 leading-5 text-dimgray">
-								Texts
+								Textos
 							</h1>
 						</div>
-						<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">Blocks of text</p>
+						<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">Bloques de texto</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Text 1<br />
+								Texto 1<br />
 								<Editor
 									apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
 									bind:value={content.text1}
@@ -884,7 +853,7 @@
 							</div>
 
 							<div class="md:w-64 mx-2">
-								Text 2<br />
+								Texto 2<br />
 								<Editor
 									apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
 									bind:value={content.text2}
@@ -896,7 +865,7 @@
 						{#if page_type != 'Form' && page_type != 'Home'}
 							<div class="md:flex items-center lg:ml-24">
 								<div class="md:w-64 mx-2">
-									Text 3<br />
+									Texto 3<br />
 									<Editor
 										apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
 										bind:value={content.text3}
@@ -905,7 +874,7 @@
 								</div>
 
 								<div class="md:w-64 mx-2">
-									Text 4<br />
+									Texto 4<br />
 									<Editor
 										apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
 										bind:value={content.text4}
@@ -924,24 +893,13 @@
 						<div class="w-80">
 							<div class="flex items-center">
 								<h1 class="focus:outline-none text-xl font-medium pr-2 leading-5 text-dimgray">
-									Fields
+									Campos del Formulario
 								</h1>
 							</div>
 							<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">
 								<button class="btn-primary flex" on:click={add_form}>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="h-5 w-5 mr-1"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-											clip-rule="evenodd"
-										/>
-									</svg>
-									Add Field</button
+									<i class="fa fa-plus mx-2 mt-1" />
+									Nuevo Campo</button
 								>
 							</p>
 						</div>
@@ -953,10 +911,10 @@
 										class="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400"
 									>
 										<th scope="col" class="px-2 py-1" />
-										<th scope="col" class="px-2 py-1"> Field's Name </th>
-										<th scope="col" class="px-2 py-1"> Type </th>
-										<th scope="col" class="px-2 py-1"> Required </th>
-										<th scope="col" class="px-2 py-1"> Position </th>
+										<th scope="col" class="px-2 py-1"> Nombre del campo </th>
+										<th scope="col" class="px-2 py-1"> Tipo </th>
+										<th scope="col" class="px-2 py-1"> Requerido? </th>
+										<th scope="col" class="px-2 py-1"> Posición </th>
 										<th scope="col" class="px-4 py-1" />
 									</thead>
 								{#if listForm.length>0}
@@ -975,13 +933,13 @@
 												>
 												<td>
 													<select class="inputA" bind:value={form.type}>
-														<option value="text">text</option>
-														<option value="longtext">longtext</option>
-														<option value="number">number</option>
+														<option value="text">texto</option>
+														<option value="longtext">texto largo</option>
+														<option value="number">numero</option>
 														<option value="email">email</option>
-														<option value="phone">phone</option>
-														<option value="date">date</option>
-														<option value="checkbox">checkbox</option>
+														<option value="phone">teléfono</option>
+														<option value="date">fecha</option>
+														<option value="checkbox">opción para chequear</option>
 													</select>
 												</td>
 												<td class="text-center">
@@ -1026,7 +984,7 @@
 						<div class="w-80">
 							<div class="flex items-center">
 								<h1 class="focus:outline-none text-xl font-medium pr-2 leading-5 text-dimgray">
-									Galleries
+									Gallerias
 								</h1>
 							</div>
 							<p class="focus:outline-none mt-4 text-sm leading-5 text-gray">
@@ -1043,7 +1001,7 @@
 											clip-rule="evenodd"
 										/>
 									</svg>
-									Add New Image</button
+									Agregar Nueva Imagen</button
 								>
 							</p>
 						</div>
@@ -1079,11 +1037,11 @@
 														d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
 													/></svg
 												>
-												Delete Image
+												Borrar Imagen
 											</button>
 										{/if}
 
-										Image
+										Imagen
 										<input
 											type="number"
 											min="1"
@@ -1100,7 +1058,7 @@
 											type="file"
 											accept=".jpg, .jpeg, .png"
 											class="inputA"
-											placeholder="Image 1"
+											placeholder="Imagen 1"
 											bind:files={fileImage}
 											on:change={() => {
 												galle.image = 'load';
@@ -1109,14 +1067,14 @@
 										/>
 										<input
 											type="text"
-											placeholder="Title"
+											placeholder="Titulo"
 											class="inputA"
 											bind:value={galle.title}
 										/>
 
 										<textarea
 											class="inputA"
-											placeholder="Description"
+											placeholder="Descripción"
 											bind:value={galle.description}
 										/>
 
@@ -1126,21 +1084,8 @@
 												deleteGallery(galle.id);
 											}}
 										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												class="h-5 w-5 mr-1 "
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-												stroke-width="2"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-												/></svg
-											>
-											Delete this Item
+										<i class="fa fa-trash mx-2 mt-1" />
+											Borrar este campo
 										</button>
 									</div>
 								{/each}
@@ -1159,19 +1104,8 @@
 							saveForm();
 						}}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5 mr-1"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						Save</button
+					<i class="fa fa-save mx-2 mt-1" />
+						Guardar</button
 					>
 				{:else if page_type == 'Gallery'}
 					<button
@@ -1181,19 +1115,8 @@
 							saveGallery();
 						}}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5 mr-1"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						Save</button
+					<i class="fa fa-save mx-2 mt-1" />
+						Guardar</button
 					>
 				{:else}
 					<button
@@ -1203,19 +1126,8 @@
 							saveCont(content.id);
 						}}
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5 mr-1"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						Save</button
+					<i class="fa fa-save mx-2 mt-1" />
+						Guardar</button
 					>
 				{/if}
 
@@ -1225,18 +1137,7 @@
 						show_cont = false;
 					}}
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5 mr-1"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-							clip-rule="evenodd"
-						/>
-					</svg>
+				<i class="fa fa-close mx-2 mt-1" />
 					Cancel</button
 				>
 			</div>

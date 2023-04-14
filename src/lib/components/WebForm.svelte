@@ -108,7 +108,7 @@ import type {WebContent} from '$lib/types/WebContent'
 	>
 		{#each listForm as item}
 			{#if item.type != 'checkbox'}
-				<div class="">{item.name}:</div>
+				<div> {item.name}: </div>
 			{/if}
 
 			{#if item.type == 'text'}

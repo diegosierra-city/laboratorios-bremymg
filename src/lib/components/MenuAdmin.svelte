@@ -38,7 +38,7 @@
 						}}
 					>
 						<i class="fa fa-building-o" />
-						<span class="text-sm ml-2 hidden lg:block">Company</span>
+						<span class="text-sm ml-2 hidden lg:block">Mis Datos</span>
 					</button>
 					<!--
                     <div class="boton_alert">5</div>
@@ -52,7 +52,7 @@
 						}}
 					>
 						<i class="fa fa-newspaper-o" />
-						<span class="text-sm ml-2 hidden lg:block">Pages</span>
+						<span class="text-sm ml-2 hidden lg:block">Paginas</span>
 					</button>
 					<!--
                     <div class="boton_alert">5</div>
@@ -69,7 +69,7 @@
 						}}
 					>
 					<i class="fa fa-commenting-o" />
-						<span class="text-sm ml-2 hidden lg:block">Forms</span>
+						<span class="text-sm ml-2 hidden lg:block">Mensages</span>
 					</button>
 				</li>
 
@@ -81,7 +81,7 @@
 						}}
 					>
 						<i class="fa fa-cubes" />
-						<span class="text-sm ml-2 hidden lg:block">Products</span>
+						<span class="text-sm ml-2 hidden lg:block">Productos</span>
 					</button>
 				</li>
 				<!-- Landing Pages -->

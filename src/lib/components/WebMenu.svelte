@@ -60,7 +60,7 @@ console.log(
 	
 	<div class="rounded-lg bg-white overflow-hidden w-40 absolute top-2 left-2 border-2 border-primary shadow-lg">
 		<!--
-			<img src="{urlFiles}/images/Logo-Cootraesturz-120.png" class="mx-auto" alt="" />
+			<img src="{urlFiles}/images/Logo" class="mx-auto" alt="" />
 		-->
 		
 	

@@ -29,6 +29,14 @@
 		galleryActual = position;
 		showGallery = true;
 	}
+
+	export let galleryFolder: string | any | null
+
+let folder:string = 'maker_gallery/'
+if(galleryFolder && galleryFolder!=''){
+  folder = galleryFolder
+}
+
 </script>
 
 <section>
@@ -41,8 +49,8 @@
 				}}
 			>
 				<div class="card_img">
-					<img src="{urlFiles}/images/maker_gallery/M{gallery.image}" alt="" class="w-full h-auto" />
-					<img src="{urlFiles}/images/maker_gallery/{gallery.image}" alt="" class="hidden" />
+					<img src="{urlFiles}/images/{folder}M{gallery.image}" alt="" class="w-full h-auto" />
+					<img src="{urlFiles}/images/{folder}{gallery.image}" alt="" class="hidden" />
 				</div>
 				<div class="card_titleB"><h4>{gallery.title}</h4></div>
 			</button>

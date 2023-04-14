@@ -8,9 +8,33 @@
 html{
 box-sizing:border-box;
 }
-	
+
+@font-face {
+    font-family: 'Niconne';
+    src: url(/css/Niconne/Niconne-REgular.ttf);
+  }
+
+ @font-face {
+    font-family: 'Federo';
+    src: url(/css/Niconne/Federo-Regular.ttf);
+  } 
+@font-face {
+    font-family: 'Carattere';
+    src: url(/css/Niconne/Carattere-Regular.ttf);
+  }	
+
+  @font-face {
+    font-family: 'MrDafoe';
+    src: url(/css/Mr_Dafoe/MrDafoe-Regular.ttf);
+  }	
+
+.niconne{font-family: 'Niconne', cursive;}
+.federo{font-family: 'Federo', sans-serif;}
+.carattere{font-family: 'Carattere', cursive;}
+.MrDafoe{font-family: 'MrDafoe', cursive;}
+
 	.boton{
-	@apply bg-primary	
+	@apply bg-primary federo	
 	}
 	/* transition: 600ms all ease; */
   
@@ -53,24 +77,27 @@ table th{
 }
 
  .menu-top{
-@apply bg-primary sticky w-full sm:flex z-50 top-0 text-white
+@apply bg-primary sticky w-full sm:flex z-50 top-0 text-white 
  }
 
  .menu-top-star{
     background-color: rgba(31, 95, 31, 0.5);
-@apply fixed top-12 w-full sm:flex z-50 text-white
+@apply fixed top-12 w-full sm:flex z-50 text-white 
  }
  
 
  .menu_up{
-    @apply mx-auto m-2
+    @apply m-2
  }
  .menu_up ul{
-    @apply flex items-center 
+    @apply flex items-center lowercase
  }
  .menu-top .menu_up li{
 	transition: 600ms all;
-	@apply text-white px-3 py-2 text-sm font-medium hover:bg-opacity-80 bg-secondary bg-opacity-100 mr-1 rounded-lg
+	@apply text-white px-3 py-2 text-lg font-medium hover:text-secondary  bg-opacity-100 mr-1 italic border-l border-l-darkgray border-y border-y-primary hover:border-y-silver 
+    /*
+@apply text-white px-3 py-2 text-lg font-medium hover:bg-opacity-80 bg-secondary bg-opacity-100 mr-1 rounded-lg italic 
+    */
 }
 
 .menu-top-star .menu_up li{
@@ -84,15 +111,18 @@ table th{
 .boton-principal-active, .boton-principal-movil-active, 
 */
 .menu_up .active{
-	@apply !bg-dimgray 
+	@apply  border-y-silver text-secondary
 }
 
 .menu_up_movil{
-    @apply absolute top-6 right-2 bg-silver p-2 border border-gray rounded-lg
+    @apply absolute top-8 right-2 bg-primary p-2 rounded-lg border border-silver italic 
 }
 .menu_up_movil li{
 	transition: 600ms all;
-	@apply text-black pl-2 pr-5 py-2 text-sm font-medium border-l-4 border-primary hover:border-l-secondary hover:bg-lavender/10 
+	@apply text-white carattere lowercase pl-2 pr-5 py-2 text-sm font-medium border-l-4 border-l-primary hover:border-l-secondary hover:text-secondary 
+    /*
+hover:bg-lavender/10
+    */
 }
 .menu_up_movil .active{
 	@apply  border-l-4 !border-l-secondary
@@ -115,20 +145,24 @@ footer{
 
 .card_home{
     transition: 600ms all;
-    @apply relative rounded-lg overflow-hidden cursor-pointer
+    @apply relative rounded-lg overflow-hidden cursor-pointer bg-silver bg-opacity-60
 }
 .card_title{
-    @apply absolute top-2 left-0 w-full text-center text-white drop-shadow-2xl shadow-black
+    @apply relative top-2 left-0 w-full text-center text-white drop-shadow-2xl shadow-black text-lg
 }
 .card_titleB{
-    @apply absolute bottom-2 left-0 w-full text-center text-white drop-shadow-lg shadow-black bg-black opacity-70 p-3
+    @apply absolute top-2 left-0 w-full text-center text-white drop-shadow-lg shadow-black bg-black opacity-70 p-3 z-10
 }
 .card_img{
     transition: 600ms all;
+    @apply overflow-hidden
 }
 
 .card_home:hover .card_img{
     @apply scale-110 
+}
+.card_text{
+    @apply p-2 h-20 bg-silver relative z-10
 }
 
 .logo_down{
@@ -281,19 +315,40 @@ focus:ring-2 focus:ring-offset-2 focus:ring-primary
 }
 
 .gallery{
-    width: 100%; height: 430px;
+    height: 400px;
+    transition: 900ms all !important;
     @apply flex
 }
+.gallery .gallery-item{
+    width: 100%; border-right: dotted 1px white;
+}
+.gallery .gallery-button{
+    @apply hidden
+}
+
+.gallery .gallery-item:hover{
+    width: 300%;
+    transition: 600ms all ease;
+}
+
+.gallery .gallery-item:hover .gallery-title{
+@apply text-2xl mt-4
+}
+
+.gallery .gallery-item:hover .gallery-button{
+@apply flex
+}
+
 .gallery img{
     width: 0px;
     flex-grow:1;
     object-fit: cover;
     opacity: 0.8;
-    transition: 600ms all ease;
+    transition: 600ms all ease; border:solid 1px red
 }
 .gallery img:hover{
 cursor:crosshair;
-width: 300px;
+width: 600px;
 opacity: 1;
 filter: contrast(120%);
 }

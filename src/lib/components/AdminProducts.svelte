@@ -120,8 +120,8 @@
 					console.error(result[0].error);
 				} else {
 					message = {
-						title: 'Save',
-						text: 'Save data',
+						title: 'Guardar',
+						text: 'Se han guardado los datos',
 						class: 'message-green',
 						accion: ''
 					};
@@ -171,12 +171,12 @@
 	}
 
 	const deleteProduct = (id: number) => {
-		if (confirm('Delete this product?')) {
+		if (confirm('Borrar this product?')) {
 			product_list = product_list.filter((item) => item.id != id);
 			//mensaje("se borró la tarea", "text-bg-danger");
 			message = {
-				title: 'Delete Product',
-				text: 'Information was deleted',
+				title: 'Borrar',
+				text: 'Se borró el producto',
 				class: 'message-red',
 				accion: ''
 			};
@@ -193,11 +193,11 @@
 </script>
 
 <svelte:head>
-	<title>Admin {category_name}</title>
+	<title>{category_name}</title>
 </svelte:head>
 
 <div class="p-3 w-full mt-14 ">
-	<h3>Category: {category_name}</h3>
+	<h3>Categoría: {category_name}</h3>
 
 	<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
 		<div class="flex">
@@ -208,26 +208,26 @@
 				}}
 			>
 				<i class="fa fa-angle-double-left mr-2 mt-1 " />
-				<strong> Back </strong>
+				<strong> Regresar </strong>
 			</button>
 			<button class="btn-green mr-2 flex" on:click={saveProduct}>
 				<i class="fa fa-save mr-2 mt-1 " />
-				Save</button
+				Guardar</button
 			>
 			<button class="btn-primary flex" on:click={add_product}>
 				<i class="fa fa-plus mr-2 mt-1 " />
-				Add New Product</button
+				Agregar Nuevo Producto</button
 			>
 		</div>
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
 				<th scope="col" class="px-4 py-2" />
-				<th scope="col" class="px-4 py-2"> Product</th>
+				<th scope="col" class="px-4 py-2"> Producto</th>
 
 				<th scope="col" class="px-4 py-2"> Ref </th>
-				<th scope="col" class="px-4 py-2"> Price </th>
-				<th scope="col" class="px-4 py-2"> Position </th>
-				<th scope="col" class="px-4 py-2"> Active </th>
+				<th scope="col" class="px-4 py-2"> Precio </th>
+				<th scope="col" class="px-4 py-2"> Posición </th>
+				<th scope="col" class="px-4 py-2"> Activo </th>
 				<th scope="col" class="px-4 py-2" />
 				<th scope="col" class="px-4 py-2" />
 			</thead>
@@ -256,7 +256,7 @@
 									if (ct.id > 1000000) {
 										message = {
 											title: 'Error',
-											text: 'First save the new Product',
+											text: 'Primero haga click en el botón de Guardar productos',
 											class: 'message-red',
 											accion: ''
 										};
@@ -310,7 +310,7 @@
 
 					<!---->
 				{:else}
-					Please Add the First Product
+					Agrega un producto
 				{/each}
 			</tbody>
 		</table>

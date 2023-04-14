@@ -5074,7 +5074,7 @@ class Upload {
     }
 
     /**
-     * Deletes the uploaded file from its temporary location
+     * Borrars the uploaded file from its temporary location
      *
      * When PHP uploads a file, it stores it in a temporary location.
      * When you {@link process} the file, you actually copy the resulting file to the given location, it doesn't alter the original file.

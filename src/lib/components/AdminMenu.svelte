@@ -77,7 +77,7 @@
 			.then((result) => {
 				
 					message = {
-						title: 'Save',
+						title: 'Guardar',
 						text: 'Save succesfully',
 						class: 'message-green',
 						accion: ''
@@ -125,12 +125,12 @@
 	}
 
 	const deleteMenu = (id: number) => {
-		if (confirm('Delete this Page?')) {
+		if (confirm('Borrar this Page?')) {
 			menu_list = menu_list.filter((item) => item.id != id);
 			//mensaje("se borró la tarea", "text-bg-danger");
 			message = {
-				title: 'Delete Menu',
-				text: 'Information was deleted',
+				title: 'Borrar Menu',
+				text: 'Se ha borrado la información',
 				class: 'message-red',
 				accion: ''
 			};
@@ -166,7 +166,7 @@
 </script>
 
 <svelte:head>
-	<title>Admin Pages</title>
+	<title>Listado de Páginas</title>
 </svelte:head>
 
 <div class="p-3 w-full mt-14 ">
@@ -174,29 +174,32 @@
 		<div class="flex">
 			<button class="btn-green mr-2 flex" on:click={saveMenu}>
 				<i class="fa fa-save mx-2 mt-1" />
-				Save</button
+				Guardar</button
 			>
 			<button class="btn-primary flex" on:click={add_menu}>
 				<i class="fa fa-plus mx-2 mt-1" />
-				Add New Page</button
+				Agregar Nueva Página</button
 			>
 		</div>
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
 				<th scope="col" class="px-4 py-2" />
-				<th scope="col" class="px-4 py-2"> Page Name </th>
-				<th scope="col" class="px-4 py-2"> Type </th>
-				<th scope="col" class="px-4 py-2"> External URL </th>
-				<th scope="col" class="px-4 py-2 text-center"> Header </th>
-				<th scope="col" class="px-4 py-2 text-center"> Footer </th>
-				<th scope="col" class="px-4 py-2 text-center"> Side </th>
-				<th scope="col" class="px-4 py-2 text-center"> Position </th>
+				<th scope="col" class="px-4 py-2"> Nombre de Página </th>
+				<th scope="col" class="px-4 py-2"> Tipo </th>
+				<th scope="col" class="px-4 py-2"> Link -URL </th>
+				<th scope="col" class="px-4 py-2 text-center"> Ver en Menu Superior </th>
+				<th scope="col" class="px-4 py-2 text-center"> Ver en Menu Inferior </th>
+				<!--
+				<th scope="col" class="px-4 py-2 text-center"> Ver en Menu Lateral </th>	
+				-->
+				
+				<th scope="col" class="px-4 py-2 text-center"> Posición </th>
 				{#if submenu_show}
 					<th scope="col" class="px-4 py-2"> Submenu </th>
 				{/if}
 
 				<th scope="col" class="px-4 py-2 text-center"> SEO </th>
-				<th scope="col" class="px-4 py-2 text-center"> EDIT </th> 
+				<th scope="col" class="px-4 py-2 text-center"> EDITAR </th> 
 				<th scope="col" class="px-4 py-2" />
 			</thead>
 			<tbody>
@@ -208,16 +211,20 @@
 						</td>
 						<td>
 							<select class="inputA" bind:value={mn.type}>
-								<option value="">Select</option>
-								<option value="Home">Home</option>
-								<option value="Info">Info</option>
-								<option value="Form">Form</option>
-								<option value="Gallery">Gallery</option>
-								<option value="News">News</option>
-								<option value="Events">Events</option>
-								<option value="Products">Products Here</option>
-								<option value="Products Sub">Products Sub</option>
-								<option value="External Link">External Link</option>
+								<option value="">Seleccione</option>
+								<option value="Home">Pag. Inicio</option>
+								<option value="Info">Informativa</option>
+								<option value="Form">Con Formulario</option>
+								<option value="Gallery">Con Galeria</option>
+								<!--
+								<option value="News">De Noticias</option>
+								<option value="Events">De Eventos</option>	
+								<option value="Products Sub">Listado Productos</option>
+								-->
+								
+								<option value="Products">Listado Categorias</option>
+								
+								<option value="External Link">Link URL</option>
 							</select>
 						</td>
 						<td>
@@ -225,7 +232,10 @@
 						</td>
 						<td class="text-center"><input type="checkbox" bind:checked={mn.head} /></td>
 						<td class="text-center"><input type="checkbox" bind:checked={mn.foot} /></td>
-						<td class="text-center"><input type="checkbox" bind:checked={mn.side} value="1" /></td>
+						<!--
+							<td class="text-center"><input type="checkbox" bind:checked={mn.side} value="1" /></td>
+						-->
+						
 
 						<td class="text-center">
 							<input type="number" min="1" max="99" class="inputA w-12" bind:value={mn.position} />
@@ -245,20 +255,7 @@
 									edit_meta(mn.id);
 								}}
 							>
-								<svg
-									class="h-5 w-5 text-primary cursor-pointer hover:black mr-4"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									stroke-width="2"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-									/>
-								</svg>
+							<i class="fa fa-edit mx-2 mt-1" />
 							</button>
 						</td>
 						<td class=" text-center">
@@ -289,31 +286,18 @@
 									deleteMenu(mn.id);
 								}}
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-5 w-5 text-red cursor-pointer hover:black"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									stroke-width="2"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-									/></svg
-								>
+							<i class="fa fa-trash mx-2 mt-1" />
 							</button>
 						</td>
 					</tr>
 					{#if metaD == true && metaP == mn.id}
 						<tr>
 							<td colspan="4">
-								<span class="font-bold">Meta Description:</span><br />
+								<span class="font-bold">Metadato: Descripción</span><br />
 								<input type="text" class="inputA w-full" bind:value={mn.metadescription} />
 							</td>
 							<td colspan="8">
-								<span class="font-bold">Meta Key Words:</span><br />
+								<span class="font-bold">Metadato: Palabras Clave</span><br />
 								<input type="text" class="inputA w-full" bind:value={mn.metakeywords} />
 							</td>
 						</tr>
@@ -327,16 +311,21 @@
 							</td>
 							<td>
 								<select class="inputA" bind:value={submn.type}>
-									<option value="">Select</option>
-									<option value="Home">Home</option>
-									<option value="Info">Info</option>
-									<option value="Form">Form</option>
-									<option value="Gallery">Gallery</option>
-									<option value="News">News</option>
-									<option value="Events">Events</option>
-									<option value="Products">Products Here</option>
-									<option value="Products Sub">Products Sub</option>
-									<option value="External Link">External Link</option>
+									<option value="">Seleccione</option>
+									
+									<option value="Home">Pag. Inicio</option>
+								<option value="Info">Informativa</option>
+								<option value="Form">Con Formulario</option>
+								<option value="Gallery">Con Galeria</option>
+								<!--
+								<option value="News">De Noticias</option>
+								<option value="Events">De Eventos</option>	
+								<option value="Products Sub">Listado Productos</option>
+								-->
+								
+								<option value="Products">Listado Categorias</option>
+								
+								<option value="External Link">Link URL</option>
 								</select>
 							</td>
 							<td>
@@ -344,9 +333,12 @@
 							</td>
 							<td class="text-center"><input type="checkbox" bind:checked={submn.head} /></td>
 							<td class="text-center"><input type="checkbox" bind:checked={submn.foot} /></td>
+							<!--
 							<td class="text-center"
 								><input type="checkbox" bind:checked={submn.side} value="1" /></td
-							>
+							>	
+							-->
+							
 
 							<td class="text-center">
 								<input
@@ -402,20 +394,7 @@
 										deleteMenu(submn.id);
 									}}
 								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										class="h-4 w-4 text-red cursor-pointer hover:black"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										stroke-width="2"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-										/></svg
-									>
+								<i class="fa fa-trash mx-2 mt-1" />
 								</button>
 							</td>
 						</tr>
@@ -424,7 +403,7 @@
 					{/each}
 					<!---->
 				{:else}
-					Please Add the First Menu
+					Agrege una Nueva página
 				{/each}
 			</tbody>
 		</table>

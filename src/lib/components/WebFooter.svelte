@@ -30,7 +30,7 @@
 	})
 </script>
 
-<footer class="relative top-28 sm:top-30">
+<footer class="relative top-28 sm:top-30 border-t-2 border-t-black">
 	<!--
 {$page.url.pathname}     
 -->
@@ -84,22 +84,7 @@
 		
 	</div>
 
-	<div class="grid grid-cols-1 mb-3 sm:grid-cols-3 gap-2 ">
-		<!--
-			<div class="sm:col-start-2">
-			<h4>Cootraesturz Ltda</h4>
-			PBX: (57 1) 713 00 99 - (57 1) 713 01 00<br />
-			info@cootraesturz.com<br />
-			</div>
-			<div>
-			servicioacliente@cootraesturz.com<br>
-			Diagonal 52A Sur # 29-58 <br>
-			Bogotá - Colombia
-		</div>
 
-		-->
-	
-</div>
 
-	<div class="w-full text-center "><small>2023 - Todos los derechos reservados</small></div>
+	<div class="w-full text-center "><small>KDAR Cosmetics 2023 - Todos los derechos reservados</small></div>
 </footer>

@@ -75,8 +75,8 @@
 			.then((result) => {
 				
 					message = {
-						title: 'Save',
-						text: 'Save data',
+						title: 'Guardar',
+						text: 'Se han guardado los datos',
 						class: 'message-green',
 						accion: ''
 					};
@@ -95,7 +95,7 @@
 </script>
 
 <svelte:head>
-	<title>Forms Report</title>
+	<title>Reporte de Mensages</title>
 </svelte:head>
 
 <div class="p-3 w-full">
@@ -115,7 +115,7 @@
 					clip-rule="evenodd"
 				/>
 			</svg>
-			Update Report</button
+			Actualizar Reporte</button
 		>
 
 		<button
@@ -124,18 +124,7 @@
 				saveAnswer();
 			}}
 		>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-5 w-5 mr-1"
-				viewBox="0 0 20 20"
-				fill="currentColor"
-			>
-				<path
-					fill-rule="evenodd"
-					d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-					clip-rule="evenodd"
-				/>
-			</svg>
+		<i class="fa fa-save mx-2 mt-1" />
 			<span class="whitespace-nowrap">Save Changes</span></button
 		>
 	</div>
@@ -144,12 +133,12 @@
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-xs text-white uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
 				<th scope="col" class="px-4 py-2" />
-				<th scope="col" class="px-4 py-2"> Date</th>
+				<th scope="col" class="px-4 py-2"> Fecha</th>
 
-				<th scope="col" class="px-4 py-2 text-center"> Page </th>
-				<th scope="col" class="px-4 py-2 text-center"> Message</th>
-				<th scope="col" class="px-4 py-2 text-center"> Response </th>
-				<th scope="col" class="px-4 py-2 text-center"> State </th>
+				<th scope="col" class="px-4 py-2 text-center"> Origen </th>
+				<th scope="col" class="px-4 py-2 text-center"> Mensage</th>
+				<th scope="col" class="px-4 py-2 text-center"> Respuesta </th>
+				<th scope="col" class="px-4 py-2 text-center"> Estado </th>
 			</thead>
 			<tbody>
 				{#each listForm as fm, i}
@@ -170,15 +159,15 @@
 
 						<td class="text-center">
 							<select class="inputA" bind:value={fm.state}>
-								<option value="open">open</option>
-								<option value="close">close</option>
+								<option value="open">abrir</option>
+								<option value="close">cerrar</option>
 							</select>
 						</td>
 					</tr>
 
 					<!---->
 				{:else}
-					There are no forms for these dates
+					No hay mensajes para estas fechas
 				{/each}
 			</tbody>
 		</table>

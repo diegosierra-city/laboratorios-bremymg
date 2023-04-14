@@ -72,7 +72,8 @@
 </script>
 
 <section class="carrusel relative" >
-<div class="bg-primary md:bg-secondary h-20 md:h-2"></div>	
+	<!--franja espacio-->
+<div class="bg-primary md:bg-secondary h-0 md:h-2"></div>	
 	<!--Image-->
 	{#if cont.image1 != '' && cont.image2 == '' && cont.image_link1 == ''}
 		<img src="{urlFiles}/images/maker_pages/{cont.image1}" alt="" class="w-full h-auto" />
@@ -215,7 +216,7 @@
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 			allowfullscreen
 		/>
-		+++{cont.video}--
+	
 	{/if}
 
 	

@@ -13,8 +13,10 @@
 	import WebCarrousel from '$lib/components/WebCarrousel.svelte';
 	import WebAccess from '$lib/components/WebAccess.svelte';
 
-
-		
+	import type { Gallery } from '$lib/types/Gallery';
+	import WebGalleryB from '$lib/components/WebGalleryB.svelte';
+	import WebGalleryA from '$lib/components/WebGalleryA.svelte';
+	
 
 	let cont: BlockContent = {
 		id: 0,
@@ -133,6 +135,44 @@
 
 	$: movil(innerWidth);
 	$: console.log('Online: ' + online);
+
+	let listGalleries: Array<Gallery> = [];
+
+const loadGallery = () => {
+	console.log('gallery:');
+	console.log(
+		urlAPI +
+			'?ref=load-listGalleryWeb&company_id=' +
+			company_id +
+			'&tokenWeb=' +
+			tokenWeb +
+			'&folder=maker_categories'			
+	);
+	/**/
+	fetch(
+		urlAPI +
+			'?ref=load-listGalleryWeb&company_id=' +
+			company_id +
+			'&tokenWeb=' +
+			tokenWeb +
+			'&folder=maker_categories'
+	)
+		.then((response) => response.json())
+		.then((result) => {
+			console.log('Nuevas Galleries:::');
+			console.log(result);
+		
+			listGalleries = result;
+		})
+		.catch((error) => console.log(error.message));
+};
+
+onMount(()=>{
+loadGallery()
+})
+
+let galleryFolder:string = 'maker_products/'
+
 </script>
 
 <svelte:head>
@@ -143,16 +183,25 @@
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
+<!--
+	<WebGalleryB {listGalleries} {urlFiles} {galleryFolder}/>
+-->
 
-<WebCarrousel {cont} {urlFiles} {prefixFolder} />
+	{#if innerWidth>900}
+	<WebGalleryA {listGalleries} {urlFiles} {galleryFolder} />
+	{/if}
+
+
+
 <WebMenuB {scrollY} />
 
-
+<WebCarrousel {cont} {urlFiles} {prefixFolder} />
 
 <WebAccess {listCont} {urlFiles}/>
+
 <section class="relative" id="principal">
 
-<div class="bg-silver h-10"></div>
+<div class="h-20 md:h-10"></div>
 
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto my-6 px-4 -mt-6">
 		{#each listCont as ct}
@@ -194,14 +243,14 @@
 		<h2 class="text-primary">{cont.title}</h2>
 		<h3>{cont.subtitle}</h3>
 {#if cont.text1}
-<p class="m-3 p-3 bg-aliceblue">{@html cont.text1}</p>
+<p class="m-3 p-3 ">{@html cont.text1}</p>
 {/if}
 		
 	</div>
 
 	{#if cont.text2}
 	<div class="w-11/12 md:w-8/12 mx-auto">
-		<p class="m-3 p-3 bg-aliceblue">{@html cont.text2}</p>
+		<p class="m-3 p-3 ">{@html cont.text2}</p>
 </div>
 	{/if}
 
@@ -210,6 +259,6 @@
 
 </section>
 
-<WebCarrousel {cont} {urlFiles} {prefixFolder} />
+
 
 <WebFooter />

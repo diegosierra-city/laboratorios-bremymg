@@ -48,8 +48,8 @@
 					prod = result[0];
 					
 					message = {
-						title: 'Save Product',
-						text: 'Save Product ' + prod.product,
+						title: 'Guardar',
+						text: 'Se guardó el producto ' + prod.product,
 						class: 'message-green',
 						accion: ''
 					};
@@ -96,8 +96,8 @@
 				} else {
 					prod = result[0];
 					message = {
-						title: 'Upload',
-						text: 'File uploaded',
+						title: 'Cargar',
+						text: 'Imágen cargada',
 						class: 'message-green',
 						accion: ''
 					};
@@ -151,8 +151,8 @@
 				} else {
 					listOptions[fileinputPosition] = result[0];
 					message = {
-						title: 'Upload',
-						text: 'File of Option uploaded',
+						title: 'Cargar',
+						text: 'Archivo cargado',
 						class: 'message-green',
 						accion: ''
 					};
@@ -236,12 +236,12 @@
 	}
 
 	const deleteOption = (id: number) => {
-		if (confirm('Delete this Option?')) {
+		if (confirm('Borrar esta versión?')) {
 			listOptions = listOptions.filter((item) => item.id != id);
 			//mensaje("se borró la tarea", "text-bg-danger");
 			message = {
-				title: 'Delete Option',
-				text: 'Option was deleted',
+				title: 'Borrar',
+				text: 'Versión Borrada',
 				class: 'message-red',
 				accion: ''
 			};
@@ -311,7 +311,7 @@
 				}}
 			>
 				<i class="fa fa-save mr-1 mt-1" />
-				Save</button
+				Guardar</button
 			>
 			<button
 				class="ml-4 flex btn-red"
@@ -320,7 +320,7 @@
 				}}
 			>
 				<i class="fa fa-close mr-1 mt-1" />
-				Close</button
+				Cerrar</button
 			>
 		</div>
 
@@ -329,9 +329,9 @@
 				<div class="mt-16 lg:flex justify-between border-b border-silver pb-4">
 					<div class="w-80">
 						<div class="flex items-center">
-							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Images</h1>
+							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Imagenes</h1>
 						</div>
-						<p class="mt-4 text-sm leading-5 text-gray">Upload the images</p>
+						<p class="mt-4 text-sm leading-5 text-gray">Cargar imagenes</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
@@ -348,7 +348,7 @@
 										}}
 									>
 										<i class="fa fa-trash-o mr-2 mt-1" />
-										Delete
+										Borrar
 									</button>
 								{/if}
 								Principal Image JPG - PNG <br />
@@ -380,7 +380,7 @@
 										}}
 									>
 										<i class="fa fa-trash-o mr-2 mt-1" />
-										Delete
+										Borrar
 									</button>
 								{/if}
 								Image 2 JPG - PNG <br />
@@ -413,10 +413,10 @@
 										}}
 									>
 										<i class="fa fa-trash-o mr-2 mt-1" />
-										Delete
+										Borrar
 									</button>
 								{/if}
-								Image 3 JPG - PNG <br />
+								Imagen 3 JPG - PNG <br />
 								<small>800 x 600 px</small>
 
 								<input
@@ -445,10 +445,10 @@
 										}}
 									>
 										<i class="fa fa-trash-o mr-2 mt-1" />
-										Delete
+										Borrar
 									</button>
 								{/if}
-								Image 4 JPG - PNG <br />
+								Imagen 4 JPG - PNG <br />
 								<small>800 x 600 px</small>
 
 								<input
@@ -472,14 +472,14 @@
 				<div class="mt-16 lg:flex justify-between border-b border-silver pb-4">
 					<div class="w-80">
 						<div class="flex items-center">
-							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Basic</h1>
+							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Datos Basicos</h1>
 						</div>
-						<p class="mt-4 text-sm leading-5 text-gray">Product, reference and others</p>
+						<p class="mt-4 text-sm leading-5 text-gray">Producto, referencia and otros</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Product <br />
+								Producto <br />
 
 								<input type="text" class="inputA" placeholder="Product" bind:value={prod.product} />
 							</div>
@@ -492,7 +492,7 @@
 						</div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Size<br />
+								Tamaño<br />
 								<input type="text" class="inputA" placeholder="Size" bind:value={prod.size} />
 							</div>
 
@@ -509,14 +509,14 @@
 				<div class="mt-16 lg:flex justify-between border-b border-silver pb-4">
 					<div class="w-80">
 						<div class="flex items-center">
-							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Description</h1>
+							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Descripción</h1>
 						</div>
-						<p class="mt-4 text-sm leading-5 text-gray">Blocks of text</p>
+						<p class="mt-4 text-sm leading-5 text-gray">Textos</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Small Description<br />
+								Descripción Corta<br />
 								<Editor
 									apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
 									bind:value={prod.description}
@@ -525,7 +525,7 @@
 							</div>
 
 							<div class="md:w-64 mx-2">
-								Full Description<br />
+								Descripción Completa<br />
 								<Editor
 									apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
 									bind:value={prod.description2}
@@ -541,14 +541,14 @@
 				<div class="mt-16 lg:flex justify-between border-b border-silver pb-4">
 					<div class="w-80">
 						<div class="flex items-center">
-							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Price</h1>
+							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Precio</h1>
 						</div>
-						<p class="mt-4 text-sm leading-5 text-gray">Price Base</p>
+						<p class="mt-4 text-sm leading-5 text-gray">Precio Base</p>
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
-								Price<br />
+								Precio<br />
 								<input type="number" class="inputA" placeholder="Price" bind:value={prod.price} />
 							</div>
 						</div>
@@ -560,13 +560,13 @@
 				<div class="mt-16 lg:flex justify-between border-b border-silver pb-4">
 					<div class="w-80">
 						<div class="flex items-center">
-							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Diferent Versions</h1>
+							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Diferentes Versiones</h1>
 						</div>
-						<p class="mt-4 text-sm leading-5 text-gray">for this Product (As Size o Color)</p>
+						<p class="mt-4 text-sm leading-5 text-gray">para este Producto (como Tamaño o Color)</p>
 						<div class="mt-4 text-sm leading-5 text-gray">
 							<button class="btn-primary flex" on:click={addOption}>
 								<i class="fa fa-plus mr-2 mt-1" />
-								Add New Version</button
+								Agregar Nueva Versión</button
 							>
 						</div>
 					</div>
@@ -577,12 +577,12 @@
 							<table>
 								<thead>
 									<th scope="col" class="px-2 py-1" />
-									<th scope="col" class="px-2 py-1">Version Type</th>
-									<th scope="col" class="px-2 py-1"> Name</th>
-									<th scope="col" class="px-2 py-1"> Image </th>
-									<th scope="col" class="px-2 py-1"> Price </th>
-									<th scope="col" class="px-2 py-1"> Stock </th>
-									<th scope="col" class="px-2 py-1"> Position </th>
+									<th scope="col" class="px-2 py-1"> Versión de:</th>
+									<th scope="col" class="px-2 py-1"> Nombre</th>
+									<th scope="col" class="px-2 py-1"> Imagen </th>
+									<th scope="col" class="px-2 py-1"> Precio </th>
+									<th scope="col" class="px-2 py-1"> Inventario </th>
+									<th scope="col" class="px-2 py-1"> Posición </th>
 									<th scope="col" class="px-4 py-1" />
 								</thead>
 								<tbody>
@@ -594,14 +594,14 @@
 													type="text"
 													class="inputA w-20"
 													bind:value={prod.options}
-													placeholder="Size,Color..."
+													placeholder="Ej: Tamaño,Color..."
 												/>
 											</td>
 											<td
 												><input
 													type="text"
 													class="inputA w-20"
-													placeholder="XS,Red..."
+													placeholder="Ej: XS,Rojo..."
 													bind:value={option.name}
 												/></td
 											>
@@ -703,7 +703,7 @@ on:click={() => {
 				}}
 			>
 				<i class="fa fa-save mr-2 mt-1" />
-				Save</button
+				Guardar</button
 			>
 			<button
 				class="ml-4 flex btn-red"
@@ -712,7 +712,7 @@ on:click={() => {
 				}}
 			>
 				<i class="fa fa-close mr-2 mt-1" />
-				Close</button
+				Cerrar</button
 			>
 		</div>
 	</div>

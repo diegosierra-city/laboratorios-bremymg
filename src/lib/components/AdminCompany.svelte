@@ -299,7 +299,7 @@
 
 						<div class="md:flex items-center lg:ml-2">
 							<div class="mx-2">
-								Telefono<br />
+								Teléfono<br />
 								<input
 									type="phone"
 									class="inputA"
