@@ -515,7 +515,7 @@
 					</div>
 					<div>
 						<div class="md:flex items-center lg:ml-24">
-							<div class="md:w-64 mx-2">
+							<div class="w-full mx-2">
 								Descripción Corta<br />
 								<Editor
 									apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
@@ -523,16 +523,19 @@
 									{conf}
 								/>
 							</div>
-
-							<div class="md:w-64 mx-2">
-								Descripción Completa<br />
-								<Editor
-									apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
-									bind:value={prod.description2}
-									{conf}
-								/>
-							</div>
+							
 						</div>
+<div class="md:flex items-center lg:ml-24">
+	<div class="w-full mx-2">
+		Descripción Completa<br />
+		<Editor
+			apiKey="6omiyxavakt13jx418pdqk4jh453k7vgjz33blqckjrskk88"
+			bind:value={prod.description2}
+			{conf}
+		/>
+	</div>
+</div>
+						
 					</div>
 				</div>
 			</div>
@@ -541,7 +544,7 @@
 				<div class="mt-16 lg:flex justify-between border-b border-silver pb-4">
 					<div class="w-80">
 						<div class="flex items-center">
-							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Precio</h1>
+							<h1 class="text-xl font-medium pr-2 leading-5 text-dimgray">Precio / Existencias</h1>
 						</div>
 						<p class="mt-4 text-sm leading-5 text-gray">Precio Base</p>
 					</div>
@@ -549,8 +552,13 @@
 						<div class="md:flex items-center lg:ml-24">
 							<div class="md:w-64 mx-2">
 								Precio<br />
-								<input type="number" class="inputA" placeholder="Price" bind:value={prod.price} />
+								<input type="number" class="inputA" placeholder="Precio" bind:value={prod.price} />
 							</div>
+<div class="md:w-64 mx-2">
+								Existencias<br />
+								<input type="number" class="inputA" placeholder="Existencias" bind:value={prod.stock} />
+							</div>
+							
 						</div>
 					</div>
 				</div>

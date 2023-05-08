@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { apiKey } from '../../store';
+	import { apiKey, cookie_info, cookie_update, userNow } from '../../store';
 	import { fade } from 'svelte/transition';
 	//import { bars, faCaretUp } from '@fortawesome/free-solid-svg-icons/index.es'
-
+	import { numberFormat } from '$lib/components/NumberFormat';
 	import type { MenuWeb } from '$lib/types/MenuWeb';
+	import type { Pedido } from '$lib/types/Pedido';
 
 	console.log(
 		$apiKey.urlAPI_Maker +
@@ -53,8 +54,19 @@
 
 	let movil_menu: boolean = true;
 	let urlFiles = $apiKey.urlFiles;
-	export let scrollY: number;
+	//export let scrollY: number;
+
+	export let carrito_total:number 
+	export let newPedido: Pedido
+	
+	let showCarrito=false
+
 </script>
+
+{#if showCarrito}
+	 <!-- content here -->
+		{newPedido}
+{/if}
 
 <header class="menu-top">
 	<div class="w-full mx-auto ">
@@ -112,6 +124,9 @@
 							<a data-sveltekit-preload-data href={menu.link}>{menu.menu}</a>
 						</li>
 					{/each}
+					<li>
+							<button><i class="fa fa-shopping-cart" /> ${numberFormat(carrito_total)}</button>
+						</li>
 				</ul>
 			</nav>
 		</div>

@@ -145,7 +145,7 @@ footer{
 
 .card_home{
     transition: 600ms all;
-    @apply relative rounded-lg overflow-hidden cursor-pointer bg-silver bg-opacity-60
+    @apply relative rounded-lg overflow-hidden cursor-pointer border border-secondary mb-4
 }
 .card_title{
     @apply relative top-2 left-0 w-full text-center text-white drop-shadow-2xl shadow-black text-lg
@@ -153,16 +153,23 @@ footer{
 .card_titleB{
     @apply absolute top-2 left-0 w-full text-center text-white drop-shadow-lg shadow-black bg-black opacity-70 p-3 z-10
 }
+.card_titleC{
+    @apply text-center text-primary
+}
 .card_img{
     transition: 600ms all;
     @apply overflow-hidden
 }
 
 .card_home:hover .card_img{
-    @apply scale-110 
+    @apply contrast-125
 }
 .card_text{
-    @apply p-2 h-20 bg-silver relative z-10
+    @apply p-2 h-20  relative z-10
+}
+
+.product-image{
+    @apply rounded-lg border border-secondary
 }
 
 .logo_down{
@@ -357,7 +364,7 @@ filter: contrast(120%);
  h2{font-size: 30px; font-weight:bold}
  h3{font-size: 20px; font-weight:bold} 
  h4{font-size: 18px; font-weight:bold}
-h4{font-size: 15px; font-weight:bold}
+h5{font-size: 15px; font-weight:bold}
 
 
 }

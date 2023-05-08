@@ -2,10 +2,10 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
-	import { apiKey } from '../../../../store';
+	import { apiKey, cookie_info, cookie_update } from '../../../../store';
 	import { fade, fly } from 'svelte/transition';
 	import type { Item } from '$lib/types/ListItem';
-	
+	import type { Product } from '$lib/types/Product';
 
 	import Messages from '$lib/components/Messages.svelte';
 	import type { Message } from '$lib/types/Message';
@@ -15,21 +15,23 @@
 	import WebGalleryA from '$lib/components/WebGalleryA.svelte';
 	import WebFooter from '$lib/components/WebFooter.svelte';
 	import WebList from '$lib/components/WebList.svelte';
-	
+
 	let m_show: boolean = false;
 	let message: Message;
-	
+
 	const urlAPI = $apiKey.urlAPI_Maker;
 	const urlFiles = $apiKey.urlFiles;
 	const company_id = $apiKey.companyId;
 	const company_name = $apiKey.companyName;
 	const tokenWeb = $apiKey.token;
 
-	let listItems: Array<Item>= []
-		let imageTop: string = ''
-	
+	let listItems: Array<Item> = [];
+	let listProducts: Array<Product> = [];
+	let imageTop: string = '';
+	let titulo: string;
+	let subtitulo: string;
+
 	const loadList = async (name: string) => {
-		
 		console.log('contenido:' + name);
 		console.log(
 			urlAPI +
@@ -51,39 +53,65 @@
 		)
 			.then((response) => response.json())
 			.then((result) => {
-				listItems = result[0];
-				console.log('prodt')
-			
+				listProducts = result[0];
+				console.log('prodt');
 				imageTop = result[1];
-				console.log(imageTop)
+				titulo = result[2];
+				subtitulo = result[3];
+				console.log(listProducts);
 			})
 			.catch((error) => console.log(error.message));
 	};
 
-	onMount(()=>{
-		loadList($page.params.name)
-	})
+	onMount(() => {
+		loadList($page.params.name);
+	});
 
 	$: loadList($page.params.name);
 	//console.table($page.params)
-		
+
 	$: innerWidth = 0;
 	$: innerHeight = 0;
 	$: scrollY = 0;
 
 	let prefixFolder: string = '';
 
-$: console.log('Ancho: ' + innerWidth);
-const movil = (w: number) => {
-	if (w > 900) {
-		//800
-		prefixFolder = '';
-	} else {
-		prefixFolder = 'M';
-	}
-};
+	$: console.log('Ancho: ' + innerWidth);
+	const movil = (w: number) => {
+		if (w > 900) {
+			//800
+			prefixFolder = '';
+		} else {
+			prefixFolder = 'M';
+		}
+	};
 
-$: movil(innerWidth);
+	$: movil(innerWidth);
+
+	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
+const date = new Date(); 
+	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
+let carrito_total: number = 0;
+let newPedido: Pedido = {
+	id: Date.now(),
+		comprador_id: 0,
+		productos: [],
+		fecha: dateToday,
+		valor: 0,
+		estado: '',
+		pago_estado: '',
+		pago_id: '',
+		notas: '',
+		origen: 'WEB'
+}
+
+
+if(cookie_info('carrito_total')){
+		carrito_total=Number(cookie_info('carrito_total'));
+		let carrito_pedido:any = cookie_info('carrito_pedido')
+		newPedido = JSON.parse(carrito_pedido);
+	}
 </script>
 
 <svelte:head>
@@ -93,15 +121,24 @@ $: movil(innerWidth);
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
 
-<div class="relative" style="background: url({urlFiles}/images/maker_products/{prefixFolder}{imageTop}); background-size: auto 100%;  background-position: center center; height: 35vh">
-<div class="absolute bottom-6 left-0 w-full MrDafoe lowercase text-center text-white px-4" style="font-size: 12vw; text-shadow: 2px 2px 3px #000000;">{$page.params.name}</div>	
+<div
+	class="relative"
+	style="background: url({urlFiles}/images/maker_products/{prefixFolder}{imageTop}); background-size: auto 100%;  background-position: center center; height: 35vh"
+>
+	<div
+		class="absolute bottom-6 left-0 w-full MrDafoe lowercase text-center text-white px-4"
+		style="font-size: 12vw; text-shadow: 2px 2px 3px #000000;"
+	>
+		{titulo}
+		<div style="font-size: 3vw;" class="-mt-24">{subtitulo}</div>
+	</div>
 </div>
 
-<WebMenuB {scrollY} />
+<WebMenuB {carrito_total} {newPedido}/>
 
 <section>
 	<div class="w-11/12 md:w-8/12 mx-auto">
-		<WebList bind:listItems  {urlFiles}/>
+		<WebList bind:listItems {listProducts} {urlFiles} />
 	</div>
 </section>
 

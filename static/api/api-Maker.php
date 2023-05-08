@@ -202,13 +202,27 @@ if ($ref == 'loadID') {
       $folder = $_GET['folder'];
       $field = $_GET['field'];
       $name = $_GET['name'];
+      $id = $_GET['id'];
 
-      //echo "SELECT * FROM $folder WHERE company_id='$company_id' and id='$id' LIMIT 1 <br>";
+      //echo "SELECT * FROM $folder WHERE $field='$id' LIMIT 1 <br>";
       $response = array();
-      $result = $mysqli->query("SELECT * FROM $folder WHERE $field='$id' LIMIT 1");
+      if ($_GET['id']) {
+        $result = $mysqli->query("SELECT * FROM $folder WHERE id='$id' LIMIT 1");
+      } else {
+        $result = $mysqli->query("SELECT * FROM $folder WHERE REPLACE($field, ' ', '-')='$name' LIMIT 1") or die($mysqli->error);
+        //echo "SELECT * FROM $folder WHERE REPLACE($field, ' ', '-')='$name' LIMIT 1";
+      }
+
       $row = $result->fetch_array(MYSQLI_ASSOC);
       $response[] = $row;
 
+      if ($folder == 'maker_products') {
+        $category_id = $row['category_id'];
+        ///cargamos la imagen de la categoria
+        $resultC = $mysqli->query("SELECT image FROM maker_categories WHERE id='$category_id' LIMIT 1");
+        $rowC = $resultC->fetch_array(MYSQLI_ASSOC);
+        $response[] = $rowC;
+      }
 
       header("HTTP/1.1 200 OK");
       echo json_encode($response);
@@ -384,7 +398,7 @@ if ($ref == 'loadID') {
         /// load categories
         $response = array();
         //echo "SELECT * FROM maker_products WHERE category_id='$category_id' AND active='1' ORDER BY position ASC <br>";
-        echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position <br>";
+        //echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position <br>";
         $result = $mysqli->query("SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position") or die($mysqli->error);
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
           $response[] = $row;
@@ -529,16 +543,21 @@ if ($ref == 'loadID') {
         if ($folder == 'maker_categories') {
           $category_id = 0;
           $image = '';
-          $rC = $mysqli->query("SELECT id, category, `image` FROM maker_categories WHERE company_id='$company_id' ORDER BY position") or die($mysqli->error);
+          $titulo = '';
+          $subtitulo = '';
+
+          $rC = $mysqli->query("SELECT id, category, description, `image` FROM maker_categories WHERE company_id='$company_id' ORDER BY position") or die($mysqli->error);
           while ($rowC = $rC->fetch_array(MYSQLI_ASSOC)) {
             if ($name == clean_link($rowC['category'])) {
               $category_id = $rowC['id'];
               $image = $rowC['image'];
+              $titulo = $rowC['category'];
+              $subtitulo = $rowC['description'];
               break;
             }
           }
 
-          $result = $mysqli->query("SELECT product as `titulo`, `description` as `text`, image1 as `image` FROM maker_products WHERE company_id='$company_id' AND category_id='$category_id' ORDER BY position") or die($mysqli->error);
+          $result = $mysqli->query("SELECT * FROM maker_products WHERE company_id='$company_id' AND category_id='$category_id' AND active='1' ORDER BY position") or die($mysqli->error);
           while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $row['folder'] = 'maker_products';
             $row['linkURL'] = 'producto/' . clean_link($row['titulo']);
@@ -551,6 +570,8 @@ if ($ref == 'loadID') {
 
           $response[] = $products;
           $response[] = $image;
+          $response[] = $titulo;
+          $response[] = $subtitulo;
         }
 
 
@@ -917,7 +938,11 @@ if ($ref == 'form-list-report') {
                 $row['active'] = true;
               }
 
-
+if ($row['home'] == 0) {
+                $row['home'] = false;
+              } else {
+                $row['home'] = true;
+              }
               $products[] = $row;
             }
 
@@ -928,7 +953,7 @@ if ($ref == 'form-list-report') {
             if ($c > 0) {
               echo json_encode($products);
             } else {
-              echo '[{"error":"Products empty"}]';
+              echo '[]';
             }
           }
         } else
@@ -1786,18 +1811,18 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $c_position = $product['position'];
       $c_options = $product['options'];
       $c_active = $product['active'];
-
+$c_home = $product['home'];
       $now = time();
 
       if ($c_id == 0 or $c_id > 1000000) {
         ///Nuevo Registro
-        $action = "INSERT INTO maker_products (category_id,product,ref,description,description2,price,size,color,image1,image2,image3,image4,position,options,active,cod) VALUES ('$c_category_id','$c_product','$c_ref','$c_description','$c_description2','$c_price','$c_size','$c_color','$c_image1','$c_image2','$c_image3','$c_image4','$c_position','$c_options','$c_active','$now')";
+        $action = "INSERT INTO maker_products (category_id,product,ref,description,description2,price,size,color,image1,image2,image3,image4,position,options,home,active,cod) VALUES ('$c_category_id','$c_product','$c_ref','$c_description','$c_description2','$c_price','$c_size','$c_color','$c_image1','$c_image2','$c_image3','$c_image4','$c_position','$c_options','$c_home','$c_active','$now')";
         $mysqli->query($action) or die($mysqli->error);
         ///
 
       } else {
         ///actualizar
-        $action = "UPDATE maker_products SET category_id='$c_category_id',product='$c_product',ref='$c_ref',description='$c_description',description2='$c_description2',price='$c_price',size='$c_size',color='$c_color',image1='$c_image1',image2='$c_image2',image3='$c_image3',image4='$c_image4',position='$c_position',options:'$c_options',active='$c_active', cod='$now' WHERE id='$c_id'";
+        $action = "UPDATE maker_products SET category_id='$c_category_id',product='$c_product',ref='$c_ref',description='$c_description',description2='$c_description2',price='$c_price',size='$c_size',color='$c_color',image1='$c_image1',image2='$c_image2',image3='$c_image3',image4='$c_image4',position='$c_position',options:'$c_options',home='$c_home',active='$c_active', cod='$now' WHERE id='$c_id'";
         $mysqli->query($action) or die($mysqli->error);
       }
       //header("HTTP/1.1 200 OK");
@@ -1928,13 +1953,13 @@ $new_prod[] = $row;
         $m_image4 = $product['image4'];
         $m_position = $product['position'];
         $m_active = $product['active'];
-
+$m_home = $product['home'];
         if ($m_id > 1000000) {
           ///Nuevo Registro
-          $mysqli->query("INSERT INTO maker_products (category_id,product,ref,`description`,description2,price,size,color,position,active,cod) VALUES ('$m_category_id','$m_product','$m_ref','$m_description','$m_description2','$m_price','$m_size','$m_color','$m_position','$m_active','$cod')") or die($mysqli->error);
+          $mysqli->query("INSERT INTO maker_products (category_id,product,ref,`description`,description2,price,size,color,position,home,active,cod) VALUES ('$m_category_id','$m_product','$m_ref','$m_description','$m_description2','$m_price','$m_size','$m_color','$m_position','$m_home','$m_active','$cod')") or die($mysqli->error);
         } else {
           ///actualizar
-          $mysqli->query("UPDATE maker_products SET category_id='$m_category_id',product='$m_product',ref='$m_ref',`description`='$m_description',description2='$m_description2',price='$m_price',size='$m_size',color='$m_color',position='$m_position',active='$m_active',cod='$cod' WHERE id='$m_id'") or die($mysqli->error);
+          $mysqli->query("UPDATE maker_products SET category_id='$m_category_id',product='$m_product',ref='$m_ref',`description`='$m_description',description2='$m_description2',price='$m_price',size='$m_size',color='$m_color',position='$m_position',home='$m_home',active='$m_active',cod='$cod' WHERE id='$m_id'") or die($mysqli->error);
         }
       }
       /// borramos los que no están
@@ -1952,7 +1977,11 @@ $new_prod[] = $row;
           $row['active'] = true;
         }
 
-
+if ($row['home'] == 0) {
+          $row['home'] = false;
+        } else {
+          $row['home'] = true;
+        }
         $products[] = $row;
       }
 

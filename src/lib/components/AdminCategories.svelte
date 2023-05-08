@@ -284,7 +284,9 @@
 									</div>
 								</div>
 							</td>
-							<td class="text-center"><input type="checkbox" bind:checked={ct.active} /></td>
+							<td class="text-center">
+								<input type="checkbox" bind:checked={ct.active} />
+							</td>
 
 							<td class="text-center">
 								<button

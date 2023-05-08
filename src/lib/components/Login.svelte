@@ -107,31 +107,16 @@
 	<title>KDAR</title>
 </svelte:head>
 
-<div class="w-full ">
+<div class="w-full mt-24">
 	<div
 		class="grid grid-cols-1 place-content-center place-items-center w-11/12 sm:w-8/12 md:w-6/12 xl:w-3/12 mt-6 mx-auto"
 	>
 		<div class="bg-white shadow-lg rounded w-full p-4 md:col-span-3 xl:col-span-2">
-			<div class="mt-4">
-				<!--
-					<img src="/maker-files/images/Logo-Cootraesturz-200.png" class="mx-auto" alt="" />
-				-->
-				
-			</div>
+			
 			<p class="text-2xl font-bold leading-6 text-primary">{action}</p>
 
 			
-            <!--    
-            <button aria-label="Continue with google" class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 p-3 border rounded-lg border-gray-700 flex items-center w-full mt-10 hover:bg-gray-100" on:click={()=>signInWithGoogle()}>
-               <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/sign_in_2-svg2.svg" alt="google">
-                <p class="text-base font-medium ml-4 text-gray-700">Continue with Google</p>
-            </button>
-            <button aria-label="Continue with github" class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 p-3 border rounded-lg border-gray-700 flex items-center w-full mt-4 hover:bg-gray-100" on:click={()=>signInWithFacebook()}>
-													<Icon data={facebookSquare} scale="1.5" class="text-royalblue"/>
-                <p class="text-base font-medium ml-4 text-gray-700">  Continue with Faceook</p>
-            </button>
             
-       -->
 			<form on:submit|preventDefault={login_run}>
 				<div class="mt-4">
 					<label for="email" class="text-sm font-medium leading-none text-dimgray"> Email</label>
@@ -147,7 +132,8 @@
 				<div class="mt-6 w-full">
 					<div class="text-sm font-medium leading-none text-dimgray grid grid-cols-2">
 						<div>{preP}Clave</div>
-						<button class="text-right link" on:click={() => forgotP(true)}>{forgot}</button>
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<div class="text-right link" on:click={() => forgotP(true)}>{forgot}</div>
 					</div>
 
 					<div class="relative flex items-center justify-center">
@@ -186,6 +172,10 @@
 					<button class="text-right link" on:click={() => forgotP(false)}>Ir a Ingreso</button>
 				{/if}
 			</form>
+
+			<div class="mt-4">
+				<img src="/maker-files/logoKdar.jpg" class="mx-auto" alt="" />
+			</div>
 		</div>
 		
 	</div>

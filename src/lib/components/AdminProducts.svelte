@@ -8,6 +8,7 @@
 	import Messages from '$lib/components/Messages.svelte';
 
 	import type { Message } from '$lib/types/Message';
+	import { numberFormat } from './NumberFormat';
 
 	let m_show: boolean = false;
 	let message: Message;
@@ -30,12 +31,14 @@
 		price: 0,
 		size: '',
 		color: '',
+		stock: 0,
 		image1: '',
 		image2: '',
 		image3: '',
 		image4: '',
 		position: 1,
 		options: '',
+		home: false,
 		active: true
 	};
 	new_product = productN;
@@ -158,12 +161,14 @@
 		price: 0,
 		size: '',
 		color: '',
+		stock: 0,
 		image1: '',
 		image2: '',
 		image3: '',
 		image4: '',
 		position: 1,
 		options: '',
+		home: false,
 		active: true
 	}
 		//console.log('nuevo')
@@ -226,7 +231,9 @@
 
 				<th scope="col" class="px-4 py-2"> Ref </th>
 				<th scope="col" class="px-4 py-2"> Precio </th>
+				<th scope="col" class="px-4 py-2"> Existencias </th>
 				<th scope="col" class="px-4 py-2"> Posición </th>
+				<th scope="col" class="px-4 py-2"> Home </th>
 				<th scope="col" class="px-4 py-2"> Activo </th>
 				<th scope="col" class="px-4 py-2" />
 				<th scope="col" class="px-4 py-2" />
@@ -245,9 +252,12 @@
 							<input type="number" min="0" class="inputA w-24" bind:value={ct.price} />
 						</td>
 						<td class="text-center">
+							<input type="number" min="0" class="inputA w-24" bind:value={ct.stock} />
+						</td>
+						<td class="text-center">
 							<input type="number" min="1" max="99" class="inputA w-12" bind:value={ct.position} />
 						</td>
-
+<td class="text-center"><input type="checkbox" bind:checked={ct.home} /></td>
 						<td class="text-center"><input type="checkbox" bind:checked={ct.active} /></td>
 
 						<td>
