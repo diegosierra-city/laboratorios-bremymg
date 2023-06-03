@@ -15,16 +15,15 @@
 	}
 </script>
 
-{#if m_show == true}
 	<!-- content here -->
 	<div class="bg-message">
-		<div id="znMessage" class={message.class}>
+		<div id="znMessage" class={message.class} >
 			<div class="message-title">
 				<h3>{message.title}</h3>
 			</div>
 
 			<p
-				class="focus:outline-none text-sm text-gray dark:text-gray-400 pb-3 font-normal message-body"
+				class="text-sm text-gray pb-3 font-normal message-body"
 			>
 				{message.text}
 			</p>
@@ -42,4 +41,4 @@
 			<!---->
 		</div>
 	</div>
-{/if}
+

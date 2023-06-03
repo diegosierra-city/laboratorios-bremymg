@@ -88,7 +88,7 @@
 		console.log('contenido:' + name);
 		console.log(
 			urlAPI +
-				'?ref=load-listWebContent&folder=maker_content&name=' +
+				'?ref=load-listWebContent&name=' +
 				name +
 				'&company_id=' +
 				company_id +
@@ -97,7 +97,7 @@
 		);
 		await fetch(
 			urlAPI +
-				'?ref=load-listWebContent&folder=maker_content&name=' +
+				'?ref=load-listWebContent&name=' +
 				name +
 				'&company_id=' +
 				company_id +
@@ -197,44 +197,20 @@
 
 	$: movil(innerWidth);
 	let galleryFolder: string 
-
-	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
 	import WebMenuB from '$lib/components/WebMenuB.svelte';
-const date = new Date(); 
-	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
-let carrito_total: number = 0;
-let newPedido: Pedido = {
-	id: Date.now(),
-		comprador_id: 0,
-		productos: [],
-		fecha: dateToday,
-		valor: 0,
-		estado: '',
-		pago_estado: '',
-		pago_id: '',
-		notas: '',
-		origen: 'WEB'
-}
-
-
-if(cookie_info('carrito_total')){
-		carrito_total=Number(cookie_info('carrito_total'));
-		let carrito_pedido:any = cookie_info('carrito_pedido')
-		newPedido = JSON.parse(carrito_pedido);
-	}
 </script>
 
 <svelte:head>
-	<title>{ContBase.menu} - {company_name}</title>
+	<title>{ContBase.menu}</title>
 	<meta name="description" content={ContBase.metadescription} />
 	<meta name="keywords" content={ContBase.metakeywords} />
-	<link rel="stylesheet" href="../../css/font-awesome-4.7.0/css/font-awesome.css" />
+	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />
 </svelte:head>
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
 
 <WebCarrousel {cont} {urlFiles} {prefixFolder} />
-<WebMenuB {carrito_total} {newPedido} />
+<WebMenuB />
 
 <section>
 	<div class="w-11/12 md:w-8/12 mx-auto">

@@ -1,5 +1,7 @@
 export interface Pedido {
  id: number,
+ company_id: number,
+ order_id: number,
  comprador_id: number,
  productos: Array<PedidoProduct>,
  fecha: string,
@@ -13,6 +15,7 @@ export interface Pedido {
 
 export interface Comprador {
  id: number,
+ company_id: number,
  nombres: string,
  apellidos: string,
  documento: string,
@@ -25,15 +28,22 @@ export interface Comprador {
 
 export interface PedidoProduct {
  id: number,
+ company_id: number,
+ order_id: number,
  category_id: number,
- product: string,
+ product_id: number,
+ name: string,
  ref: string,
+ image: string,
  description: string,
  description2: string,
  size: string,
  color: string,
- image1: string,
+ version_type: string,
+ version: string,
+ image_version: string,
  price: number,
  quantity: number,
- total: number, 
+ total: number,
 }
+

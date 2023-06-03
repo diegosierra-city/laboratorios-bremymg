@@ -38,29 +38,43 @@
 
 
 {#if listProducts}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 container mx-auto my-6 px-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 container mx-auto my-6 px-4 ">
 {#each listProducts as product}
 <a class="card_home mx-2 relative" href="/producto/{linkMaker(product.product)}">
 	
 	<div class="card_img">
-		<img src="{urlFiles}/images/maker_products/M{product.image1}" alt={product.product} />
+		{#if product.image1}
+			 <!-- content here -->
+				<img src="{urlFiles}/images/maker_products/M{product.image1}" alt={product.product} class="w-full" />
+		{/if}
+		
+
+		
+
 	</div>
-	<div class="reative mb-12 z-40 ">
+
+	
+
+	<div class="card_text relative z-10 bg-lightgray h-full">
+
+		<div class="grid grid-cols-2 px-2 my-4 relative -top-10 w-full ">
+			<h3 class="text-center rounded-l-lg rounded-r-none p-0 h-9 w-full bg-white border border-silver ">$ {numberFormat(Number(product.price))}</h3>
+	<button class="btn-green bg-secondary rounded-r-lg rounded-l-none items-center">
+			detalles</button
+		>
+			</div>
+
 	<!-- card_text -->
-		<h3 class="card_titleC ">{product.product}</h3>
-		<p class="text-darkgray px-2">
+		<h3 class="card_titleC relative -top-10 ">{product.product}</h3>
+		<p class="text-darkgray px-2 relative -top-10 text-justify">
 			{@html product.description}
 			</p>
 		
-		
+			
+
 	</div>
 	
-<div class="grid grid-cols-2 px-2 my-4 absolute -bottom-4 w-full ">
-		<h3 class="text-center rounded-l-lg rounded-r-none p-0 h-9 w-full bg-white">$ {numberFormat(Number(product.price))}</h3>
-<button class="btn-green rounded-r-lg rounded-l-none items-center">
-		ver este producto</button
-	>
-		</div>
+
 	
 </a>
 {/each}

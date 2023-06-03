@@ -32,7 +32,7 @@
 	let subtitulo: string;
 
 	const loadList = async (name: string) => {
-		console.log('contenido:' + name);
+		console.log('categoria:' + name);
 		console.log(
 			urlAPI +
 				'?ref=load-list-Web&folder=maker_categories&name=' +
@@ -88,56 +88,36 @@
 
 	$: movil(innerWidth);
 
-	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
-const date = new Date(); 
-	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
-let carrito_total: number = 0;
-let newPedido: Pedido = {
-	id: Date.now(),
-		comprador_id: 0,
-		productos: [],
-		fecha: dateToday,
-		valor: 0,
-		estado: '',
-		pago_estado: '',
-		pago_id: '',
-		notas: '',
-		origen: 'WEB'
-}
-
-
-if(cookie_info('carrito_total')){
-		carrito_total=Number(cookie_info('carrito_total'));
-		let carrito_pedido:any = cookie_info('carrito_pedido')
-		newPedido = JSON.parse(carrito_pedido);
-	}
+		
 </script>
 
 <svelte:head>
 	<title>{$page.params.name}</title>
-	<link rel="stylesheet" href="../../css/font-awesome-4.7.0/css/font-awesome.css" />
+	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
 
-<div
-	class="relative"
-	style="background: url({urlFiles}/images/maker_products/{prefixFolder}{imageTop}); background-size: auto 100%;  background-position: center center; height: 35vh"
->
-	<div
+<div class="relative overflow-hidden" style="height: 16vw">
+	{#if imageTop}
+		 <!-- content here -->
+			<img src="{urlFiles}/images/maker_products/{prefixFolder}{imageTop}" alt="" class="w-full" />
+	{/if}
+	
+	<!-- <div
 		class="absolute bottom-6 left-0 w-full MrDafoe lowercase text-center text-white px-4"
 		style="font-size: 12vw; text-shadow: 2px 2px 3px #000000;"
 	>
+	
 		{titulo}
 		<div style="font-size: 3vw;" class="-mt-24">{subtitulo}</div>
-	</div>
+	</div> -->
 </div>
 
-<WebMenuB {carrito_total} {newPedido}/>
+<WebMenuB />
 
 <section>
-	<div class="w-11/12 md:w-8/12 mx-auto">
+	<div class="w-11/12 md:w-10/12 mx-auto">
 		<WebList bind:listItems {listProducts} {urlFiles} />
 	</div>
 </section>

@@ -13,7 +13,7 @@ if ($_GET['error']) {
   ini_set('display_errors', '0');
 }
 
-
+//echo date('Y-m-d H:i:s');
 
 $db_host = "localhost"; //192.185.131.105
 $db_user = "cityciud_muser";
@@ -35,6 +35,7 @@ $keyEncrypter = '-Hy1jFr6+';
 
 function clean_link($texto)
 {
+  $texto = trim($texto);
   $no_permitidas = array("á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú", "ñ", "Ñ", " ");
   $permitidas = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "n", "N", "-");
   $texto = str_replace($no_permitidas, $permitidas, $texto);
@@ -505,10 +506,15 @@ if ($ref == 'loadID') {
       } else {
         $folder = $_GET['folder'];
         $type = $_GET['type'];
+        $campo = $_GET['campo'];
+        $campoV = $_GET['campoV'];
         //
         $filtre = '';
         if ($type != '') {
           $filtre = "AND type='$type'";
+        }
+        if ($_GET['campo']) {
+          $filtre .= "AND $campo='$campoV'";
         }
         /// load categories
         $response = array();
@@ -572,6 +578,35 @@ if ($ref == 'loadID') {
           $response[] = $image;
           $response[] = $titulo;
           $response[] = $subtitulo;
+        } else if ($folder == 'maker_products') {
+          $category_id = 0;
+          $image = '';
+          $titulo = '';
+          $subtitulo = '';
+
+          $categories = array();
+          $products = array();
+
+          $rC = $mysqli->query("SELECT id, category, `description`, `image` FROM maker_categories WHERE company_id='$company_id' AND active='1' ORDER BY position") or die($mysqli->error);
+          while ($rowC = $rC->fetch_array(MYSQLI_ASSOC)) {
+            $categories[] = $rowC;
+            $category_id = $rowC['id'];
+            //
+            $result = $mysqli->query("SELECT * FROM maker_products WHERE company_id='$company_id' AND category_id='$category_id' AND active='1' ORDER BY position") or die($mysqli->error);
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+              $row['folder'] = 'maker_products';
+              $row['linkURL'] = 'producto/' . clean_link($row['titulo']);
+              $products[] = $row;
+            }
+            //echo mysqli_num_rows($result).'++';
+            if (mysqli_num_rows($result) == 0) {
+              $products = '';
+            }
+          }
+
+
+          $response[] = $categories;
+          $response[] = $products;
         }
 
 
@@ -593,19 +628,18 @@ if ($ref == 'loadID') {
         $type = $_GET['type'];
         $name = $_GET['name'];
         //
-        $filtre = '';
-        if ($type != '') {
-          $filtre = "AND maker_menu.type='$type'";
-        }
+
+        if ($folder != '') $filtre . " AND $folder.type='$type'";
         /// load categories
         $response = array();
         //echo "SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, content_blocks WHERE maker_menu.company_id='$company_id' $filtre AND maker_content_blocks.menu_id=menu.id GROUP BY maker_menu.id ORDER BY maker_menu.position ++";
-        $result = $mysqli->query("SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, maker_content_blocks WHERE maker_menu.company_id='$company_id' $filtre AND maker_content_blocks.menu_id=maker_menu.id GROUP BY maker_menu.id ORDER BY maker_menu.position") or die($mysqli->error);
+        $result = $mysqli->query("SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, maker_content_blocks WHERE maker_menu.company_id='$company_id' $filtre AND maker_content_blocks.menu_id=maker_menu.id AND maker_content_blocks.company_id='$company_id' GROUP BY maker_menu.id ORDER BY maker_menu.position") or die($mysqli->error);
         //echo 'R:'.mysqli_num_rows($result).'++';
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
           if ($name != '') {
             //echo clean_link($row['menu']) .'=='. $name .'*';
             if (clean_link($row['menu']) == $name) {
+              // echo '*'.$row['id'];
               //$row['link'] = clean_link($row['menu']);
               $response[] = $row;
             }
@@ -938,7 +972,7 @@ if ($ref == 'form-list-report') {
                 $row['active'] = true;
               }
 
-if ($row['home'] == 0) {
+              if ($row['home'] == 0) {
                 $row['home'] = false;
               } else {
                 $row['home'] = true;
@@ -1811,7 +1845,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $c_position = $product['position'];
       $c_options = $product['options'];
       $c_active = $product['active'];
-$c_home = $product['home'];
+      $c_home = $product['home'];
       $now = time();
 
       if ($c_id == 0 or $c_id > 1000000) {
@@ -1953,7 +1987,7 @@ $new_prod[] = $row;
         $m_image4 = $product['image4'];
         $m_position = $product['position'];
         $m_active = $product['active'];
-$m_home = $product['home'];
+        $m_home = $product['home'];
         if ($m_id > 1000000) {
           ///Nuevo Registro
           $mysqli->query("INSERT INTO maker_products (category_id,product,ref,`description`,description2,price,size,color,position,home,active,cod) VALUES ('$m_category_id','$m_product','$m_ref','$m_description','$m_description2','$m_price','$m_size','$m_color','$m_position','$m_home','$m_active','$cod')") or die($mysqli->error);
@@ -1977,7 +2011,7 @@ $m_home = $product['home'];
           $row['active'] = true;
         }
 
-if ($row['home'] == 0) {
+        if ($row['home'] == 0) {
           $row['home'] = false;
         } else {
           $row['home'] = true;
@@ -2366,6 +2400,8 @@ if ($row['home'] == 0) {
         }
       } else if ($folder == 'maker_products' && $prefix == 'C') {
         $table = 'maker_categories';
+        $w = 1600;
+        $h = 256;
       } else if ($folder == 'maker_products') {
         $table = 'maker_products';
         $w = 800;
@@ -2750,6 +2786,276 @@ if ($row['home'] == 0) {
       //the end send
 
     }
+  } else if ($ref == 'pedidoSave') {
+    $company_id = $data['company_id'];
+    $tokenWeb = $data['tokenWeb'];
+    $tokenBase = md5($company_id . $keyEncrypter);
+
+    if ($tokenBase != $tokenWeb) {
+      header("HTTP/1.1 202 ERROR");
+      //echo '[{"error":"yess-'.$user_id.'+'.$time_life.'"}]'; 
+      echo '[{"error":"error in token"}]';
+    } else {
+      /// se procesa primero el comprador
+      $cod = time();
+      $folder = 'maker_buyer';
+      $request = $data['pedidoComprador'];
+      $insertA = "";
+      $insertB = "";
+      $update = "";
+      $id = 0;
+      $email_destino = $request['email'];
+      foreach ($request as $campo => $valor) {
+        // $update="$campo='$valor',";
+        if ($campo != 'id') {
+          $insertA .= $campo . ',';
+          $insertB .= "'$valor',";
+          $update .= "$campo='$valor',";
+        } else {
+          $id = $valor;
+        }
+      }
+
+
+      $now = time();
+
+      if ($id == 0 or $id > 1000000) {
+        ///Nuevo Registro
+        $rA = trim($insertA, ',');
+        $rB = trim($insertB, ',');
+
+        $action = "INSERT INTO $folder ($rA) VALUES ($rB)";
+        $mysqli->query($action) or die($mysqli->error);
+        ///
+        $resultID = $mysqli->query("SELECT id FROM $folder WHERE company_id='$company_id' ORDER BY id DESC LIMIT 1") or die($mysqli->error);
+        $rowID = $resultID->fetch_array();
+        $id = $rowID['id'];
+      } else {
+        ///actualizar
+        $u = trim($update, ',');
+        $action = "UPDATE $folder SET $u WHERE id='$id' AND company_id='$company_id'";
+        $mysqli->query($action) or die($mysqli->error);
+      }
+
+
+      $folder = 'maker_orders';
+      /// definimos el id del pedido
+      $rPID = $mysqli->query("SELECT order_id FROM $folder WHERE company_id='$company_id' ORDER BY id DESC LIMIT 1") or die($mysqli->error);
+      $rowPID = $rPID->fetch_array();
+      $order_id = 1;
+      if ($rowPID['order_id'] != '') {
+        $order_id = $rowPID['order_id'] + 1;
+      }
+      ///------ el pedido
+
+      $comprador_id = $id;
+      $request = $data['pedido'];
+      $insertA = "";
+      $insertB = "";
+      $update = "";
+      $id = 0;
+      foreach ($request as $campo => $valor) {
+        // $update="$campo='$valor',";
+        if ($campo == 'comprador_id') {
+          $valor = $comprador_id;
+        }
+        if ($campo == 'order_id' && $valor == 0) {
+          $valor = $order_id;
+        }
+        if ($campo == 'fecha' && ($valor == '' || $valor = '0000-00-00 00:00:00')) {
+          $valor = date('Y-m-d H:i:s');
+        }
+        if ($campo == 'productos') {
+          //$valor = json_decode($valor, true);
+          $productos = $data['productos'];
+
+          $pp = '';
+
+          foreach ($productos as $producto) {
+            $insertAP = "";
+            $insertBP = "";
+
+            $pp .= '<tr>';
+            $restar = $producto['quantity'];
+            $pd_id = $producto['product_id'];
+
+            $pd_version=$producto['version'];
+
+            if($producto['version']=='única'){
+             $rSK = $mysqli->query("SELECT stock FROM maker_products WHERE id='$pd_id' LIMIT 1") or die($mysqli->error);
+        $rowSK = $rSK->fetch_array();
+        $stock = $rowSK['stock']; 
+
+        $newStock=$stock-$restar;
+
+            $query = "UPDATE maker_products SET stock= '$newStock' WHERE id='$pd_id'";
+            $mysqli->query($query) or die($mysqli->error);
+            }else{
+          $rSK = $mysqli->query("SELECT id, stock FROM maker_product_versions WHERE product_id='$pd_id' and `name`='$pd_version' LIMIT 1") or die($mysqli->error);
+        $rowSK = $rSK->fetch_array();
+        $stock = $rowSK['stock'];
+        
+        $newStock=$stock-$restar;
+$pd_id=$rowSK['id'];
+            $query = "UPDATE maker_product_versions SET stock= '$newStock' WHERE id='$pd_id'";
+            $mysqli->query($query) or die($mysqli->error);
+            }
+            
+        
+
+            
+if($producto['version']!='única'){
+$producto['name']=$producto['name'].'<br>Versión: '.$producto['version_type'].' '.$producto['version'];  
+}
+/*  
+header("HTTP/1.1 200 OK");
+            echo '[{"error":"' . $producto['name'] . '"}]';
+            return;
+*/
+            foreach ($producto as $prod => $v) {
+              
+              if ($prod != 'id') {
+                $insertAP .= $prod . ',';
+                $insertBP .= "'$v',";
+                if ($prod == 'image') {
+                  $pp .= '<td style="border-bottom:solid 1px black"><img src="https://maker.cityciudad.com/maker-files/images/' . $v . '" alt="producto" width="120" height="90"></td>';
+                } else if ($prod == 'name' || $prod == 'price' || $prod == 'total') {
+                  if ($v > 1000) {
+                    $pp .= '<td style="border-bottom:solid 1px black">' . number_format($v, 0, ',', '.') . '</td>';
+                  } else {
+                    $pp .= '<td style="border-bottom:solid 1px black">' . $v . '</td>';
+                  }
+                } else if ($prod == 'quantity') {
+                  
+                    $pp .= '<td style="border-bottom:solid 1px black; text-align:center">' . number_format($v, 0, ',', '.') . '</td>';
+                  
+                }
+              }
+            }
+
+            $pp .= '</tr>';
+            $insertAP .= 'cod';
+            $insertBP .= "'$cod'";
+            //
+
+            /* header("HTTP/1.1 200 OK");
+            echo '[{"error":"'.$insertAP.'**'.$insertBP.'"}]';
+            return; */
+
+            $action = "INSERT INTO maker_order_product ($insertAP) VALUES ($insertBP)";
+            $mysqli->query($action) or die($mysqli->error);
+          }
+        }
+        if ($campo != 'id') {
+          $insertA .= $campo . ',';
+          $insertB .= "'$valor',";
+          $update .= "$campo='$valor',";
+        } else {
+          $id = $valor;
+        }
+      }
+
+
+      $now = time();
+
+      if ($id == 0 or $id > 1000000) {
+        ///Nuevo Registro
+        $rA = trim($insertA, ',');
+        $rB = trim($insertB, ',');
+        //
+
+        /* header("HTTP/1.1 200 OK");
+        echo '[{"error":"'.$rA.'"}]';
+        return; */
+
+        $action = "INSERT INTO $folder ($rA) VALUES ($rB)";
+        $mysqli->query($action) or die($mysqli->error);
+        ///
+        $resultID = $mysqli->query("SELECT id FROM $folder WHERE company_id='$company_id' ORDER BY id DESC LIMIT 1") or die($mysqli->error);
+        $rowID = $resultID->fetch_array();
+        $id = $rowID['id'];
+        //
+        //actualizo el id de la order de los productos
+        $action = "UPDATE maker_order_product SET order_id='$id' WHERE cod='$cod' AND company_id='$company_id'";
+        $mysqli->query($action) or die($mysqli->error);
+      } else {
+        ///actualizar
+        $u = trim($update, ',');
+        $action = "UPDATE $folder SET $u WHERE id='$id' AND company_id='$company_id'";
+        $mysqli->query($action) or die($mysqli->error);
+      }
+
+      $result = $mysqli->query("SELECT * FROM $folder WHERE id='$id' AND company_id='$company_id' LIMIT 1");
+      $response = array();
+      $row = $result->fetch_array(MYSQLI_ASSOC);
+
+      $response[] = $row;
+
+
+      /// eniar correo de aviso
+      //remitente:
+      $rRM = $mysqli->query("SELECT * FROM maker_companies WHERE id='$company_id' LIMIT 1") or die($mysqli->error);
+      $rowRM = $rRM->fetch_array();
+      $remitente = $rowRM['email'];
+      //comprador
+      $rCP = $mysqli->query("SELECT * FROM maker_buyer WHERE company_id='$company_id' AND id='$comprador_id' LIMIT 1") or die($mysqli->error);
+      $rowCP = $rCP->fetch_array();
+      $cuentas_bancarias = 'Contactenos por favor';
+      if ($rowRM['bank1'] != '') {
+        $cuentas_bancarias = $rowRM['bank1'];
+      }
+      if ($rowRM['bank2'] != '') {
+        $cuentas_bancarias .= '<br>' . $rowRM['bank2'];
+      }
+      if ($rowRM['bank3'] != '') {
+        $cuentas_bancarias .= '<br>' . $rowRM['bank3'];
+      }
+      //send mail
+      $message = '<div style="text-align:center"><img src="https://maker.cityciudad.com/maker-files/images/maker_companies/M' . $rowRM['image1'] . '" alt="logo ' . $rowRM['company'] . '" width="150" height="112"></div><br><strong>Pedido WEB: ' . $id . '</strong><br>' . $rowRM['company'] . ' ' . $rowRM['documento'] . '<br>' . $rowRM['country'] . '-' . $rowRM['city'] . '<br>' . $rowRM['address'] . '<br><br><strong>Medio de Pago:</strong><br>' . $cuentas_bancarias . '<br><br><strong>Comprador:</strong><br>' . $rowCP['nombres'] . ' ' . $rowCP['apellidos'] . '<br>Documento:' . $rowCP['documento'] . ' | Celular:' . $rowCP['celular'] . '<br>Email: ' . $rowCP['email'] . '<br><br><strong>Destino Envío:</strong><br>' . $rowCP['pais'] . ' - ' . $rowCP['ciudad'] . '<br>' . $rowCP['direccion'] . '<br><br><strong>Compra:</strong><br><table style="border:solid 1px black; width: 100%"><tr ><td style="border-bottom:solid 1px black">Producto</td><td style="border-bottom:solid 1px black">Imagen</td><td style="border-bottom:solid 1px black">Precio</td><td style="border-bottom:solid 1px black">Cantidad</td><td style="border-bottom:solid 1px black">Total</td></tr>' . $pp . '<tr><td></td><td></td><td></td><td>Total</td><td><strong>$' . number_format($request['valor'], 0, ',', '.') . '</strong></td></tr></table>';
+
+      ob_start();
+      include("mail.php");
+      $html = ob_get_contents();
+      ob_end_clean();
+
+      $subjet = 'Pedido N.' . $order_id;
+
+
+      $from_email = $remitente;
+      // echo $html;
+      $send_email = $email_destino;
+
+      if (strtoupper(substr(PHP_OS, 0, 3) == 'WIN')) {
+        $eol = "\r\n";
+      } elseif (strtoupper(substr(PHP_OS, 0, 3) == 'MAC')) {
+        $eol = "\r";
+      } else {
+        $eol = "\n";
+      }
+      $header = "Content-type: text/html" . $eol;
+      //dirección del remitente
+      $header .= 'From: ' . $company . ' <' . $from_email . '>' . $eol;
+      $header .= 'Reply-To: ' . $company . ' <' . $from_email . '>' . $eol;
+      $header .= "Message-ID:<" . time() . " TheSystem@" . $_SERVER['SERVER_NAME'] . ">" . $eol;
+      $header .= "X-Mailer: PHP v" . phpversion() . $eol;
+      $header .= 'MIME-Version: 1.0' . $eol;
+      //////
+      mail($send_email, $subjet, $html, $header);
+      mail($remitente, $subjet, $html, $header);
+      //mail('diegosierra@cityciudad.com', $subjet, $html, $header);
+      /// the end send mail
+
+      ///
+      header("HTTP/1.1 200 OK");
+      //echo $fecha.'*'.$empresa_id;
+      echo '[{"pedido":"ok"}]';
+    }
+
+
+    //$result->close();
+    //$mysqli->close();
+
+
   }
 }
 

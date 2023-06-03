@@ -181,4 +181,7 @@
 	</div>
 </div>
 
-<Messages bind:m_show bind:message />
+{#if m_show}
+	 <!-- content here -->
+		<Messages bind:m_show bind:message />
+{/if}

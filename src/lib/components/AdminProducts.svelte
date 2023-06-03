@@ -331,4 +331,7 @@
 	<AdminProduct bind:show_product bind:prod={product_list[prod_position]} bind:m_show bind:message />
 {/if}
 
-<Messages bind:m_show bind:message />
+{#if m_show}
+	 <!-- content here -->
+		<Messages bind:m_show bind:message />
+{/if}

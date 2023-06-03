@@ -209,7 +209,7 @@
 					<th scope="col" class="px-4 py-2"> Descripción</th>
 					<th scope="col" class="px-4 py-2 text-center"> Posición </th>
 					<th scope="col" class="px-4 py-2 text-center">
-					<div>Imagen JPG-PNG</div>	 <small>1600-600px</small></th
+					<div>Imagen JPG-PNG</div>	 <small>1600-256px</small></th
 					>
 					<th scope="col" class="px-4 py-2 text-center"> Activa </th>
 					<th scope="col" class="px-4 py-2 text-center"> Productos </th>
@@ -331,4 +331,7 @@
 	<AdminProducts {category_id} {category_name} bind:show_products />
 {/if}
 
-<Messages bind:m_show bind:message />
+{#if m_show}
+	 <!-- content here -->
+		<Messages bind:m_show bind:message />
+{/if}

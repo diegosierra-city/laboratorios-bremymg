@@ -13,6 +13,7 @@
 	import WebFooter from '$lib/components/WebFooter.svelte';
 
 	import WebProduct from '$lib/components/WebProduct.svelte';
+	import type { ProductOptions } from '$lib/types/ProductOptions';
 
 	let m_show: boolean = false;
 	let message: Message;
@@ -45,7 +46,40 @@
 		active: true
 	};
 	let imageTop: string = '';
+	let listProductOptions: Array<ProductOptions>= []
 	
+	const loadProductOptions = async (id: number) => {
+		
+		console.log(
+			urlAPI +
+				'?ref=load-listWeb&folder=maker_product_versions' +
+				'&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb +
+				'&campo=product_id&campoV=' +
+				id
+		);
+		await fetch(
+			urlAPI +
+				'?ref=load-listWeb&folder=maker_product_versions' +
+				'&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb +
+				'&campo=product_id&campoV=' +
+				id
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				listProductOptions = result;
+				console.log('Versiones',listProductOptions);
+				
+			})
+			.catch((error) => console.log(error.message));
+	}
+
+
 
 	const loadProducto = async (name: string) => {
 		//	console.log('contenido:' + name);
@@ -73,6 +107,7 @@
 				console.log('producto');
 				console.log(result[0]);
 				imageTop = result[1]['image'];
+				loadProductOptions(product.id)
 			})
 			.catch((error) => console.log(error.message));
 	};
@@ -106,49 +141,28 @@ const date = new Date();
 	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
 let carrito_total: number = 0;
-let newPedido: Pedido = {
-	id: Date.now(),
-		comprador_id: 0,
-		productos: [],
-		fecha: dateToday,
-		valor: 0,
-		estado: '',
-		pago_estado: '',
-		pago_id: '',
-		notas: '',
-		origen: 'WEB'
-}
 
-
-if(cookie_info('carrito_total')){
-		carrito_total=Number(cookie_info('carrito_total'));
-		let carrito_pedido:any = cookie_info('carrito_pedido')
-		newPedido = JSON.parse(carrito_pedido);
-	}
 </script>
 
 <svelte:head>
-	<title>{$page.params.name}</title>
-	<link rel="stylesheet" href="../../css/font-awesome-4.7.0/css/font-awesome.css" />
+	<title>{product.product}</title>
+	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
 
-<div
-	class="relative"
-	style="background: url({urlFiles}/images/maker_products/{prefixFolder}{imageTop}); background-size: auto 100%;  background-position: center center; height: 35vh"
->
-	<div
-		class="absolute bottom-6 left-0 w-full MrDafoe lowercase text-center text-white px-4"
-		style="font-size: 4vw; text-shadow: 2px 2px 3px #000000;"
-	>{product.product}</div>
+<div class="relative overflow-hidden" style="height: 16vw">
+	{#if imageTop}
+		 <!-- content here -->
+			<img src="{urlFiles}/images/maker_products/{prefixFolder}{imageTop}" alt="" class="w-full" />
+	{/if}
 </div>
 
 
-<WebMenuB {carrito_total} {newPedido}/>
+<WebMenuB bind:carrito_total />
 
 <section>
-	<WebProduct bind:product bind:prefixFolder bind:carrito_total bind:newPedido />
+	<WebProduct bind:product bind:prefixFolder bind:carrito_total bind:listProductOptions />
 </section>
 
 <WebFooter />

@@ -16,11 +16,11 @@ box-sizing:border-box;
 
  @font-face {
     font-family: 'Federo';
-    src: url(/css/Niconne/Federo-Regular.ttf);
+    src: url(/css/Federo/Federo-Regular.ttf);
   } 
 @font-face {
     font-family: 'Carattere';
-    src: url(/css/Niconne/Carattere-Regular.ttf);
+    src: url(/css/Carattere/Carattere-Regular.ttf);
   }	
 
   @font-face {
@@ -50,7 +50,8 @@ box-sizing:border-box;
  }
 
  body{
-    @apply bg-secondary bg-opacity-40
+    /* bg-opacity-40  */
+    @apply bg-secondary
  }
 
  header{
@@ -77,7 +78,7 @@ table th{
 }
 
  .menu-top{
-@apply bg-primary sticky w-full sm:flex z-50 top-0 text-white 
+@apply bg-primary sticky w-full sm:flex z-40 top-0 text-white 
  }
 
  .menu-top-star{
@@ -115,11 +116,11 @@ table th{
 }
 
 .menu_up_movil{
-    @apply absolute top-8 right-2 bg-primary p-2 rounded-lg border border-silver italic 
+    @apply absolute top-8 right-2 bg-primary p-2 rounded-lg border border-silver w-2/12  
 }
 .menu_up_movil li{
 	transition: 600ms all;
-	@apply text-white carattere lowercase pl-2 pr-5 py-2 text-sm font-medium border-l-4 border-l-primary hover:border-l-secondary hover:text-secondary 
+	@apply text-white federo lowercase pl-2 pr-5 py-0 md:py-2 text-sm md:text-lg border-l-4 border-l-primary hover:border-l-secondary hover:text-secondary 
     /*
 hover:bg-lavender/10
     */
@@ -143,9 +144,19 @@ footer{
 	@apply  text-secondary
 }
 
+.link-general{
+    transition: 600ms all;
+    @apply text-white hover:text-primary 
+}
+
+.acceso{
+    transition: 600ms all;
+    @apply rounded-lg my-4 bg-white bg-opacity-60 cursor-pointer text-secondary hover:bg-opacity-20 hover:text-primary text-xl py-2 !min-w-full
+}
+
 .card_home{
     transition: 600ms all;
-    @apply relative rounded-lg overflow-hidden cursor-pointer border border-secondary mb-4
+    @apply relative rounded-lg overflow-hidden cursor-pointer border border-secondary mb-4 bg-white
 }
 .card_title{
     @apply relative top-2 left-0 w-full text-center text-white drop-shadow-2xl shadow-black text-lg
@@ -158,15 +169,15 @@ footer{
 }
 .card_img{
     transition: 600ms all;
-    @apply overflow-hidden
+    /* @apply overflow-hidden */
 }
 
 .card_home:hover .card_img{
-    @apply contrast-125
+    @apply scale-110
 }
-.card_text{
+/* .card_text{
     @apply p-2 h-20  relative z-10
-}
+} */
 
 .product-image{
     @apply rounded-lg border border-secondary
@@ -268,7 +279,7 @@ focus:ring-2 focus:ring-offset-2 focus:ring-primary
 
 /* Message */
 .bg-message{
-    @apply fixed w-full h-full bg-black/70 z-40 overflow-auto top-0 left-0
+    @apply fixed bg-black/70 z-40 overflow-auto top-0 bottom-0 left-0 right-0 
     
 }
 #znMessage{
@@ -360,6 +371,31 @@ opacity: 1;
 filter: contrast(120%);
 }
 
+.pasos_carrito ul{
+    @apply flex justify-center border-b-2 border-b-secondary mb-4
+}
+.pasos_carrito li{
+    @apply px-10 
+}
+
+.pasos_carrito i{
+    @apply text-3xl
+}
+.pasos_carrito .active i{
+    @apply text-secondary
+}
+.list-carrito{
+    @apply grid grid-cols-5
+}
+.list-carrito div{
+    @apply p-2 border-b border-b-silver
+}
+.list-carrito-titulo{
+    @apply bg-secondary text-primary font-bold
+}
+.carrito{
+    transition: 1200ms all;
+}
  h1{font-size: 40px; font-weight:bold}
  h2{font-size: 30px; font-weight:bold}
  h3{font-size: 20px; font-weight:bold} 

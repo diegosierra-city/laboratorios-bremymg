@@ -17,6 +17,9 @@
 	import WebGalleryB from '$lib/components/WebGalleryB.svelte';
 	import WebGalleryA from '$lib/components/WebGalleryA.svelte';
 	
+	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
+	import WebList from '$lib/components/WebList.svelte';
+	
 
 	let cont: BlockContent = {
 		id: 0,
@@ -173,80 +176,23 @@ loadGallery()
 
 let galleryFolder:string = 'maker_products/'
 
-import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
-	import WebList from '$lib/components/WebList.svelte';
-const date = new Date(); 
-	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
-let carrito_total: number = 0;
-let newPedido: Pedido = {
-	id: Date.now(),
-		comprador_id: 0,
-		productos: [],
-		fecha: dateToday,
-		valor: 0,
-		estado: '',
-		pago_estado: '',
-		pago_id: '',
-		notas: '',
-		origen: 'WEB'
-}
-
-
-if(cookie_info('carrito_total')){
-		carrito_total=Number(cookie_info('carrito_total'));
-		let carrito_pedido:any = cookie_info('carrito_pedido')
-		newPedido = JSON.parse(carrito_pedido);
-	}
 
 	import type { Item } from '$lib/types/ListItem';
 	import type { Product } from '$lib/types/Product';
+	import WebIntro from '$lib/components/WebIntro.svelte';
 	let listItems: Array<Item> = [];
 	let listProducts: Array<Product> = [];
 
-		/* const loadList = async (name: string) => {
-		console.log('contenido:' + name);
-		console.log(
-			urlAPI +
-				'?ref=load-list-Web&folder=maker_categories&name=' +
-				name +
-				'&company_id=' +
-				company_id +
-				'&tokenWeb=' +
-				tokenWeb
-		);
-		await fetch(
-			urlAPI +
-				'?ref=load-list-Web&folder=maker_categories&name=' +
-				name +
-				'&company_id=' +
-				company_id +
-				'&tokenWeb=' +
-				tokenWeb
-		)
-			.then((response) => response.json())
-			.then((result) => {
-				listProducts = result[0];
-				console.log('prodt');
-				imageTop = result[1];
-				titulo = result[2];
-				subtitulo = result[3];
-				console.log(listProducts);
-			})
-			.catch((error) => console.log(error.message));
-	};
+		
+let intro = true 
 
-	onMount(() => {
-		loadList($page.params.name);
-	});
- */
 </script>
 
 <svelte:head>
 	<title>{company_name}</title>
 	<meta name="description" content={pag.metadescription} />
 	<meta name="keywords" content={pag.metakeywords} />
-	<link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.css" />
+	<link rel="stylesheet" href="./css/fontawesome-free-6.4.0-web/css/all.css" />
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
@@ -254,57 +200,25 @@ if(cookie_info('carrito_total')){
 	<WebGalleryB {listGalleries} {urlFiles} {galleryFolder}/>
 -->
 
-	{#if innerWidth>900}
+<!-- 	{#if innerWidth>900}
 	<WebGalleryA {listGalleries} {urlFiles} {galleryFolder} />
-	{/if}
+	{/if} -->
 
-
-
-<WebMenuB {carrito_total} {newPedido} />
+{#if intro}
+	 <!-- content here -->
+		<WebIntro bind:intro/>
+{/if}
 
 <WebCarrousel {cont} {urlFiles} {prefixFolder} />
+<WebMenuB />
 
-<WebAccess {listCont} {urlFiles}/>
+<!-- <WebAccess {listCont} {urlFiles}/> -->
 
 <section class="relative" id="principal">
 
 <div class="h-20 md:h-10"></div>
 
-	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto my-6 px-4 -mt-6">
-		{#each listCont as ct}
-			<a class="card_home mx-auto" href="/pagina/{ct.link}">
-				<div class="card_img">
-					<img src="{urlFiles}/images/maker_pages/M{ct.image1}" alt={ct.menu} />
-				</div>
-				<div class="card_title">
-					<h3 class="bg-secondary">{ct.menu}</h3>
-					<!--
-						<p class="bg-black opacity-70 p-3 ">
-						{ct.text1}
-					</p>
-					-->
-					
-				</div>
-				<button
-					class="btn-green mr-2 flex w-full !mx-auto !rounded-b-lg rounded-t-none relative z-10"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-5 w-5 mr-1"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					saber más</button
-				>
-			</a>
-		{/each}
-	</div>
+	
 
 	<div class="w-11/12 md:w-8/12 mx-auto">
 		<h2 class="text-primary">{cont.title}</h2>
@@ -330,3 +244,5 @@ if(cookie_info('carrito_total')){
 
 
 <WebFooter />
+
+

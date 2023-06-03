@@ -10,7 +10,7 @@ export default {
       // these options are set automatically — see below
       pages: 'build',
       assets: 'build',
-      fallback: 'index.html',//null//'index.html' '404.html' '200.html'//se define para SPA
+      fallback: '200.html',//null//'index.html' '404.html' '200.html'//se define para SPA
       precompress: false,
       strict: true ///true
     }),

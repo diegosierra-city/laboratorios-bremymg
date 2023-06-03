@@ -45,18 +45,25 @@
 		<div class="menu_footer">
 			<ul>
 				<li>
-					<a href="Https://facebook.com" target="_blank" rel="noopener noreferrer">
-				<i class="fa fa-facebook"></i> Facebook</a>
+					<a href="https://www.facebook.com/profile.php?id=100091299960286" target="_blank" rel="noopener noreferrer">
+						<i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
 			</li>
 <li>
 	<a
-				href="https://instagram.com"
+				href="https://instagram.com/kdarcosmetics?igshid=NTc4MTIwNjQ2YQ=="
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-					<i class="fa fa-instagram"></i> Instagram</a>
+			<i class="fa-brands fa-instagram text-lg"></i> Instagram</a>
 </li>
-				
+		<li>
+	<a
+				href="https://www.tiktok.com/@kdarcosmetics?_t=8cD9eguMrPK&_r=1"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+			<i class="fa-brands fa-tiktok text-lg"></i> TikTok</a>
+</li>		
 			</ul>
 					
 		</div>
