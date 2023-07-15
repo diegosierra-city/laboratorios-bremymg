@@ -288,7 +288,7 @@
 								<input type="checkbox" bind:checked={ct.active} />
 							</td>
 
-							<td class="text-center">
+							<td class="text-center text-xl">
 								<button
 									on:click={() => {
 										category_id = ct.id;
@@ -296,16 +296,16 @@
 										show_products = true;
 									}}
 								>
-								<i class="fa fa-edit mx-2 mt-1 text-green text-lg" />
+								<i class="fa fa-edit mx-2 mt-1 text-green " />
 								</button>
 							</td>
-							<td>
+							<td class="text-xl">
 								<button
 									on:click={() => {
 										deleteCategory(ct.id);
 									}}
 								>
-								<i class="fa fa-trash-o mx-2 mt-1 text-red text-lg" />
+								<i class="fa fa-trash-o mx-2 mt-1 text-red " />
 								</button>
 							</td>
 						</tr>

@@ -59,20 +59,6 @@
                     -->
 				</li>
 
-				
-
-				<li class:boton_admin_active={$moduleAdmin === 'forms'}>
-					<button
-						class="flex items-center"
-						on:click={() => {
-							$moduleAdmin = 'forms';
-						}}
-					>
-					<i class="fa fa-commenting-o" />
-						<span class="text-sm ml-2 hidden lg:block">Mensages</span>
-					</button>
-				</li>
-
 				<li class:boton_admin_active={$moduleAdmin === 'categories'}>
 					<button
 						class="flex items-center"
@@ -86,6 +72,30 @@
 				</li>
 				<!-- Landing Pages -->
 				
+				<li class:boton_admin_active={$moduleAdmin === 'forms'}>
+					<button
+						class="flex items-center"
+						on:click={() => {
+							$moduleAdmin = 'forms';
+						}}
+					>
+					<i class="fa fa-commenting-o" />
+						<span class="text-sm ml-2 hidden lg:block">Mensages</span>
+					</button>
+				</li>
+
+
+				<li class:boton_admin_active={$moduleAdmin === 'pedidos'}>
+					<button
+						class="flex items-center"
+						on:click={() => {
+							$moduleAdmin = 'pedidos';
+						}}
+					>
+					<i class="fa fa-tags" />
+						<span class="text-sm ml-2 hidden lg:block">Pedidos</span>
+					</button>
+				</li>
 			</ul>
 
 			

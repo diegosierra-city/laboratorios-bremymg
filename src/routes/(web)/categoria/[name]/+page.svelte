@@ -93,7 +93,7 @@
 
 <svelte:head>
 	<title>{$page.params.name}</title>
-	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />
+	<!-- <link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" /> -->
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
@@ -104,20 +104,12 @@
 			<img src="{urlFiles}/images/maker_products/{prefixFolder}{imageTop}" alt="" class="w-full" />
 	{/if}
 	
-	<!-- <div
-		class="absolute bottom-6 left-0 w-full MrDafoe lowercase text-center text-white px-4"
-		style="font-size: 12vw; text-shadow: 2px 2px 3px #000000;"
-	>
-	
-		{titulo}
-		<div style="font-size: 3vw;" class="-mt-24">{subtitulo}</div>
-	</div> -->
-</div>
+	</div>
 
 <WebMenuB />
 
 <section>
-	<div class="w-11/12 md:w-10/12 mx-auto">
+	<div class="w-11/12 md:w-10/12 mx-auto mt-8 md:mt-0">
 		<WebList bind:listItems {listProducts} {urlFiles} />
 	</div>
 </section>

@@ -205,7 +205,7 @@
 	<title>{ContBase.menu}</title>
 	<meta name="description" content={ContBase.metadescription} />
 	<meta name="keywords" content={ContBase.metakeywords} />
-	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />
+<!-- <link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />  -->
 </svelte:head>
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
 

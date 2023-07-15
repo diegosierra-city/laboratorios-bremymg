@@ -9,6 +9,7 @@
 	import { cookie_info, cookie_update, moduleAdmin, userNow } from '../../../store';
 	import type { User } from '$lib/types/User';
 	import AdminCompany from '$lib/components/AdminCompany.svelte';
+	import AdminPedidos from '$lib/components/AdminPedidos.svelte';
 
 	let userN: any;
 	let user: User;
@@ -43,7 +44,6 @@
 
 <svelte:head>
 	<title>Maker-{$moduleAdmin}</title>
-	<link rel="stylesheet" href="../css/font-awesome-4.7.0/css/font-awesome.css" />
 </svelte:head>
 
 <div class="w-full">
@@ -59,5 +59,7 @@
 		<AdminCategories />
 	{:else if $moduleAdmin == 'forms'}
 		<AdminForms />
+	{:else if $moduleAdmin == 'pedidos'}
+		<AdminPedidos />
 	{/if}
 </div>

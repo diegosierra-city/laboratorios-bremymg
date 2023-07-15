@@ -20,6 +20,14 @@
 	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
 	import WebList from '$lib/components/WebList.svelte';
 	
+	import type { Item } from '$lib/types/ListItem';
+	import type { Product } from '$lib/types/Product';
+	import WebIntro from '$lib/components/WebIntro.svelte';
+	let listItems: Array<Item> = [];
+	let listProducts: Array<Product> = [];
+
+		
+let intro = true 
 
 	let cont: BlockContent = {
 		id: 0,
@@ -99,12 +107,13 @@
 		)
 			.then((response) => response.json())
 			.then((result) => {
-				//console.table(result);
+				console.table('Home',result);
 				
 					console.log('contenido:');
 					console.log(result);
 					pag = result[0];
 					cont = result[1];
+					listProducts = result[2];
 					//console.table(pag.metadescription);
 				
 			})
@@ -177,14 +186,7 @@ loadGallery()
 let galleryFolder:string = 'maker_products/'
 
 
-	import type { Item } from '$lib/types/ListItem';
-	import type { Product } from '$lib/types/Product';
-	import WebIntro from '$lib/components/WebIntro.svelte';
-	let listItems: Array<Item> = [];
-	let listProducts: Array<Product> = [];
-
-		
-let intro = true 
+	
 
 </script>
 
@@ -235,9 +237,11 @@ let intro = true
 </div>
 	{/if}
 
+	{#if listProducts && listProducts.length>0}
+		 <!-- content here -->
+			<WebList {listProducts} {listItems} {urlFiles}/>
+	{/if}
 	
-	<!-- <WebList {listProducts} {listItems} {urlFiles}/> -->
-
 
 </section>
 

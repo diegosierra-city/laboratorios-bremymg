@@ -3,7 +3,7 @@
 	import { numberFormat } from '$lib/components/NumberFormat';
 	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
 	import type { Product } from '$lib/types/Product';
-	import { apiKey, cookie_info, cookie_update, userNow } from '../../store';
+	import { apiKey, cookie_info, cookie_update, newPedido, carritoTotal, userNow } from '../../store';
 	import Messages from '$lib/components/Messages.svelte';
 	import type { Message } from '$lib/types/Message';
 	import type { ProductOptions } from '$lib/types/ProductOptions';
@@ -21,7 +21,7 @@
 	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
 	export let product: Product = {
-		id: 0,
+		id: Date.now(),
 		company_id: company_id,
 		category_id: 0,
 		product: '',
@@ -54,10 +54,10 @@
 		//console.log('CambiarImagen',imagen_principal)
 	}
 
-	let version: string = 'única';
+	
 	let image_version: string = '';
 	let versionActual: number = -1;
-	let stock: number = product.stock;
+	let stock: number;
 	//let tarifa: number;
 	//let cantidad: number = 1;
 	//let total: number = 0;
@@ -78,62 +78,19 @@
 			newProduct.quantity = 1;
 		} else if (newProduct.quantity > stock) {
 			newProduct.quantity = stock;
-			alert('No tenemos más existencias en este momento')
+			alert('No tenemos más existencias en este momento'+stock)
 		}
 		newProduct.total = newProduct.price * newProduct.quantity;
 	};
 
-	/* 
-let showBooking: boolean = false;
-function abrir_pedido() {
-		//alert(total+'*'+adultos)
-		if (cantidad == 0) {
-			message = {
-				title: 'error',
-				text: 'Define la cantidad de productos',
-				class: 'message-red',
-				accion: ''
-			};
-			m_show = true;
-		} else {
-			//alert(total+'+'+adultos)
-			showBooking = true;
-		}
-	} */
-
-	/* $: tarifa = product.price;
-	$: totalizar(tarifa, cantidad); */
-
-	export let carrito_total: number = 0;
-	export let newPedido: Pedido = {
-		id: Date.now(),
-		company_id: $apiKey.companyId,
-		order_id: 0,
-		comprador_id: 0,
-		productos: [],
-		fecha: dateToday,
-		valor: 0,
-		estado: '',
-		pago_estado: '',
-		pago_id: '',
-		notas: '',
-		origen: 'WEB'
-	};
-	//cookie_update('carrito_total','');
-	//cookie_update('carrito_pedido','');
-
-	if (cookie_info('carrito_total') && cookie_info('carrito_pedido')) {
-		//alert(cookie_info('carrito_pedido'))
-		carrito_total = Number(cookie_info('carrito_total'));
-		let carrito_pedido: any = cookie_info('carrito_pedido');
-		newPedido = JSON.parse(carrito_pedido);
-	}
-
+	
 	let newProduct: PedidoProduct;
 
 	$: if (product.id) {
+		change_image('maker_products/M'+product.image1);
+		stock= product.stock;
 		newProduct = {
-			id: 0,
+			id: Date.now(),
 			company_id: $apiKey.companyId,
 			order_id: 0,
 			category_id: product.category_id,
@@ -146,7 +103,7 @@ function abrir_pedido() {
 			size: product.size,
 			color: product.color,
 			version_type: product.options,
-			version: version,
+			version: '',
 			image_version: image_version,
 			price: product.price,
 			quantity: 1,
@@ -155,13 +112,13 @@ function abrir_pedido() {
 	}
 
 	function addCarrito(valor: number, p: PedidoProduct) {
-		carrito_total += (valor*1);
+		$carritoTotal += (valor*1);
 		//alert(carrito_total)
-		cookie_update('carrito_total', String(carrito_total));
-		newPedido.valor = carrito_total;
+		//cookie_update('carrito_total', String(carrito_total));
+		$newPedido.valor = $carritoTotal
 
-		newPedido.productos = [...newPedido.productos, newProduct];
-		cookie_update('carrito_pedido', JSON.stringify(newPedido));
+		$newPedido.productos = [...$newPedido.productos, newProduct];
+		//cookie_update('carrito_pedido', JSON.stringify(newPedido));
 		message = {
 			title: 'Carrito',
 			text: 'Se ha agregado este producto a tu carrito.',
@@ -171,13 +128,9 @@ function abrir_pedido() {
 		m_show = true;
 	}
 
-	/* $: if (product.image1 != '') {
-		imagen_principal = urlFiles + '/images/maker_products/' + prefixFolder + product.image1;
-	} */
-
+	
 	const cambioVersion = (posicion: number) => {
 		if (posicion != -1) {
-			newProduct['version'] = listProductOptions[posicion]['name'];
 			newProduct['price'] = listProductOptions[posicion]['price'];
 			stock = listProductOptions[posicion]['stock'];
 			if (listProductOptions[posicion]['image'] != '') {
@@ -189,29 +142,29 @@ function abrir_pedido() {
 			}
 			newProduct.total = newProduct.price * newProduct.quantity;
 		}
-
 		console.log('NuevoProductox', newProduct);
 	};
 
 	$: console.log('NuevoProducto', newProduct);
-	$: cambioVersion(versionActual);
+	cambioVersion(versionActual);
 
 	$: if (listProductOptions.length > 0 && newProduct && versionActual == -1) {
 		versionActual = 0;
 		cambioVersion(0);
+		newProduct['version'] = listProductOptions[0]['name']
 	}
 </script>
 
-<div class="w-8/12 mx-auto mt-4 grid grid-cols-2">
+<div class="w-11/12 md:w-8/12 mx-auto mt-20 md:mt-4 grid grid-cols-1 md:grid-cols-2 ">
 	<div>
 		<img src={imagen_principal} alt={product.product} class="product-image" />
-		<div class="flex mt-2">
+		<div class="flex mt-2 mb-6">
 			{#if product.image1 != '' && product.image2 != ''}
 				<button
 					on:click={() => {
 						change_image('maker_products/M'+product.image1);
 					}}
-					class="mr-2 w-40"
+					class="mx-2 w-40"
 				>
 					<img
 						src="{urlFiles}/images/maker_products/M{product.image1}"
@@ -279,26 +232,38 @@ function abrir_pedido() {
 				{#if newProduct}
 					<!-- content here -->
 					<h3>Precio: ${numberFormat(newProduct.total)}</h3>
+					<!-- {newProduct['version']}-{versionActual} -->
 				{/if}
 
 				{#if listProductOptions && listProductOptions.length > 0}
 					{#each listProductOptions as option, i}
 						<div>
-							<input type="radio" bind:group={versionActual} name="versionActual" value={i} />
-							{option.name}
+							<!--	
+								<input type="radio" bind:group={versionActual} name="versionActual" value={i} on:click={()=>cambioVersion(i)}/>
+							-->
+							<input type="radio" checked={i===0 && true}  name="versionActual" value={i} on:click={()=> {
+								newProduct['version']=option.name
+								cambioVersion(i)
+								versionActual=i
+								}}/>
+							{product.options+': '+option.name}
 						</div>
 					{/each}
 				{/if}
 
-				<div class="text-lg">
+				{#if newProduct?.quantity}
+				<div class="text-xl">
 					<button on:click={() => cambiarCantidad('menos')}
 						><i class="fa fa-minus-square mr-2 text-primary" /></button
 					>
-					{newProduct?.quantity}
+					{newProduct.quantity}
 					<button on:click={() => cambiarCantidad('mas')}
 						><i class="fa fa-plus-square ml-2 text-primary" /></button
 					>
 				</div>
+				{/if}
+				
+
 			</div>
 
 			{#if newProduct}

@@ -16,7 +16,8 @@
 </script>
 
 	<!-- content here -->
-	<div class="bg-message">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div class="bg-message" on:click|self={()=>m_show=false}>
 		<div id="znMessage" class={message.class} >
 			<div class="message-title">
 				<h3>{message.title}</h3>

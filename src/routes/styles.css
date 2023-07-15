@@ -116,11 +116,11 @@ table th{
 }
 
 .menu_up_movil{
-    @apply absolute top-8 right-2 bg-primary p-2 rounded-lg border border-silver w-2/12  
+    @apply absolute top-8 right-2 bg-primary p-2 rounded-lg border border-silver w-5/12 md:w-4/12 
 }
 .menu_up_movil li{
 	transition: 600ms all;
-	@apply text-white federo lowercase pl-2 pr-5 py-0 md:py-2 text-sm md:text-lg border-l-4 border-l-primary hover:border-l-secondary hover:text-secondary 
+	@apply text-white federo lowercase pl-2 pr-5 py-0 md:py-2 border-l-4 border-l-primary hover:border-l-secondary hover:text-secondary border-b border-b-darkgray 
     /*
 hover:bg-lavender/10
     */
@@ -180,12 +180,12 @@ footer{
 } */
 
 .product-image{
-    @apply rounded-lg border border-secondary
+    @apply rounded-lg border border-secondary w-full
 }
 
 .logo_down{
     transition: 600ms all;
-    @apply grayscale hover:grayscale-0 cursor-pointer w-36 h-auto
+    @apply grayscale hover:grayscale-0 cursor-pointer w-36 h-auto rounded-md
 }
  
  .menu_boton_footer{ @apply hover:text-secondary}

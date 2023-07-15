@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { apiKey, cookie_info, cookie_update, userNow } from '../../store';
+	import { apiKey, cookie_info, carritoTotal, cookie_update, userNow } from '../../store';
 	import { fade } from 'svelte/transition';
 	//import { bars, faCaretUp } from '@fortawesome/free-solid-svg-icons/index.es'
 	import { numberFormat } from '$lib/components/NumberFormat';
@@ -134,7 +134,7 @@
 						{/each}
 						<li>
 							<button class="text-sm" on:click={() => (showCarrito = true)}
-								><i class="fa fa-shopping-cart" /> ${numberFormat(carrito_total)}</button
+								><i class="fa fa-shopping-cart" /> ${numberFormat($carritoTotal)}</button
 							>
 						</li>
 					</ul>
@@ -146,5 +146,5 @@
 
 {#if showCarrito}
 	<!-- content here -->
-	<WebCart bind:showCarrito bind:carrito_total />
+	<WebCart bind:showCarrito />
 {/if}

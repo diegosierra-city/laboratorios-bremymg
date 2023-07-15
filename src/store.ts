@@ -3,7 +3,7 @@ import { onMount } from "svelte";
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
 import type { Keys } from "$lib/types/Keys";
-
+import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
 //export let cookie_name
 //export let cookie_value
 
@@ -34,29 +34,7 @@ export const userNow = writable({
 	token: ''
 })
 
-
-/*
-let credentials:Keys = {
-	urlAPI_Maker: '',
-	urlFiles: '',
-	token: '',
-	companyName: '',
-	companyId: 0
-}
-
-export const loadCredentials = async () => {
-	await fetch('/credentials.json')
-	.then(response => response.json())
-	.then(res=>{
-		console.log('datos:')
-		console.log(res)
-		credentials = res
-		return res
-	})  
-	}
-	
-	//loadCredentials()	
-	*/
+let companyId:number = 2
 
 
 export const apiKey = writable({
@@ -64,19 +42,36 @@ export const apiKey = writable({
 	urlFiles: "https://maker.cityciudad.com/maker-files",
 	token: "48aeca28238a599d9bdde0f280727cfa",
 	companyName: 'KDAR Cosmetics',
-	companyId: 2
-	/*
-	urlAPI_Maker: credentials.urlAPI_Maker,
-	urlFiles: credentials.urlFiles,
-	token: credentials.token,
-	companyName: credentials.companyName,
-	companyId: credentials.companyId
-	*/
-	
-	/*
-token: "c1ce08031b26c72b5deaa1026acec30b",
-	companyName: 'Vender o Arrendar',
-	companyId: 3
-	*/
+	companyId: companyId
 })
 
+export const newPedido = writable({
+	id: Date.now(),
+		company_id: companyId,
+		order_id: 0,
+		comprador_id: 0,
+		productos: Array<PedidoProduct>(),
+		fecha: '',
+		valor: 0,
+		estado: '',
+		pago_estado: '',
+		pago_id: '',
+		notas: '',
+		fecha_envio: '',
+		origen: 'WEB'
+})
+
+export const pedidoComprador = writable({
+	id: Date.now(),
+	company_id: companyId,
+	nombres: '',
+	apellidos: '',
+	documento: '',
+	email: '',
+	celular: '',
+	pais: 'Colombia',
+	ciudad: '',
+	direccion: ''
+})
+
+export const carritoTotal = writable(0)

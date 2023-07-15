@@ -38,7 +38,7 @@
 
 
 {#if listProducts}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 container mx-auto my-6 px-4 ">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 container mx-auto my-6 px-4">
 {#each listProducts as product}
 <a class="card_home mx-2 relative" href="/producto/{linkMaker(product.product)}">
 	
@@ -48,9 +48,6 @@
 				<img src="{urlFiles}/images/maker_products/M{product.image1}" alt={product.product} class="w-full" />
 		{/if}
 		
-
-		
-
 	</div>
 
 	
@@ -66,7 +63,7 @@
 
 	<!-- card_text -->
 		<h3 class="card_titleC relative -top-10 ">{product.product}</h3>
-		<p class="text-darkgray px-2 relative -top-10 text-justify">
+		<p class="text-darkgray px-6 relative -top-10 text-justify">
 			{@html product.description}
 			</p>
 		

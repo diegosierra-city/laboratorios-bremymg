@@ -134,6 +134,7 @@
 					product_list = result;
 					//new_user = result[0]
 					//cookie_update('user',JSON.stringify(new_user))
+					show_products = false;
 				}
 			})
 

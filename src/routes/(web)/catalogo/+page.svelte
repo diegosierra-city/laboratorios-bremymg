@@ -89,7 +89,7 @@ import type {Category} from '$lib/types/Category'
 
 <svelte:head>
 	<title>Catalogo</title>
-	<link rel="stylesheet" href="../css/fontawesome-free-6.4.0-web/css/all.css" />
+	<!-- <link rel="stylesheet" href="../css/fontawesome-free-6.4.0-web/css/all.css" /> -->
 </svelte:head>
 
 

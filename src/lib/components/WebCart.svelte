@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
-	import { apiKey, cookie_info, cookie_update, userNow } from '../../store';
+	import { apiKey, cookie_info, cookie_update, newPedido, pedidoComprador, carritoTotal, userNow } from '../../store';
 	import type { Message } from '$lib/types/Message';
 	import Messages from '$lib/components/Messages.svelte';
 
@@ -16,60 +16,27 @@
 	const date = new Date();
 	const dateToday = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
-	let newPedido: Pedido = {
-		id: Date.now(),
-		company_id: company_id,
-		order_id: 0,
-		comprador_id: 0,
-		productos: [],
-		fecha: dateToday,
-		valor: 0,
-		estado: '',
-		pago_estado: '',
-		pago_id: '',
-		notas: '',
-		origen: 'WEB'
-	};
-
+	
 	export let showCarrito: boolean;
 	let paso: number = 1;
 	let pasoOk: number = 1;
+	
 
-	let pedidoComprador: Comprador = {
-		id: 0,
-		company_id: $apiKey.companyId,
-		nombres: '',
-		apellidos: '',
-		documento: '',
-		email: '',
-		celular: '',
-		pais: 'Colombia',
-		ciudad: '',
-		direccion: ''
-	};
-	export let carrito_total: number = 0;
-
-	if (cookie_info('carrito_total')) {
-		carrito_total = Number(cookie_info('carrito_total'));
-		let carrito_pedido: any = cookie_info('carrito_pedido');
-		newPedido = JSON.parse(carrito_pedido);
-	}
-
-	$: console.log('Pedido:', newPedido);
+	//$: console.log('Pedido:', newPedido);
 
 	const pedidoSave = async () => {
-		console.log('Pedido', newPedido);
-		console.log('Comprador', pedidoComprador);
-		console.log('Productos', newPedido.productos);
+		// console.log('Pedido', newPedido);
+		// console.log('Comprador', pedidoComprador);
+		// console.log('Productos', $newPedido.productos);
 
 		await fetch(urlAPI + '?ref=pedidoSave', {
 			method: 'POST', //POST - PUT - DELETE
 			body: JSON.stringify({
 				company_id: $apiKey.companyId,
 				tokenWeb: tokenWeb,
-				pedido: newPedido,
-				pedidoComprador: pedidoComprador,
-				productos: newPedido.productos
+				pedido: $newPedido,
+				pedidoComprador: $pedidoComprador,
+				productos: $newPedido.productos
 			}),
 			headers: {
 				'Content-type': 'application/json; charset=UTF-8'
@@ -87,35 +54,37 @@
 				};
 				m_show = true;
 				 
-				///se resetean las variables y las cookies
-				newPedido = {
-					id: Date.now(),
-					company_id: company_id,
-					order_id: 0,
-					comprador_id: 0,
-					productos: [],
-					fecha: dateToday,
-					valor: 0,
-					estado: '',
-					pago_estado: '',
-					pago_id: '',
-					notas: '',
-					origen: 'WEB'
-				};
-				pedidoComprador = {
-					id: 0,
-					company_id: $apiKey.companyId,
-					nombres: '',
-					apellidos: '',
-					documento: '',
-					email: '',
-					celular: '',
-					pais: 'Colombia',
-					ciudad: '',
-					direccion: ''
-				};
-				cookie_update('carrito_total', '');
-				cookie_update('carrito_pedido', '');
+			/// seteamos las stores del carrito
+		$newPedido = {
+	id: Date.now(),
+		company_id: $apiKey.companyId,
+		order_id: 0,
+		comprador_id: 0,
+		productos:[],
+		fecha: '',
+		valor: 0,
+		estado: '',
+		pago_estado: '',
+		pago_id: '',
+		notas: '',
+		fecha_envio: '',
+		origen: 'WEB'
+}
+
+$pedidoComprador = {
+	id: Date.now(),
+	company_id: $apiKey.companyId,
+	nombres: '',
+	apellidos: '',
+	documento: '',
+	email: '',
+	celular: '',
+	pais: 'Colombia',
+	ciudad: '',
+	direccion: ''
+}
+
+$carritoTotal = 0
 
 				/// fin resetear
 				showCarrito = false;
@@ -129,18 +98,20 @@
 	};
 
 	const carritoDelete = (ind: number) => {
-		if (confirm('Borrar este Producto?')) {
-			newPedido.productos.splice(ind, 1);
+		if(ind>-1){
+	if(confirm('Borrar este Producto?')) {
+
+			$newPedido.productos.splice(ind, 1);
 			//
 			let tt = 0;
-			for (let prod of newPedido.productos) {
-				tt += prod.total;
+			for (let prod of $newPedido.productos) {
+				tt += Number(prod.total);
 			}
-			newPedido.valor = tt;
-			carrito_total = tt
-			cookie_update('carrito_pedido', JSON.stringify(newPedido));
-			cookie_update('carrito_total', String(tt));
-			console.log('total carrito', tt);
+			$newPedido.valor = tt;
+			$carritoTotal = tt
+			// cookie_update('carrito_pedido', JSON.stringify(newPedido));
+			// cookie_update('$carritoTotal', String(tt));
+			// console.log('total carrito', tt);
 			//
 			message = {
 				title: 'Borrar',
@@ -150,10 +121,45 @@
 			};
 			m_show = true;
 		}
+	}else{
+		if (confirm('Desea Borrar TODO el carrito?')) {
+
+			$newPedido = {
+					id: Date.now(),
+					company_id: company_id,
+					order_id: 0,
+					comprador_id: 0,
+					productos: [],
+					fecha: String(dateToday),
+					valor: 0,
+					estado: '',
+					pago_estado: '',
+					pago_id: '',
+					notas: '',
+					fecha_envio: '',
+					origen: 'WEB'
+				}
+
+				$carritoTotal = 0
+// cookie_update('carrito_pedido', JSON.stringify(newPedido));
+// cookie_update('$carritoTotal', String(0));
+//
+message = {
+	title: 'Borrar',
+	text: 'Se borró el Carrito',
+	class: 'message-red',
+	accion: ''
+};
+m_show = true;
+}
+	}
+	//console.log('Ps',$newPedido.productos)
 	};
+//console.log('Psx',$newPedido.productos)
+//	$: console.log('Psx',$newPedido.productos)
 </script>
 
-{#if carrito_total > 0}
+{#if $carritoTotal > 0}
 	<button
 		class="fixed w-full h-full bg-black/70 z-40 overflow-y-hidden top-0 left-0 bottom-0 cursor-pointer"
 		on:click|self={() => (showCarrito = false)}
@@ -182,21 +188,21 @@
 			<h3>Pedido</h3>
 
 			<div class="list-carrito">
-				{#if carrito_total > 0}
+				{#if $carritoTotal > 0}
 					<div class="list-carrito-titulo">Imagen</div>
 					<div class="list-carrito-titulo">Producto</div>
 					<div class="list-carrito-titulo">Precio</div>
 					<div class="list-carrito-titulo">Cantidad</div>
 					<div class="list-carrito-titulo">Total</div>
 					<!-- content here -->
-					{#each newPedido.productos as producto, i}
+					{#each $newPedido.productos as producto, i}
 						<!-- content here -->
 						<div class="flex">
 							<span class="font-bold">{i + 1}.</span>
 							<img src="{urlFiles}/images/{producto.image}" alt="" class="w-24" />
 						</div>
 						<div>{producto.name}
-					<small>	<strong>Versión:</strong> {producto.version_type+' '+producto.version} </small>
+					<small>	{@html producto.version!=''? '<strong>Versión:</strong> '+producto.version_type+' '+producto.version : ''} </small>
 						</div>
 						<div class="text-right">{producto.price}</div>
 						<div class="text-center">{producto.quantity}</div>
@@ -213,7 +219,18 @@
 					{/each}
 
 					<div class="col-span-4 text-right">TOTAL:</div>
-					<div class="text-center text-xl font-bold pr-8">${carrito_total}</div>
+					<div class="text-center text-xl font-bold pr-4">${$carritoTotal}
+					
+						<button
+							class="ml-4"
+							on:click={() => {
+								carritoDelete(-1);
+							}}
+							><i class="fa-solid fa-circle-xmark text-red hover:text-primary text-lg" /></button
+						>
+					</div>
+
+			
 				{/if}
 			</div>
 
@@ -240,7 +257,7 @@
 								class="inputA"
 								autocomplete="on"
 								required
-								bind:value={pedidoComprador.documento}
+								bind:value={$pedidoComprador.documento}
 							/>
 						</div>
 					</div>
@@ -253,7 +270,7 @@
 								class="inputA"
 								autocomplete="on"
 								required
-								bind:value={pedidoComprador.nombres}
+								bind:value={$pedidoComprador.nombres}
 							/>
 						</div>
 					</div>
@@ -266,7 +283,7 @@
 								class="inputA"
 								autocomplete="on"
 								required
-								bind:value={pedidoComprador.apellidos}
+								bind:value={$pedidoComprador.apellidos}
 							/>
 						</div>
 					</div>
@@ -279,7 +296,7 @@
 								class="inputA"
 								autocomplete="on"
 								required
-								bind:value={pedidoComprador.email}
+								bind:value={$pedidoComprador.email}
 							/>
 						</div>
 					</div>
@@ -292,7 +309,7 @@
 								class="inputA"
 								autocomplete="on"
 								required
-								bind:value={pedidoComprador.celular}
+								bind:value={$pedidoComprador.celular}
 							/>
 						</div>
 					</div>
@@ -321,7 +338,7 @@
 					<div>
 						<div>Pais:</div>
 						<div class="col-span-2 font-bold">
-							{pedidoComprador.pais}
+							{$pedidoComprador.pais}
 						</div>
 					</div>
 
@@ -333,7 +350,7 @@
 								class="inputA"
 								autocomplete="on"
 								required
-								bind:value={pedidoComprador.ciudad}
+								bind:value={$pedidoComprador.ciudad}
 							/>
 						</div>
 					</div>
@@ -345,7 +362,7 @@
 								type="text"
 								class="inputA"
 								autocomplete="on"
-								bind:value={pedidoComprador.direccion}
+								bind:value={$pedidoComprador.direccion}
 							/>
 						</div>
 					</div>

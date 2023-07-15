@@ -146,7 +146,7 @@ let carrito_total: number = 0;
 
 <svelte:head>
 	<title>{product.product}</title>
-	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" />
+<!-- 	<link rel="stylesheet" href="../../css/fontawesome-free-6.4.0-web/css/all.css" /> -->
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
@@ -162,7 +162,7 @@ let carrito_total: number = 0;
 <WebMenuB bind:carrito_total />
 
 <section>
-	<WebProduct bind:product bind:prefixFolder bind:carrito_total bind:listProductOptions />
+	<WebProduct bind:product bind:prefixFolder bind:listProductOptions />
 </section>
 
 <WebFooter />

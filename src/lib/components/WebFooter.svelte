@@ -34,11 +34,11 @@
 	<!--
 {$page.url.pathname}     
 -->
-	<div class="grid grid-cols-1 mb-3 sm:grid-cols-3 gap-2 ">
+	<div class="grid grid-cols-2 mb-3 sm:grid-cols-3 gap-2 ">
 		<div class="grid place-content-center place-items-center">
-			<!--
-<img src="/maker-files/images/Logo-Cootraesturz-200.png" class="logo_down md:mr-4" alt="Cootraesturz" />
-			-->
+			
+<img src="/logoKdar.jpg" class="logo_down md:mr-4" alt="logo Kdar" />
+			<!---->
 			
 		</div>
 

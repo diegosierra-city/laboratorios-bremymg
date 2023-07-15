@@ -10,6 +10,7 @@ export interface Pedido {
  pago_estado: string,
  pago_id: string,
  notas: string,
+ fecha_envio: string,
  origen: string
 }
 

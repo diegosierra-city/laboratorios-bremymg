@@ -297,7 +297,8 @@
 	};
 </script>
 
-<div class="bg-edit">
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="bg-edit" on:click|self={()=>show_product = false}>
 	<div class="edit-page">
 		<h3>{prod.product}</h3>
 

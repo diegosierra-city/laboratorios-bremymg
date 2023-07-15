@@ -386,11 +386,19 @@ if ($ref == 'loadID') {
         $company_id = $_GET['company_id'];
         $folder = $_GET['folder'];
         $type = $_GET['type'];
+        $order = $_GET['order'];
+        $campo = $_GET['campo'];
+        $campoV = $_GET['campoV'];
         //
         $filtre = '';
         if ($type != '') {
           $filtre = "AND type='$type'";
         }
+        if ($_GET['campo']) {
+          $filtre .= "AND $campo='$campoV'";
+        }
+        if ($order == '') $order = 'position';
+
         if ($company_id == '') {
           $rCi = $mysqli->query("SELECT company_id FROM maker_users WHERE id='$user_id' LIMIT 1 ") or die($mysqli->error);
           $rowCi = $rCi->fetch_array(MYSQLI_ASSOC);
@@ -398,17 +406,34 @@ if ($ref == 'loadID') {
         }
         /// load categories
         $response = array();
+        $response2= array();
         //echo "SELECT * FROM maker_products WHERE category_id='$category_id' AND active='1' ORDER BY position ASC <br>";
-        //echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position <br>";
-        $result = $mysqli->query("SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position") or die($mysqli->error);
+        //echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY $order <br>";
+        $result = $mysqli->query("SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY $order") or die($mysqli->error);
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+          /// 
+          if ($folder == 'maker_orders') {
+            $comprador_id = $row['comprador_id'];
+            //comprador
+            $rCP = $mysqli->query("SELECT * FROM maker_buyer WHERE company_id='$company_id' AND id='$comprador_id' LIMIT 1") or die($mysqli->error);
+            $rowCP = $rCP->fetch_array();
+            $response2[] = $rowCP;
+          }
+
           $response[] = $row;
         }
 
+$final=array();
+        if(count($response2)>0){
+          $final[] = $response;
+          $final[] = $response2;
+        }else{
+          $final = $response;
+        }
 
         header("HTTP/1.1 200 OK");
         //echo $fecha.'*'.$empresa_id;
-        echo json_encode($response);
+        echo json_encode($final);
       }
     } else if ($ref == 'load-listGallery') {
 
@@ -1188,7 +1213,18 @@ if ($ref == 'form-list-report') {
                   $form[] = $rowF;
                 }
                 $page[] = $form;
+              } else if ($type == 'Home') {
+                $products = array();
+
+                $result = $mysqli->query("SELECT * FROM maker_products WHERE company_id='$company_id' AND home='1' AND active='1' ORDER BY category_id, product") or die($mysqli->error);
+                while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                  $row['folder'] = 'maker_products';
+                  $row['linkURL'] = 'producto/' . clean_link($row['titulo']);
+                  $products[] = $row;
+                }
+                $page[] = $products;
               }
+
 
               ///
               header("HTTP/1.1 200 OK");
@@ -1551,6 +1587,33 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       echo json_encode($menu);
 
       //echo '[{"ok":"yess"}]';
+    }
+  }else if ($ref == 'update-campo') {
+
+    $user_id = $data['user_id'];
+    $time_life = $data['time_life'];
+    $token = $data['token'];
+    //$documento=clean_numbers($data['documento']);
+    /// primero validamos el token
+    $tokenBase = md5($user_id . $time_life . $keyEncrypter);
+
+    if ($tokenBase != $token) {
+      header("HTTP/1.1 202 ERROR");
+      //echo '[{"error":"yess-'.$user_id.'+'.$time_life.'"}]'; 
+      echo '[{"error":"yes"}]';
+    } else {
+      $campo=$data['campo'];
+      $id=$data['id'];
+      $folder=$data['folder'];
+      $val=$data['val'];
+      ///
+      $action="UPDATE $folder SET $campo='$val' WHERE id='$id'";
+      $rUp = $mysqli->query($action);
+      $err=$mysqli->error;
+      ///
+      header("HTTP/1.1 200 OK");
+      echo '[{"update":"ok"}]';
+      //echo '[{"update":"'.$action.'"}]';
     }
   } else if ($ref == 'save-form') {
 
@@ -2817,6 +2880,12 @@ $new_prod[] = $row;
       }
 
 
+      /* header("HTTP/1.1 200 OK");
+            echo '[{"error":"prueba"}]';
+            return; */
+
+
+
       $now = time();
 
       if ($id == 0 or $id > 1000000) {
@@ -2879,41 +2948,41 @@ $new_prod[] = $row;
             $restar = $producto['quantity'];
             $pd_id = $producto['product_id'];
 
-            $pd_version=$producto['version'];
+            $pd_version = $producto['version'];
 
-            if($producto['version']=='única'){
-             $rSK = $mysqli->query("SELECT stock FROM maker_products WHERE id='$pd_id' LIMIT 1") or die($mysqli->error);
-        $rowSK = $rSK->fetch_array();
-        $stock = $rowSK['stock']; 
+            if ($producto['version'] == 'única') {
+              $rSK = $mysqli->query("SELECT stock FROM maker_products WHERE id='$pd_id' LIMIT 1") or die($mysqli->error);
+              $rowSK = $rSK->fetch_array();
+              $stock = $rowSK['stock'];
 
-        $newStock=$stock-$restar;
+              $newStock = $stock - $restar;
 
-            $query = "UPDATE maker_products SET stock= '$newStock' WHERE id='$pd_id'";
-            $mysqli->query($query) or die($mysqli->error);
-            }else{
-          $rSK = $mysqli->query("SELECT id, stock FROM maker_product_versions WHERE product_id='$pd_id' and `name`='$pd_version' LIMIT 1") or die($mysqli->error);
-        $rowSK = $rSK->fetch_array();
-        $stock = $rowSK['stock'];
-        
-        $newStock=$stock-$restar;
-$pd_id=$rowSK['id'];
-            $query = "UPDATE maker_product_versions SET stock= '$newStock' WHERE id='$pd_id'";
-            $mysqli->query($query) or die($mysqli->error);
+              $query = "UPDATE maker_products SET stock= '$newStock' WHERE id='$pd_id'";
+              $mysqli->query($query) or die($mysqli->error);
+            } else {
+              $rSK = $mysqli->query("SELECT id, stock FROM maker_product_versions WHERE product_id='$pd_id' and `name`='$pd_version' LIMIT 1") or die($mysqli->error);
+              $rowSK = $rSK->fetch_array();
+              $stock = $rowSK['stock'];
+
+              $newStock = $stock - $restar;
+              $pd_id = $rowSK['id'];
+              $query = "UPDATE maker_product_versions SET stock= '$newStock' WHERE id='$pd_id'";
+              $mysqli->query($query) or die($mysqli->error);
             }
-            
-        
 
-            
-if($producto['version']!='única'){
-$producto['name']=$producto['name'].'<br>Versión: '.$producto['version_type'].' '.$producto['version'];  
-}
-/*  
+
+
+
+            if ($producto['version'] != 'única') {
+              $producto['name'] = $producto['name'] . '<br>Versión: ' . $producto['version_type'] . ' ' . $producto['version'];
+            }
+            /*  
 header("HTTP/1.1 200 OK");
             echo '[{"error":"' . $producto['name'] . '"}]';
             return;
 */
             foreach ($producto as $prod => $v) {
-              
+
               if ($prod != 'id') {
                 $insertAP .= $prod . ',';
                 $insertBP .= "'$v',";
@@ -2926,9 +2995,8 @@ header("HTTP/1.1 200 OK");
                     $pp .= '<td style="border-bottom:solid 1px black">' . $v . '</td>';
                   }
                 } else if ($prod == 'quantity') {
-                  
-                    $pp .= '<td style="border-bottom:solid 1px black; text-align:center">' . number_format($v, 0, ',', '.') . '</td>';
-                  
+
+                  $pp .= '<td style="border-bottom:solid 1px black; text-align:center">' . number_format($v, 0, ',', '.') . '</td>';
                 }
               }
             }
