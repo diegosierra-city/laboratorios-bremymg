@@ -39,7 +39,8 @@
 		position: 0,
 		options: '',
 		home: false,
-		active: true
+		active: true,
+		variants: []
 	};
 
 	export let listProductOptions: Array<ProductOptions> = [];

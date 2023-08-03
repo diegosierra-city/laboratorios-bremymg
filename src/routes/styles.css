@@ -156,7 +156,7 @@ footer{
 
 .card_home{
     transition: 600ms all;
-    @apply relative rounded-lg overflow-hidden cursor-pointer border border-secondary mb-4 bg-white
+    @apply relative rounded-lg overflow-hidden border border-secondary mb-4 bg-white
 }
 .card_title{
     @apply relative top-2 left-0 w-full text-center text-white drop-shadow-2xl shadow-black text-lg
@@ -238,7 +238,7 @@ footer{
 }
 
 .btn-min{
-    @apply flex text-white cursor-pointer items-center mx-1 hover:ring-1 hover:text-white rounded-md p-1 
+    @apply flex text-white cursor-pointer items-center mx-1 hover:ring-1 hover:text-white rounded-md py-2 px-2
 }
 
 .box_submenu{

@@ -43,7 +43,8 @@
 		position: 0,
 		options: '',
 		home: false,
-		active: true
+		active: true,
+		variants: []
 	};
 	let imageTop: string = '';
 	let listProductOptions: Array<ProductOptions>= []

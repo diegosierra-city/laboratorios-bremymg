@@ -18,5 +18,5 @@ export interface Product {
     options: string,
     home: boolean,
     active: boolean,
-    
+    variants: Array<any>    
 }

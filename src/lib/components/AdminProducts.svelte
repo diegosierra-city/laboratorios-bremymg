@@ -39,7 +39,8 @@
 		position: 1,
 		options: '',
 		home: false,
-		active: true
+		active: true,
+		variants: []
 	};
 	new_product = productN;
 
@@ -170,7 +171,8 @@
 		position: 1,
 		options: '',
 		home: false,
-		active: true
+		active: true,
+		variants: []
 	}
 		//console.log('nuevo')
 		//show_message("Add Product", "Information was saved", "message-green");

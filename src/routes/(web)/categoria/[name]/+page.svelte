@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	import { apiKey, cookie_info, cookie_update } from '../../../../store';
 	import { fade, fly } from 'svelte/transition';
@@ -27,9 +27,11 @@
 
 	let listItems: Array<Item> = [];
 	let listProducts: Array<Product> = [];
+	
 	let imageTop: string = '';
 	let titulo: string;
 	let subtitulo: string;
+	let category_id: number
 
 	const loadList = async (name: string) => {
 		console.log('categoria:' + name);
@@ -58,12 +60,16 @@
 				imageTop = result[1];
 				titulo = result[2];
 				subtitulo = result[3];
-				console.log(listProducts);
+				category_id=result[5];
+
+				console.log('Pro',listProducts);
+				
 			})
 			.catch((error) => console.log(error.message));
 	};
 
 	onMount(() => {
+		listProducts = []
 		loadList($page.params.name);
 	});
 
@@ -88,7 +94,7 @@
 
 	$: movil(innerWidth);
 
-		
+
 </script>
 
 <svelte:head>
@@ -110,7 +116,7 @@
 
 <section>
 	<div class="w-11/12 md:w-10/12 mx-auto mt-8 md:mt-0">
-		<WebList bind:listItems {listProducts} {urlFiles} />
+		<WebList bind:listItems {listProducts} {urlFiles} {category_id} />
 	</div>
 </section>
 

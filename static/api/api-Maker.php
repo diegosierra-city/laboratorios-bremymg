@@ -406,7 +406,7 @@ if ($ref == 'loadID') {
         }
         /// load categories
         $response = array();
-        $response2= array();
+        $response2 = array();
         //echo "SELECT * FROM maker_products WHERE category_id='$category_id' AND active='1' ORDER BY position ASC <br>";
         //echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY $order <br>";
         $result = $mysqli->query("SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY $order") or die($mysqli->error);
@@ -423,11 +423,11 @@ if ($ref == 'loadID') {
           $response[] = $row;
         }
 
-$final=array();
-        if(count($response2)>0){
+        $final = array();
+        if (count($response2) > 0) {
           $final[] = $response;
           $final[] = $response2;
-        }else{
+        } else {
           $final = $response;
         }
 
@@ -570,7 +570,9 @@ $final=array();
         /// load categories
         $response = array();
         $products = array();
+
         //echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position <br>";
+        $base_id=0;
         if ($folder == 'maker_categories') {
           $category_id = 0;
           $image = '';
@@ -580,6 +582,7 @@ $final=array();
           $rC = $mysqli->query("SELECT id, category, description, `image` FROM maker_categories WHERE company_id='$company_id' ORDER BY position") or die($mysqli->error);
           while ($rowC = $rC->fetch_array(MYSQLI_ASSOC)) {
             if ($name == clean_link($rowC['category'])) {
+              $base_id = $rowC['id'];
               $category_id = $rowC['id'];
               $image = $rowC['image'];
               $titulo = $rowC['category'];
@@ -592,6 +595,17 @@ $final=array();
           while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $row['folder'] = 'maker_products';
             $row['linkURL'] = 'producto/' . clean_link($row['titulo']);
+            $opciones = array();
+            //opciones
+            $pId = $row['id'];
+            $rOp = $mysqli->query("SELECT * FROM maker_product_versions WHERE company_id='$company_id' AND product_id='$pId' ORDER BY `name`") or die($mysqli->error);
+            while ($rowOp = $rOp->fetch_array(MYSQLI_ASSOC)) {
+              $opciones[] = $rowOp;
+            }
+            $row['variants'] = $opciones;
+            /// fin opciones
+            
+
             $products[] = $row;
           }
           //echo mysqli_num_rows($result).'++';
@@ -603,6 +617,8 @@ $final=array();
           $response[] = $image;
           $response[] = $titulo;
           $response[] = $subtitulo;
+          $response[] = $opciones;
+          $response[] = $base_id;
         } else if ($folder == 'maker_products') {
           $category_id = 0;
           $image = '';
@@ -621,6 +637,16 @@ $final=array();
             while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
               $row['folder'] = 'maker_products';
               $row['linkURL'] = 'producto/' . clean_link($row['titulo']);
+
+              //opciones
+            $pId = $row['id'];
+            $rOp = $mysqli->query("SELECT * FROM maker_product_versions WHERE company_id='$company_id' AND product_id='$pId' ORDER BY `name`") or die($mysqli->error);
+            while ($rowOp = $rOp->fetch_array(MYSQLI_ASSOC)) {
+              $opciones[] = $rowOp;
+            }
+            $row['variants'] = $opciones;
+            /// fin opciones
+            
               $products[] = $row;
             }
             //echo mysqli_num_rows($result).'++';
@@ -1588,7 +1614,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       //echo '[{"ok":"yess"}]';
     }
-  }else if ($ref == 'update-campo') {
+  } else if ($ref == 'update-campo') {
 
     $user_id = $data['user_id'];
     $time_life = $data['time_life'];
@@ -1602,14 +1628,14 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       //echo '[{"error":"yess-'.$user_id.'+'.$time_life.'"}]'; 
       echo '[{"error":"yes"}]';
     } else {
-      $campo=$data['campo'];
-      $id=$data['id'];
-      $folder=$data['folder'];
-      $val=$data['val'];
+      $campo = $data['campo'];
+      $id = $data['id'];
+      $folder = $data['folder'];
+      $val = $data['val'];
       ///
-      $action="UPDATE $folder SET $campo='$val' WHERE id='$id'";
+      $action = "UPDATE $folder SET $campo='$val' WHERE id='$id'";
       $rUp = $mysqli->query($action);
-      $err=$mysqli->error;
+      $err = $mysqli->error;
       ///
       header("HTTP/1.1 200 OK");
       echo '[{"update":"ok"}]';

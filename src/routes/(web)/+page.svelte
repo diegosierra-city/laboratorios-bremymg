@@ -239,7 +239,7 @@ let galleryFolder:string = 'maker_products/'
 
 	{#if listProducts && listProducts.length>0}
 		 <!-- content here -->
-			<WebList {listProducts} {listItems} {urlFiles}/>
+			<WebList {listProducts} {listItems} {urlFiles} category_id={0}/>
 	{/if}
 	
 

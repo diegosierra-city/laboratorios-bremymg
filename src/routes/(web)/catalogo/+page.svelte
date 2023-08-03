@@ -92,8 +92,9 @@ import type {Category} from '$lib/types/Category'
 	<!-- <link rel="stylesheet" href="../css/fontawesome-free-6.4.0-web/css/all.css" /> -->
 </svelte:head>
 
+<WebMenuB />
 
-<div class="w-11/12 md:w-10/12 mx-auto">
+<div class="w-11/12 md:w-10/12 mx-auto mt-12">
  <!-- <div class="flex bg-primary text-white niconne align-middle items-center rounded-t-xl overflow-hidden">
 <img src="./logoKdar.jpg" alt="" class="w-32">
 <h2 class="pl-8">Bienvenido a Kdar Cosmetics</h2>
@@ -132,8 +133,8 @@ import type {Category} from '$lib/types/Category'
  <!--Los Accesos-->
 
  <section>
-  <div class="w-11/12 md:w-10/12 mx-auto">
-   <WebList bind:listItems {listProducts} {urlFiles} />
+  <div class="w-12/12 md:w-11/12 mx-auto">
+   <WebList bind:listItems {listProducts} {urlFiles} category_id={0} />
   </div>
  </section>
  
