@@ -16,16 +16,13 @@ box-sizing:border-box;
 
  @font-face {
     font-family: 'Yanone Kaffeesatz', sans-serif;
-    src: url(/css/Yanone_Kaffeesatzx/YanoneKaffeesatz-VariableFont_wght.ttf);
+    src: url(/css/Yanone_Kaffeesatz/YanoneKaffeesatz-VariableFont_wght.ttf);
   } 
 
 
 .textMetro{font-family: 'Metrophobic', sans-serif;}
 .textYanone{font-family: 'Yanone Kaffeesatz', sans-serif;}
 
-.federo{font-family: 'Federo', sans-serif;}
-.carattere{font-family: 'Carattere', cursive;}
-.MrDafoe{font-family: 'MrDafoe', cursive;}
 
 	.boton{
 	@apply bg-primary 	
@@ -46,7 +43,7 @@ box-sizing:border-box;
  }
  
  h1,h2,h3{
-   line-height: 1;
+   line-height: 1.2;
  }
 
 

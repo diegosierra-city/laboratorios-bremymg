@@ -30,15 +30,15 @@
 	})
 </script>
 
-<footer class="relative top-28 sm:top-30 border-t-2 border-t-black pt-8">
+<footer class="relative top-28 sm:top-30 border-t-2 border-t-black pt-8 !textYanone">
 	<!--
 {$page.url.pathname}     
 -->
-	<div class="grid grid-cols-2 mb-3 sm:grid-cols-3 gap-2 ">
+	<div class="grid grid-cols-2 mb-3 sm:grid-cols-3 gap-2 !textYanone">
 		<div class="grid place-content-center place-items-center">
 			
 <!-- <img src="/maker-files/images/logo-LaboratoriosBremymg-200.png" class="logo_down md:mr-4" alt="logo Bremymg" /> -->
-		<h3>¡SÍGUENOS!</h3>
+		<h3 class="">¡SÍGUENOS!</h3>
 		<div class="flex mt-4">
 <img src="/maker-files/images/icon-Instagram.png" alt=""> <h3 class="mt-4 ml-4">@BREMYMG</h3>
 		</div>
