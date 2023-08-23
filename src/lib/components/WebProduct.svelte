@@ -156,10 +156,12 @@
 	}
 </script>
 
-<div class="w-11/12 md:w-8/12 mx-auto mt-20 md:mt-4 grid grid-cols-1 md:grid-cols-2 ">
+<div class="w-11/12 md:w-8/12 mx-auto mt-8 md:mt-4 grid grid-cols-1 md:grid-cols-2 ">
 	<div>
-		<img src={imagen_principal} alt={product.product} class="product-image" />
-		<div class="flex mt-2 mb-6">
+		<img src={imagen_principal} alt={product.product} class="product-imagexx" />
+		<!-- 
+			
+			<div class="flex mt-2 mb-6">
 			{#if product.image1 != '' && product.image2 != ''}
 				<button
 					on:click={() => {
@@ -215,12 +217,14 @@
 					/></button
 				>
 			{/if}
-		</div>
+		</div> -->
+
 	</div>
 
-	<div class="px-2">
-		<h2 class="text-primary">{product.product}</h2>
-		<div>{product.ref}</div>
+	<div class="px-2 text-primary">
+		<h2 class="">{product.product}</h2>
+		Presentación: 
+		<h3>{@html product.ref}</h3>
 		<p>
 			{#if product.description2 != ''}
 				{@html product.description2}
@@ -228,20 +232,19 @@
 				{@html product.description}
 			{/if}
 		</p>
-		<div class="mt-4 border-t border-dotted">
+
+		<!-- <div class="mt-4 border-t border-dotted">
 			<div class="mt-1">
 				{#if newProduct}
-					<!-- content here -->
+					
 					<h3>Precio: ${numberFormat(newProduct.total)}</h3>
-					<!-- {newProduct['version']}-{versionActual} -->
+					
 				{/if}
 
 				{#if listProductOptions && listProductOptions.length > 0}
 					{#each listProductOptions as option, i}
 						<div>
-							<!--	
-								<input type="radio" bind:group={versionActual} name="versionActual" value={i} on:click={()=>cambioVersion(i)}/>
-							-->
+							
 							<input type="radio" checked={i===0 && true}  name="versionActual" value={i} on:click={()=> {
 								newProduct['version']=option.name
 								cambioVersion(i)
@@ -268,7 +271,7 @@
 			</div>
 
 			{#if newProduct}
-				 <!-- content here -->
+				
 					<div>
 						<button
 							class="btn-green bg-primary"
@@ -280,7 +283,8 @@
 			{/if}
 			
 
-		</div>
+		</div> -->
+		
 	</div>
 </div>
 

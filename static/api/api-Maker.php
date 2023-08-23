@@ -7,7 +7,8 @@ header('Access-Control-Max-Age: 86400');
 
 
 error_reporting(E_ALL);
-if ($_GET['error']) {
+
+if (isset($_GET['error'])) {
   ini_set('display_errors', '1');
 } else {
   ini_set('display_errors', '0');
@@ -15,10 +16,10 @@ if ($_GET['error']) {
 
 //echo date('Y-m-d H:i:s');
 
-$db_host = "localhost"; //192.185.131.105
-$db_user = "cityciud_muser";
-$db_pass = "L[D3[B?M2oEp"; //R6!D[d$0RoDf //jnuMu4iD%Yh6
-$db_name = "cityciud_maker";
+$db_host = "localhost";
+$db_user = "sysamericacolomb_user";
+$db_pass = "q58dVa((-VcB";
+$db_name = "sysamericacolomb_maker";
 
 //
 $conn = @mysqli_connect($db_host, $db_user, $db_pass, $db_name);
@@ -127,8 +128,8 @@ if ($ref == 'loadID') {
       $response = array();
       $result = $mysqli->query("SELECT * FROM $folder WHERE $field='$id' $add LIMIT 1") or die($mysqli->error);
 
-
       if (mysqli_num_rows($result) == 0) {
+
         $mysqli->query("INSERT INTO $folder ($field $field2) VALUES ('$id' $id2)") or die($mysqli->error);
         $result = $mysqli->query("SELECT * FROM $folder WHERE $field='$id' LIMIT 1") or die($mysqli->error);
       }
@@ -284,7 +285,7 @@ if ($ref == 'loadID') {
 
     $company_id = $_GET['company_id'];
     $tokenWeb = $_GET['tokenWeb'];
-    $tokenB = md5($company_id . 'Fr-96(');
+    $tokenB = md5($company_id . $keyEncrypter);
 
     if ($tokenWeb != $tokenB) {
       header("HTTP/1.1 202 ERROR");
@@ -296,6 +297,21 @@ if ($ref == 'loadID') {
       if ($folder == 'options') {
         $product_id = $_GET['id'];
         $result = $mysqli->query("SELECT * FROM product_options WHERE product_id='$product_id' AND active='1' ORDER BY position");
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+          $response[] = $row;
+        }
+      }else if ($folder == 'AccessCategories') {
+        
+        $result = $mysqli->query("SELECT p.*, c.category AS nombre_categoria
+        FROM (
+            SELECT DISTINCT category_id
+            FROM maker_products
+        ) AS categorias_distintas
+        JOIN maker_products p ON categorias_distintas.category_id = p.category_id
+        JOIN maker_categories c ON p.category_id = c.id
+        WHERE p.company_id = '$company_id'
+        GROUP BY c.id
+        ORDER BY RAND()");
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
           $response[] = $row;
         }
@@ -372,16 +388,15 @@ if ($ref == 'loadID') {
       }
     } else if ($ref == 'load-list') {
 
-      $user_id = $_GET['user_id'];
-      $time = $_GET['time'];
-      $token = $_GET['token'];
+      $company_id = $_GET['company_id'];
+      $tokenWeb = $_GET['tokenWeb'];
 
-      $tokenBase = md5($user_id . $time . $keyEncrypter);
+      $tokenB = md5($company_id . $keyEncrypter);
 
-      if ($tokenBase != $token) {
+      if ($tokenWeb != $tokenB) {
         header("HTTP/1.1 403 ERROR");
-        //echo 'Error in token:'.$tokenBase.'!='.$token; 
-        echo 'Error in token';
+        echo 'Error in token:'.$tokenBase.'!='.$token; 
+        //echo 'Error in token';
       } else {
         $company_id = $_GET['company_id'];
         $folder = $_GET['folder'];
@@ -414,7 +429,7 @@ if ($ref == 'loadID') {
           /// 
           if ($folder == 'maker_orders') {
             $comprador_id = $row['comprador_id'];
-            //comprador
+            //
             $rCP = $mysqli->query("SELECT * FROM maker_buyer WHERE company_id='$company_id' AND id='$comprador_id' LIMIT 1") or die($mysqli->error);
             $rowCP = $rCP->fetch_array();
             $response2[] = $rowCP;
@@ -518,6 +533,40 @@ if ($ref == 'loadID') {
         //echo $fecha.'*'.$empresa_id;
         echo json_encode($response);
       }
+    }else if ($ref == 'load-listCategorias') {
+
+      $company_id = $_GET['company_id'];
+      $tokenWeb = $_GET['tokenWeb'];
+
+      $tokenB = md5($company_id . $keyEncrypter);
+
+      if ($tokenWeb != $tokenB) {
+        header("HTTP/1.1 403 ERROR");
+        echo 'Error in token';
+      } else {
+        
+        /// load categories
+        $response = array();
+                
+          $result = $mysqli->query("SELECT id, category FROM maker_categories WHERE company_id='$company_id' AND active='1' ORDER BY position") or die($mysqli->error);
+       
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+$category_id=$row['id'];
+$resultP = $mysqli->query("SELECT * FROM maker_products WHERE company_id='$company_id' AND category_id='$category_id' AND active='1' ORDER BY position") or die($mysqli->error);
+       
+while ($rowP = $resultP->fetch_array(MYSQLI_ASSOC)) {
+$rowP['linkURL'] = '/producto/' . clean_link($rowP['product']);  
+$row['products'][] = $rowP;
+  }
+
+          $response[] = $row;
+        }
+
+
+        header("HTTP/1.1 200 OK");
+        //echo $fecha.'*'.$empresa_id;
+        echo json_encode($response);
+      }
     } else if ($ref == 'load-listWeb') {
 
       $company_id = $_GET['company_id'];
@@ -572,7 +621,7 @@ if ($ref == 'loadID') {
         $products = array();
 
         //echo "SELECT * FROM $folder WHERE company_id='$company_id' $filtre ORDER BY position <br>";
-        $base_id=0;
+        $base_id = 0;
         if ($folder == 'maker_categories') {
           $category_id = 0;
           $image = '';
@@ -604,7 +653,7 @@ if ($ref == 'loadID') {
             }
             $row['variants'] = $opciones;
             /// fin opciones
-            
+
 
             $products[] = $row;
           }
@@ -639,14 +688,14 @@ if ($ref == 'loadID') {
               $row['linkURL'] = 'producto/' . clean_link($row['titulo']);
 
               //opciones
-            $pId = $row['id'];
-            $rOp = $mysqli->query("SELECT * FROM maker_product_versions WHERE company_id='$company_id' AND product_id='$pId' ORDER BY `name`") or die($mysqli->error);
-            while ($rowOp = $rOp->fetch_array(MYSQLI_ASSOC)) {
-              $opciones[] = $rowOp;
-            }
-            $row['variants'] = $opciones;
-            /// fin opciones
-            
+              $pId = $row['id'];
+              $rOp = $mysqli->query("SELECT * FROM maker_product_versions WHERE company_id='$company_id' AND product_id='$pId' ORDER BY `name`") or die($mysqli->error);
+              while ($rowOp = $rOp->fetch_array(MYSQLI_ASSOC)) {
+                $opciones[] = $rowOp;
+              }
+              $row['variants'] = $opciones;
+              /// fin opciones
+
               $products[] = $row;
             }
             //echo mysqli_num_rows($result).'++';
@@ -683,8 +732,8 @@ if ($ref == 'loadID') {
         if ($folder != '') $filtre . " AND $folder.type='$type'";
         /// load categories
         $response = array();
-        //echo "SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, content_blocks WHERE maker_menu.company_id='$company_id' $filtre AND maker_content_blocks.menu_id=menu.id GROUP BY maker_menu.id ORDER BY maker_menu.position ++";
-        $result = $mysqli->query("SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, maker_content_blocks WHERE maker_menu.company_id='$company_id' $filtre AND maker_content_blocks.menu_id=maker_menu.id AND maker_content_blocks.company_id='$company_id' GROUP BY maker_menu.id ORDER BY maker_menu.position") or die($mysqli->error);
+        //echo "SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, maker_content_blocks WHERE maker_menu.company_id='$company_id'  AND maker_content_blocks.menu_id=maker_menu.id AND maker_content_blocks.company_id='$company_id' GROUP BY maker_menu.id ORDER BY maker_menu.position";
+        $result = $mysqli->query("SELECT maker_menu.id, maker_menu.menu, maker_menu.type, maker_menu.metadescription, maker_menu.metakeywords, maker_content_blocks.id AS content_id, maker_content_blocks.title, maker_content_blocks.subtitle, maker_content_blocks.text1, maker_content_blocks.text2, maker_content_blocks.text3, maker_content_blocks.text4, maker_content_blocks.image1, maker_content_blocks.image2, maker_content_blocks.image3, maker_content_blocks.image4, maker_content_blocks.video, maker_content_blocks.position, maker_content_blocks.link FROM maker_menu, maker_content_blocks WHERE maker_menu.company_id='$company_id'  AND maker_content_blocks.menu_id=maker_menu.id AND maker_content_blocks.company_id='$company_id' GROUP BY maker_menu.id ORDER BY maker_menu.position") or die($mysqli->error);
         //echo 'R:'.mysqli_num_rows($result).'++';
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
           if ($name != '') {
@@ -1100,6 +1149,25 @@ if ($ref == 'form-list-report') {
                     $row['link'] = '/';
                   } else if ($row['type'] == 'Info') {
                     $row['link'] = '/pagina/' . clean_link(trim($row['menu']));
+                  } else if ($row['type'] == 'Categories') {
+                    $row['link'] = '/pagina/Lineas-de-Producto';
+                  } else if ($row['type'] == 'Sub Categories') {
+                    $row['submenu'] = true;
+                    $row['link'] = '#';
+                    $row['submenus'] = array();
+                    ///
+                    $rct = $mysqli->query("SELECT maker_categories.id, maker_categories.category AS menu FROM maker_categories WHERE maker_categories.company_id='$company_id' AND active='1' ORDER BY maker_categories.position ASC ");
+
+                    while ($rowct = $rct->fetch_array(MYSQLI_ASSOC)) {
+                      $rowct['link'] = '/categoria/' . clean_link(trim($rowct['menu'])); ///product
+                      $rowct['submenu'] = false;
+                      $rowct['submenus'] = array();
+
+                      // $categorias[]=$rowct;
+                      $row['submenus'][] = $rowct;
+                    }
+                    ///
+
                   } else if ($row['type'] == 'Products') {
                     $row['link'] = '/products'; /// load categories
                   } else if ($row['type'] == 'Gallery') {
@@ -1113,20 +1181,23 @@ if ($ref == 'form-list-report') {
                   }
                 }
 
-
-                /// cargamos el submenu
                 $m_id = $row['id'];
-                $submenu = array();
-                $resultSM = $mysqli->query("SELECT id, menu, link, submenu FROM maker_menu WHERE menu_id='$m_id' ORDER BY position ASC ");
-                $sb = 0;
-                while ($rowSM = $resultSM->fetch_array(MYSQLI_ASSOC)) {
-                  $sb++;
+                /// cargamos el submenu
+                if ($row['type'] !== 'Categories') {
+                  $submenu = array();
+                  $resultSM = $mysqli->query("SELECT id, menu, link, submenu FROM maker_menu WHERE menu_id='$m_id' ORDER BY position ASC ");
+                  $sb = 0;
+                  while ($rowSM = $resultSM->fetch_array(MYSQLI_ASSOC)) {
+                    $sb++;
 
-                  $submenu[] = $rowSM;
+                    $submenu[] = $rowSM;
+                  }
+
+
+                  $row['submenus'] = $submenu;
                 }
 
 
-                $row['submenus'] = $submenu;
 
                 if ($row['type'] != 'Products') {
                   $menu[] = $row;
@@ -1511,18 +1582,22 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tokenBase = md5($user_id . $time_life . $keyEncrypter);
 
     if ($tokenBase != $token) {
-      header("HTTP/1.1 202 ERROR");
+      header("HTTP/1.1 400 ERROR");
       //echo '[{"error":"yess-'.$user_id.'+'.$time_life.'"}]'; 
-      echo '[{"error":"yes"}]';
+      echo '[{"error":"Acceso incorrecto"}]';
     } else {
       ///company_id
-      $rCi = $mysqli->query("SELECT company_id FROM maker_users WHERE id='$user_id' LIMIT 1 ") or die($mysqli->error);
+      $error = '';
+
+      $rCi = $mysqli->query("SELECT company_id FROM maker_users WHERE id='$user_id' LIMIT 1 ");
+      $error = $mysqli->error;
       $rowCi = $rCi->fetch_array(MYSQLI_ASSOC);
       $company_id = $rowCi['company_id'];
       /// run
       $cod = time();
       $a = 0;
       $datos = '';
+
       foreach ($data['menu'] as $menu) {
         $a++;
         $m_id = $menu['id'];
@@ -1533,24 +1608,36 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $m_head = $menu['head'];
         $m_foot = $menu['foot'];
         $m_side = $menu['side'];
+        $m_head === true ? $m_head = 1 : $m_head = 0;
+        $m_foot === true ? $m_foot = 1 : $m_foot = 0;
+        $m_side === true ? $m_side = 1 : $m_side = 0;
         $m_position = $menu['position'];
         $m_submenu = $menu['submenu'];
+        $m_submenu === true ? $m_submenu = 1 : $m_submenu = 0;
         $m_metadescription = $menu['metadescription'];
         $m_metakeywords = $menu['metakeywords'];
         //
         if ($m_id > 1000000) {
           ///Nuevo Registro
-          $mysqli->query("INSERT INTO maker_menu (company_id,menu_id,menu,`type`,link,head,foot,side,position,submenu,metadescription,metakeywords,cod) VALUES ('$company_id','$m_menu_id','$m_menu','$m_type','$m_link','$m_head','$m_foot','$m_slide','$m_position','$m_submenu','$m_metadescription','$m_metakeywords','$cod')") or die($mysqli->error);
+          $mysqli->query("INSERT INTO maker_menu (company_id,menu_id,menu,`type`,link,head,foot,side,position,submenu,metadescription,metakeywords,cod) VALUES ('$company_id','$m_menu_id','$m_menu','$m_type','$m_link','$m_head','$m_foot','$m_side','$m_position','$m_submenu','$m_metadescription','$m_metakeywords','$cod')");
+          $error = $mysqli->error;
         } else {
           ///actualizar
-          $mysqli->query("UPDATE maker_menu SET company_id='$company_id', menu_id='$m_menu_id',menu='$m_menu',`type`='$m_type',link='$m_link',head='$m_head',foot='$m_foot',side='$m_slide',position='$m_position',submenu='$m_submenu',metadescription='$m_metadescription',metakeywords='$m_metakeywords',cod='$cod' WHERE id='$m_id'") or die($mysqli->error);
+          $mysqli->query("UPDATE maker_menu SET company_id='$company_id', menu_id='$m_menu_id',menu='$m_menu',`type`='$m_type',link='$m_link',head='$m_head',foot='$m_foot',side='$m_side',position='$m_position',submenu='$m_submenu',metadescription='$m_metadescription',metakeywords='$m_metakeywords',cod='$cod' WHERE id='$m_id'");
+          $error = $mysqli->error;
         }
       }
+
+      /* header("HTTP/1.1 401 OK");
+      echo '[{"error":"' . $error . '"}]';
+      return; */
       /// borramos los que no están
-      $mysqli->query("DELETE FROM maker_menu WHERE company_id='$company_id' AND cod!='$cod'") or die($mysqli->error);
+      $mysqli->query("DELETE FROM maker_menu WHERE company_id='$company_id' AND cod!='$cod'");
+      $error = $mysqli->error;
       //
       $menu = array();
       $result = $mysqli->query("SELECT * FROM maker_menu WHERE menu_id='0' AND company_id='$company_id' ORDER BY position ASC ");
+      $error = $mysqli->error;
       $limit = mysqli_num_rows($result) + 1;
       while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 
@@ -1579,6 +1666,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $m_id = $row['id'];
         $submenu = array();
         $resultSM = $mysqli->query("SELECT * FROM maker_menu WHERE menu_id='$m_id' ORDER BY position ASC ");
+        $error = $mysqli->error;
         while ($rowSM = $resultSM->fetch_array(MYSQLI_ASSOC)) {
           if ($rowSM['head'] == 0) {
             $rowSM['head'] = false;
@@ -1606,7 +1694,8 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $row['submenus'] = $submenu;
         $menu[] = $row;
       }
-
+      /* header("HTTP/1.1 400 OK");
+     echo '[{"error":"'.$error.'"}]';  */
       ///
       header("HTTP/1.1 200 OK");
       //echo $fecha.'*'.$empresa_id;
@@ -1996,7 +2085,7 @@ $new_prod[] = $row;
         $m_category = $category['category'];
         $m_description = $category['description'];
         $m_position = $category['position'];
-        $m_active = $category['active'];
+        $category['active']? $m_active=1 : $m_active=0;
         $m_image = $category['image'];
 
         if ($m_id > 1000000) {
@@ -2233,18 +2322,26 @@ $new_prod[] = $row;
       if (!$_GET['orden']) {
         $orden = 'position';
       }
-
-      foreach ($list as $request) {
+      /* header("HTTP/1.1 402 ERROR");
+        echo '{"error":"'.$list.'"}';
+  return; */
+      foreach ($list as $item) {
 
         $insertA = "";
         $insertB = "";
         $UPDATE = "";
         $id = 0;
 
-        foreach ($request as $campo => $valor) {
 
+
+        foreach ($item as $campo => $valor) {
           // $update="$campo='$valor',";
           if ($campo != 'id' && $campo != 'cod' && $campo != $_GET['descartar1'] && $campo != $_GET['descartar2']) {
+            /* if($campo==='variant'){
+             $valor=json_decode($valor);
+            } */
+            if($valor===false) $valor=0;
+            if($valor===true) $valor=1;
             $insertA .= $campo . ',';
             $insertB .= "'$valor',";
             $UPDATE .= "$campo='$valor',";
@@ -2252,8 +2349,12 @@ $new_prod[] = $row;
             $id = $valor;
           }
         }
-
-
+        
+        /* header("HTTP/1.1 401 OK");
+      echo '{"error":"' . $insertA .'*'.$insertB. '"}';
+      //echo '{"error":"nada"}';
+      return; */
+        
         $now = time();
 
         if ($id == 0 or $id > 1000000) {
@@ -2262,18 +2363,26 @@ $new_prod[] = $row;
           $rB = $insertB . "'$cod'";
 
           $action = "INSERT INTO $folder ($rA) VALUES ($rB)";
-          $mysqli->query($action) or die($mysqli->error);
+          $mysqli->query($action);
+          $error = $mysqli->error;
           ///
-          $resultID = $mysqli->query("SELECT id FROM $folder WHERE cod='$cod' ORDER BY id DESC LIMIT 1") or die($mysqli->error);
+          $resultID = $mysqli->query("SELECT id FROM $folder WHERE cod='$cod' ORDER BY id DESC LIMIT 1");
+          $error = $mysqli->error;
           $rowID = $resultID->fetch_array();
           $id = $rowID['id'];
         } else {
           ///actualizar
           $u = $UPDATE . "cod='$cod'";
           $action = "UPDATE $folder SET $u WHERE id='$id'";
-          $mysqli->query($action) or die($mysqli->error);
+          $mysqli->query($action);
+          $error = $mysqli->error;
         }
       }
+
+
+     /*  header("HTTP/1.1 403 OK");
+      echo '{"error":"' . $error . '"}';
+      return; */
 
       //borramos los que no están
       $add = "company_id='$company_id' AND ";
@@ -2281,15 +2390,21 @@ $new_prod[] = $row;
         $add .= "$columna='$columna_id' AND";
       }
 
-      $mysqli->query("DELETE FROM $folder WHERE $add cod!='$cod'") or die($mysqli->error);
-      //
+      
 
+      $mysqli->query("DELETE FROM $folder WHERE $add cod!='$cod'");
+      $error = $mysqli->error;
+      //
+/*  header("HTTP/1.1 400 ERROR");
+      echo '{"error":"'.$action.'"}';
+return; */
       if ($data['respuesta'] == 'basica') {
         header("HTTP/1.1 200 OK");
         //echo '{"save":"ok:'.$u.'"}';
         echo '{"save":"ok"}';
       } else {
-        $result = $mysqli->query("SELECT * FROM $folder WHERE $add cod='$cod' ORDER BY $orden") or die($mysqli->error);
+        $result = $mysqli->query("SELECT * FROM $folder WHERE $add cod='$cod' ORDER BY $orden");
+        $error = $mysqli->error;
         $response = array();
         $pt = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -2473,7 +2588,7 @@ $new_prod[] = $row;
       $folder = $_GET['folder'];
       $prefix = $_GET['prefix'];
       $w = 1600;
-      $h = 600;
+      $h = 720;
 
       $table = $folder;
 
@@ -2482,7 +2597,8 @@ $new_prod[] = $row;
         $resultM = $mysqli->query("SELECT maker_menu.type FROM maker_content_blocks,maker_menu WHERE maker_content_blocks.id='$id' AND maker_menu.id=maker_content_blocks.menu_id LIMIT 1") or die($mysqli->error);
         $rowM = $resultM->fetch_array(MYSQLI_ASSOC);
         $type = $rowM['type'];
-
+        $w = 1600;
+        $h = 635;
         if ($type == 'News/Events') { //if($type=='Gallery' || $type=='News/Events' ){
           $w = 800;
           $h = 600;
@@ -2490,11 +2606,11 @@ $new_prod[] = $row;
       } else if ($folder == 'maker_products' && $prefix == 'C') {
         $table = 'maker_categories';
         $w = 1600;
-        $h = 256;
+        $h = 635;
       } else if ($folder == 'maker_products') {
         $table = 'maker_products';
-        $w = 800;
-        $h = 600;
+        $w = 370;
+        $h = 520;
       } else if ($folder == 'maker_gallery' || $folder == 'maker_product_versions' || $folder == 'maker_companies') {
         $w = 800;
         $h = 600;
@@ -2721,7 +2837,7 @@ $new_prod[] = $row;
     } else {
       /// type
 
-      $w = 1800;
+      $w = 1600;
       $wM = $w / 2;
 
       /// VErot Upload

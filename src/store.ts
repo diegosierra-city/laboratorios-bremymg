@@ -38,10 +38,10 @@ let companyId:number = 2
 
 
 export const apiKey = writable({
-	urlAPI_Maker: "https://maker.cityciudad.com/api/api-Maker.php",
-	urlFiles: "https://maker.cityciudad.com/maker-files",
+	urlAPI_Maker: "https://laboratoriosbremymg.com/api/api-Maker.php",
+	urlFiles: "https://laboratoriosbremymg.com/maker-files",
 	token: "48aeca28238a599d9bdde0f280727cfa",
-	companyName: 'KDAR Cosmetics',
+	companyName: 'Laboratorios Bremymg',
 	companyId: companyId
 })
 

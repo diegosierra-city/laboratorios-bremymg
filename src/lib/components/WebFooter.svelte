@@ -30,27 +30,40 @@
 	})
 </script>
 
-<footer class="relative top-28 sm:top-30 border-t-2 border-t-black">
+<footer class="relative top-28 sm:top-30 border-t-2 border-t-black pt-8">
 	<!--
 {$page.url.pathname}     
 -->
 	<div class="grid grid-cols-2 mb-3 sm:grid-cols-3 gap-2 ">
 		<div class="grid place-content-center place-items-center">
 			
-<img src="/logoKdar.jpg" class="logo_down md:mr-4" alt="logo Kdar" />
-			<!---->
+<!-- <img src="/maker-files/images/logo-LaboratoriosBremymg-200.png" class="logo_down md:mr-4" alt="logo Bremymg" /> -->
+		<h3>¡SÍGUENOS!</h3>
+		<div class="flex mt-4">
+<img src="/maker-files/images/icon-Instagram.png" alt=""> <h3 class="mt-4 ml-4">@BREMYMG</h3>
+		</div>
 			
 		</div>
 
-		<div class="menu_footer">
-			<ul>
+		<div >
+			<div class="flex mt-4">
+				<img src="/maker-files/images/icon-Phone.png" alt="" style="width:51px; height:53px"> 
+				<div class="pl-4">
+				<h3 class="mt-4">TELÉFONOS:</h3>	
+				<h3>601 369 04 75 | 329 51 60 <br />
+					329 51 62 | 329 51 63 <br /> 
+					329 51 64</h3>
+				</div>
+				
+						</div>
+			<!-- <ul>
 				<li>
-					<a href="https://www.facebook.com/profile.php?id=100091299960286" target="_blank" rel="noopener noreferrer">
+					<a href="" target="_blank" rel="noopener noreferrer">
 						<i class="fa-brands fa-facebook text-lg"></i> Facebook</a>
 			</li>
 <li>
 	<a
-				href="https://instagram.com/kdarcosmetics?igshid=NTc4MTIwNjQ2YQ=="
+				href=""
 				target="_blank"
 				rel="noopener noreferrer"
 			>
@@ -58,33 +71,25 @@
 </li>
 		<li>
 	<a
-				href="https://www.tiktok.com/@kdarcosmetics?_t=8cD9eguMrPK&_r=1"
+				href=""
 				target="_blank"
 				rel="noopener noreferrer"
 			>
 			<i class="fa-brands fa-tiktok text-lg"></i> TikTok</a>
 </li>		
-			</ul>
+			</ul> -->
 					
 		</div>
 
 		<div>
-			<nav>
-				<ul class="menu_footer">
-					{#each listMenu as menu}
-						<li
-							class:active={$page.url.pathname === menu.link + '/' ||
-								$page.url.pathname === menu.link}
-						>
-							<a data-sveltekit-preload-data href={menu.link}>{menu.menu}</a>
-						</li>
-					{:else}
-						cargando...
-					{/each}
-				</ul>
-			</nav>
-
-			
+			<div class="flex mt-4">
+				<img src="/maker-files/images/icon-Celular.png" alt="" style="width:51px; height:53px"> 
+				<div class="pl-4">
+				<h3 class="mt-4">CELULAR:</h3>	
+				<h3>(+57) 313 328 57 38</h3>
+				</div>
+				
+						</div>			
 		</div>
 
 		
@@ -92,6 +97,15 @@
 	</div>
 
 
+<div class="flex justify-between w-full footer-down mt-8">
+	{#each listMenu as menu}
+						
+	<a data-sveltekit-preload-data href={menu.link}>{menu.menu.toUpperCase()}</a>
 
-	<div class="w-full text-center "><small>KDAR Cosmetics 2023 - Todos los derechos reservados</small></div>
+{:else}
+cargando...
+{/each}
+<a href="https://gmarketingypublicidad.com/" target="_blank" rel="noopener noreferrer">BY G MARKETING Y PUBLICIDAD</a>
+</div>
+	
 </footer>

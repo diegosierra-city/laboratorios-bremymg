@@ -1,33 +1,29 @@
 <script lang="ts">
 	//import WebConstruccion from "$lib/components/WebConstruccion.svelte";
 	import { onMount } from 'svelte/internal';
-	import WebMenuB from '$lib/components/WebMenuB.svelte';
-	import WebFooter from '$lib/components/WebFooter.svelte';
+	//import WebMenuC from '$lib/components/WebMenuC.svelte';
+
+	//import WebFooter from '$lib/components/WebFooter.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { apiKey, cookie_info, cookie_update } from '../../store';
 
 	import type { BlockContent } from '$lib/types/BlockContent';
 	import type { Menu } from '$lib/types/Menu';
 	import type { WebContent } from '$lib/types/WebContent';
-	import type { MenuWeb } from '$lib/types/MenuWeb';
+
 	import WebCarrousel from '$lib/components/WebCarrousel.svelte';
 	import WebAccess from '$lib/components/WebAccess.svelte';
 
 	import type { Gallery } from '$lib/types/Gallery';
-	import WebGalleryB from '$lib/components/WebGalleryB.svelte';
-	import WebGalleryA from '$lib/components/WebGalleryA.svelte';
-	
-	import type { Pedido, Comprador, PedidoProduct } from '$lib/types/Pedido';
+
 	import WebList from '$lib/components/WebList.svelte';
-	
+	import WebSlider from '$lib/components/WebSlider.svelte';
+
 	import type { Item } from '$lib/types/ListItem';
 	import type { Product } from '$lib/types/Product';
-	import WebIntro from '$lib/components/WebIntro.svelte';
+
 	let listItems: Array<Item> = [];
 	let listProducts: Array<Product> = [];
-
-		
-let intro = true 
 
 	let cont: BlockContent = {
 		id: 0,
@@ -77,6 +73,7 @@ let intro = true
 	const company_name = $apiKey.companyName;
 	const tokenWeb = $apiKey.token;
 
+	let listSlide: Array<string> = [];
 	onMount(async () => {
 		await fetch(
 			urlAPI +
@@ -88,43 +85,62 @@ let intro = true
 			.then((response) => response.json())
 			.then((result) => {
 				//console.table(result);
-				
-					console.log('ok');
-					console.log(result);
 
-					listCont = result;
-				
+				console.log('ok');
+				console.log(result);
+
+				listCont = result;
 			})
 			.catch((error) => console.log(error.message));
 	});
 
+	const loadCategories= async()=>{
+		console.log('Cat',urlAPI + '?ref=listWeb&f=AccessCategories&company_id=' + company_id + '&tokenWeb=' + tokenWeb)
+		await fetch(
+			urlAPI + '?ref=listWeb&f=AccessCategories&company_id=' + company_id + '&tokenWeb=' + tokenWeb
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				listProducts=result
+				console.log('Categories',listProducts)
+			})
+			.catch((error)=>{
+console.log('error',error)
+			})
+	}
+
+	onMount(()=>{
+		loadCategories()
+	})
+
 	onMount(async () => {
 		console.log(
 			urlAPI + '?ref=page-web&type=Home&company_id=' + company_id + '&tokenWeb=' + tokenWeb
-		)
+		);
 		await fetch(
 			urlAPI + '?ref=page-web&type=Home&company_id=' + company_id + '&tokenWeb=' + tokenWeb
 		)
 			.then((response) => response.json())
 			.then((result) => {
-				console.table('Home',result);
-				
-					console.log('contenido:');
-					console.log(result);
-					pag = result[0];
-					cont = result[1];
-					listProducts = result[2];
-					//console.table(pag.metadescription);
-				
+				console.log('Homex', result[1]);
+
+				pag = result[0];
+				cont = result[1];
+				listProducts = result[2];
+				//console.table(pag.metadescription);
+				if (cont.image1 !== null) listSlide = [cont.image1];
+				if (cont.image2 !== null) listSlide = [...listSlide, cont.image2];
+				if (cont.image3 !== null) listSlide = [...listSlide, cont.image3];
+				if (cont.image4 !== null) listSlide = [...listSlide, cont.image4];
+				console.log('kk',listSlide)
 			})
 			.catch((error) => console.log(error.message));
 	});
 
-
 	let innerWidth: number = 0;
 	let innerHeight: number = 0;
 	let scrollY: number = 0;
-	let online: any ;
+	let online: any;
 
 	/*
 	$: innerWidth
@@ -150,44 +166,43 @@ let intro = true
 
 	let listGalleries: Array<Gallery> = [];
 
-const loadGallery = () => {
-	console.log('gallery:');
-	console.log(
-		urlAPI +
-			'?ref=load-listGalleryWeb&company_id=' +
-			company_id +
-			'&tokenWeb=' +
-			tokenWeb +
-			'&folder=maker_categories'			
-	);
-	/**/
-	fetch(
-		urlAPI +
-			'?ref=load-listGalleryWeb&company_id=' +
-			company_id +
-			'&tokenWeb=' +
-			tokenWeb +
-			'&folder=maker_categories'
-	)
-		.then((response) => response.json())
-		.then((result) => {
-			console.log('Nuevas Galleries:::');
-			console.log(result);
-		
-			listGalleries = result;
-		})
-		.catch((error) => console.log(error.message));
-};
+	const loadGallery = () => {
+		console.log('gallery:');
+		console.log(
+			urlAPI +
+				'?ref=load-listGalleryWeb&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb +
+				'&folder=maker_categories'
+		);
+		/**/
+		fetch(
+			urlAPI +
+				'?ref=load-listGalleryWeb&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb +
+				'&folder=maker_categories'
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				console.log('Nuevas Galleries:::');
+				console.log(result);
 
-onMount(()=>{
-loadGallery()
-})
+				listGalleries = result;
+			})
+			.catch((error) => console.log(error.message));
+	};
 
-let galleryFolder:string = 'maker_products/'
+	onMount(() => {
+		loadGallery();
+	});
 
+	let galleryFolder: string = 'maker_products/';
+	let target = 'categorias'
 
 	
-
 </script>
 
 <svelte:head>
@@ -198,55 +213,34 @@ let galleryFolder:string = 'maker_products/'
 </svelte:head>
 
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
-<!--
-	<WebGalleryB {listGalleries} {urlFiles} {galleryFolder}/>
--->
 
-<!-- 	{#if innerWidth>900}
-	<WebGalleryA {listGalleries} {urlFiles} {galleryFolder} />
-	{/if} -->
+<!-- <WebMenuC /> -->
 
-{#if intro}
-	 <!-- content here -->
-		<WebIntro bind:intro/>
-{/if}
+<WebSlider bind:listSlide={listSlide} />
 
-<WebCarrousel {cont} {urlFiles} {prefixFolder} />
-<WebMenuB />
 
-<!-- <WebAccess {listCont} {urlFiles}/> -->
 
-<section class="relative" id="principal">
-
-<div class="h-20 md:h-10"></div>
-
-	
-
-	<div class="w-11/12 md:w-8/12 mx-auto">
-		<h2 class="text-primary">{cont.title}</h2>
-		<h3>{cont.subtitle}</h3>
-{#if cont.text1}
-<p class="m-3 p-3 ">{@html cont.text1}</p>
-{/if}
-		
+<section class="relative mt-12" id="principal" >
+<div class="w-10/12 md:w-6/12 mx-auto flex text-primary">
+	<div>
+		<img src="/maker-files/images/icon-Home.png" alt="" >
 	</div>
 
-	{#if cont.text2}
-	<div class="w-11/12 md:w-8/12 mx-auto">
-		<p class="m-3 p-3 ">{@html cont.text2}</p>
+	<div class="pl-8">
+		<h2>{cont.title}</h2>
+		<div>{cont.text1}</div>
+	</div>
 </div>
-	{/if}
-
-	{#if listProducts && listProducts.length>0}
-		 <!-- content here -->
-			<WebList {listProducts} {listItems} {urlFiles} category_id={0}/>
-	{/if}
-	
-
 </section>
 
+<WebList bind:listProducts={listProducts} {target} />
+
+<!-- <WebFooter /> -->
 
 
-<WebFooter />
-
-
+<style>
+ .image-container img {
+   transition: opacity 0.3s ease-in-out;
+ }
+ 
+</style>

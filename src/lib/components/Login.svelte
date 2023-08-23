@@ -104,7 +104,7 @@
 </script>
 
 <svelte:head>
-	<title>KDAR</title>
+	<title>Bremymg</title>
 </svelte:head>
 
 <div class="w-full mt-24">
@@ -174,7 +174,7 @@
 			</form>
 
 			<div class="mt-4">
-				<img src="/maker-files/logoKdar.jpg" class="mx-auto" alt="" />
+				<img src="/maker-files/images/logo-LaboratoriosBremymg-200.png" class="mx-auto" alt="" />
 			</div>
 		</div>
 		

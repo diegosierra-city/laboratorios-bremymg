@@ -34,6 +34,13 @@
 	const urlAPI = $apiKey.urlAPI_Maker;
 	//// GET
 //alert('*'+urlAPI)
+console.log(urlAPI +
+				'?ref=menu-list&user_id=' +
+				$userNow.id +
+				'&time=' +
+				$userNow.user_time_life +
+				'&token=' +
+				$userNow.token)
 	onMount(async () => {
 		await fetch(
 			urlAPI +
@@ -56,10 +63,7 @@
 	});
 
 	const saveMenu = async () => {
-		//console.log("guardando...");
-		//// POST
-
-		await fetch(urlAPI + '?ref=save-menu', {
+			await fetch(urlAPI + '?ref=save-menu', {
 			method: 'POST', //POST - PUT - DELETE
 			body: JSON.stringify({
 				user_id: $userNow.id,
@@ -75,7 +79,7 @@
 			.then((response) => response.json())
 			//.then(result => console.log(result))
 			.then((result) => {
-				
+				console.log('recibiendo',result)
 					message = {
 						title: 'Guardar',
 						text: 'Save succesfully',
@@ -89,7 +93,7 @@
 				
 			})
 
-			.catch((error) => console.log(error.message));
+			.catch((error) => console.log('Error:',error));
 
 		//  });
 	};
@@ -222,8 +226,9 @@
 								<option value="Products Sub">Listado Productos</option>
 								-->
 								
-								<option value="Products">Listado Categorias</option>
-								
+								<option value="Products">Cargar Categorias</option>
+								<option value="Sub Categories">Sub Categorias</option>
+								<option value="Categories">Categorias</option>
 								<option value="External Link">Link URL</option>
 							</select>
 						</td>

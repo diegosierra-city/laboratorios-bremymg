@@ -44,16 +44,15 @@
 			.then((response) => response.json())
 			.then((result) => {
 				//console.table(result);
-				
-					//console.log("Listado Category Muy Bien:");
-					category_list = result;
-				
+
+				//console.log("Listado Category Muy Bien:");
+				category_list = result;
 			})
 			.catch((error) => console.log(error.message));
 	});
 
 	const saveCategory = async () => {
-		//console.log("yy");
+	console.log("save:",category_list);
 		//// POST
 
 		await fetch(urlAPI + '?ref=save-category', {
@@ -72,20 +71,18 @@
 			.then((response) => response.json())
 			//.then(result => console.log(result))
 			.then((result) => {
-				
-					message = {
-						title: 'Guardar',
-						text: 'Se han guardado los datos',
-						class: 'message-green',
-						accion: ''
-					};
-					m_show = true;
+				message = {
+					title: 'Guardar',
+					text: 'Se han guardado los datos',
+					class: 'message-green',
+					accion: ''
+				};
+				m_show = true;
 
-					//console.log("Muy Bien:"+result[0].ok);
-					category_list = result;
-					//new_user = result[0]
-					//cookie_update('user',JSON.stringify(new_user))
-				
+				//console.log("Muy Bien:"+result[0].ok);
+				category_list = result;
+				//new_user = result[0]
+				//cookie_update('user',JSON.stringify(new_user))
 			})
 			.catch((error) => console.log(error.message));
 
@@ -97,17 +94,17 @@
 	function add_category() {
 		//category_list.push(new_category) ///esta opción no actuaiza el listado automáticamente
 		new_category.id = Date.now();
-		new_category.position = (category_list.length+1);
+		new_category.position = category_list.length + 1;
 		//category_list.push(new_category)
 		category_list = [...category_list, new_category];
 		new_category = {
-		id: 0,
-		category: '',
-		description: '',
-		position: 1,
-		image: '',
-		active: true
-	}
+			id: 0,
+			category: '',
+			description: '',
+			position: 1,
+			image: '',
+			active: true
+		};
 		//console.log('nuevo')
 		//show_message("Add Category", "Information was saved", "message-green");
 	}
@@ -145,12 +142,11 @@
 			};
 			m_show = true;
 		} else {
-			
 			let image = e.target.files[0];
 			//console.table(fileinput);
 			//alert(image_id+'*'+image_position+'*'+category_list[image_position].position);
 			//console.table(image);
-			
+
 			const dataArray = new FormData();
 			dataArray.append('user_id', String($userNow.id));
 			dataArray.append('time_life', String($userNow.user_time_life));
@@ -158,7 +154,7 @@
 			dataArray.append('id', String(image_id));
 			dataArray.append('position', '');
 			dataArray.append('uploadFile', image);
-
+			
 			fetch(urlAPI + '?ref=upload&folder=maker_products&prefix=C', {
 				method: 'POST',
 				body: dataArray
@@ -169,15 +165,14 @@
 					//console.log("RRRY:");
 					//console.table(result);
 
-						category_list[image_position] = result[0];
-						message = {
-							title: 'Subir archivo',
-							text: 'El archivo se subió con éxito',
-							class: 'message-green',
-							accion: ''
-						};
-						m_show = true;
-					
+					category_list[image_position] = result[0];
+					message = {
+						title: 'Subir archivo',
+						text: 'El archivo se subió con éxito',
+						class: 'message-green',
+						accion: ''
+					};
+					m_show = true;
 				})
 				.catch((error) => console.log(error.message));
 		}
@@ -209,7 +204,8 @@
 					<th scope="col" class="px-4 py-2"> Descripción</th>
 					<th scope="col" class="px-4 py-2 text-center"> Posición </th>
 					<th scope="col" class="px-4 py-2 text-center">
-					<div>Imagen JPG-PNG</div>	 <small>1600-256px</small></th
+						<div>Imagen JPG-PNG</div>
+						<small>1600-256px</small></th
 					>
 					<th scope="col" class="px-4 py-2 text-center"> Activa </th>
 					<th scope="col" class="px-4 py-2 text-center"> Productos </th>
@@ -252,34 +248,31 @@
 													ct.image = '';
 												}}
 											>
-											<i class="fa fa-trash-o m-1" />
-											</button
-											>
+												<i class="fa fa-trash-o m-1" />
+											</button>
 										</div>
 									{/if}
 									<div class="flex items-center">
 										<button
 											class="btn-min bg-primary"
 											on:click={() => {
-												if(ct.id>1000000){
+												if (ct.id > 1000000) {
 													message = {
-				title: 'Error',
-				text: 'First save this Category',
-				class: 'message-red',
-				accion: ''
-			};
-			m_show = true;	
-												}else{
-												image_id = ct.id;
-												image_position = i;
-												fileinput.click();
-												ct.image = 'load';	
+														title: 'Error',
+														text: 'First save this Category',
+														class: 'message-red',
+														accion: ''
+													};
+													m_show = true;
+												} else {
+													image_id = ct.id;
+													image_position = i;
+													fileinput.click();
+													ct.image = 'load';
 												}
-												
 											}}
 										>
-										<i class="fa fa-camera m-1" />
-										
+											<i class="fa fa-camera m-1" />
 										</button>
 									</div>
 								</div>
@@ -296,7 +289,7 @@
 										show_products = true;
 									}}
 								>
-								<i class="fa fa-edit mx-2 mt-1 text-green " />
+									<i class="fa fa-edit mx-2 mt-1 text-green " />
 								</button>
 							</td>
 							<td class="text-xl">
@@ -305,7 +298,7 @@
 										deleteCategory(ct.id);
 									}}
 								>
-								<i class="fa fa-trash-o mx-2 mt-1 text-red " />
+									<i class="fa fa-trash-o mx-2 mt-1 text-red " />
 								</button>
 							</td>
 						</tr>
@@ -332,6 +325,6 @@
 {/if}
 
 {#if m_show}
-	 <!-- content here -->
-		<Messages bind:m_show bind:message />
+	<!-- content here -->
+	<Messages bind:m_show bind:message />
 {/if}

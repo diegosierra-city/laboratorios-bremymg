@@ -9,8 +9,7 @@
 
 	import Messages from '$lib/components/Messages.svelte';
 	import type { Message } from '$lib/types/Message';
-	import WebMenuB from '$lib/components/WebMenuB.svelte';
-	import WebFooter from '$lib/components/WebFooter.svelte';
+	
 
 	import WebProduct from '$lib/components/WebProduct.svelte';
 	import type { ProductOptions } from '$lib/types/ProductOptions';
@@ -160,13 +159,12 @@ let carrito_total: number = 0;
 </div>
 
 
-<WebMenuB bind:carrito_total />
 
 <section>
 	<WebProduct bind:product bind:prefixFolder bind:listProductOptions />
 </section>
 
-<WebFooter />
+
 
 {#if m_show == true}
 	<Messages bind:m_show bind:message />

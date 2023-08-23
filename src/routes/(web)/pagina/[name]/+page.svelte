@@ -12,11 +12,11 @@
 	import Messages from '$lib/components/Messages.svelte';
 	import type { Message } from '$lib/types/Message';
 	import WebCarrousel from '$lib/components/WebCarrousel.svelte';
-	import WebMenu from '$lib/components/WebMenu.svelte';
-	import WebGalleryB from '$lib/components/WebGalleryB.svelte';
+	
 	import WebGalleryA from '$lib/components/WebGalleryA.svelte';
 	import WebFooter from '$lib/components/WebFooter.svelte';
 	import WebForm from '$lib/components/WebForm.svelte';
+	import WebList from '$lib/components/WebList.svelte';
 
 	let m_show: boolean = false;
 	let message: Message;
@@ -85,6 +85,7 @@
 	};
 
 	const loadContent = async (name: string) => {
+		//alert('x')
 		console.log('contenido:' + name);
 		console.log(
 			urlAPI +
@@ -107,8 +108,8 @@
 			.then((response) => response.json())
 			.then((result) => {
 				ContBase = result[0];
-				console.log('contenido:::');
-				console.log(result[0]);
+				console.log('contenido::x');
+				console.log(result);
 				cont = {
 					id: ContBase.id,
 					menu_id: 0,
@@ -143,6 +144,9 @@
 	};
 
 	$: loadContent($page.params.name);
+	onMount(()=>{
+		loadContent($page.params.name)		
+	})
 	//console.table($page.params)
 	let listGalleries: Array<Gallery> = [];
 
@@ -178,6 +182,60 @@
 			.catch((error) => console.log(error.message));
 	};
 
+	let listProducts: Array<any>
+
+	const loadProducts = async() => {
+		
+		console.log(
+			urlAPI +
+				'?ref=load-listCategorias&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb
+		);
+		/**/
+		await fetch(
+			urlAPI +
+				'?ref=load-listCategorias&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				console.log('lp',result);
+			
+				listProducts = result;
+			})
+			.catch((error) => console.log(error.message));
+	}
+
+	const loadMedicos = async() => {
+		//alert('p')
+		console.log('zz',
+			urlAPI +
+				'?ref=load-list&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb +'&folder=maker_products&campo=category_id&campoV=26'
+		);
+		/**/
+		await fetch(
+			urlAPI +
+				'?ref=load-list&company_id=' +
+				company_id +
+				'&tokenWeb=' +
+				tokenWeb +'&folder=maker_products&campo=category_id&campoV=26'
+		)
+			.then((response) => response.json())
+			.then((result) => {
+				console.log('lyy',result);
+			
+				listProducts = result;
+			})
+			.catch((error) => console.log(error.message));
+	}
+
 	$: innerWidth = 0;
 	$: innerHeight = 0;
 	$: scrollY = 0;
@@ -197,8 +255,18 @@
 
 	$: movil(innerWidth);
 	let galleryFolder: string 
-	import WebMenuB from '$lib/components/WebMenuB.svelte';
 
+	if($page.params.name=='Lineas-de-Producto'){
+		onMount(()=>{
+			loadProducts()
+		})
+	}
+
+if($page.params.name=='Portal-Medicos'){
+		onMount(()=>{
+			loadMedicos()
+		})
+	}
 </script>
 
 <svelte:head>
@@ -209,26 +277,46 @@
 </svelte:head>
 <svelte:window bind:innerWidth bind:innerHeight bind:scrollY />
 
-<WebCarrousel {cont} {urlFiles} {prefixFolder} />
-<WebMenuB />
+<section>
+	<div class="w-10/12 md:w-8/12 mx-auto mt-10">
+		<img src="/maker-files/images/maker_pages/{ContBase?.image1}" alt="">
+	</div>
+</section>
+
 
 <section>
 	<div class="w-11/12 md:w-8/12 mx-auto">
-		{#if ContBase.title != ''}
-			<h1 class="text-primary">{ContBase.title}</h1>
-		{:else}
-			<h1 class="text-primary">{ContBase.menu}</h1>
+		{#if ContBase.title != null}
+			<!-- <h1 class="text-primary">{ContBase.title}</h1> -->
+		{:else if ContBase.menu != null}
+			<!-- <h1 class="text-primary">{ContBase.menu}</h1> -->
 		{/if}
-
+{#if ContBase.text1 != null}
 		<p class="pb-4">{@html ContBase.text1}</p>
-		{#if ContBase.text2 != ''}
+		{/if}
+		{#if ContBase.text2 != null}
 			<p class="pb-4">{@html ContBase.text2}</p>
 		{/if}
-		{#if ContBase.text3 != ''}
+		{#if ContBase.text3 != null}
 			<p class="pb-4">{@html ContBase.text3}</p>
 		{/if}
-		{#if ContBase.text4 != ''}
+		{#if ContBase.text4 != null}
 			<p class="pb-4">{@html ContBase.text4}</p>
+		{/if}
+
+		{#if $page.params.name=='Lineas-de-Producto' && listProducts?.length>0}
+			 <!-- content here -->
+				{#each listProducts as categoria}
+					<h2 class="text-primary">{categoria.category}</h2>
+				<WebList bind:listProducts={categoria.products} target={`product`} />
+				{/each}
+		{/if}
+
+		{#if $page.params.name=='Portal-Medicos' && listProducts?.length>0}
+			 <!-- content here -->
+				
+				<WebList bind:listProducts={listProducts} target={`product`} />
+				
 		{/if}
 
 		{#if ContBase.type == 'Gallery'}
@@ -244,7 +332,7 @@
 	</div>
 </section>
 
-<WebFooter />
+
 
 {#if m_show == true}
 	<Messages bind:m_show bind:message />

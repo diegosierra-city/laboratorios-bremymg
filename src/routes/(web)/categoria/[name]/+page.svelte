@@ -116,7 +116,7 @@
 
 <section>
 	<div class="w-11/12 md:w-10/12 mx-auto mt-8 md:mt-0">
-		<WebList bind:listItems {listProducts} {urlFiles} {category_id} />
+		<WebList  bind:listProducts={listProducts} target={`products`}/>
 	</div>
 </section>
 

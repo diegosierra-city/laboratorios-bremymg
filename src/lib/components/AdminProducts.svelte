@@ -74,23 +74,20 @@
 		)
 			.then((response) => response.json())
 			.then((result) => {
-				//console.table(result);
-				if (result[0].error) {
-					console.error(result[0].error);
-				} else {
+				console.log('pp',result);
+				
 					//console.log("Listado Product Muy Bien:");
 					product_list = result;
-				}
+				
 			})
-			.catch((error) => console.log(error.message));
+			.catch((error) => console.log(error));
 	}
 
 	$: loadProducts(category_id);
 	
 	const saveProduct = async () => {
-		//console.log("yy");
+		console.log("yy",product_list);
 		//// POST
-
 		//await fetch(urlAPI + '?ref=save-product', {
 		await fetch(urlAPI + '?ref=save-list&folder=maker_products&campo=category_id&campo_id='+category_id, {	
 			method: 'POST', //POST - PUT - DELETE
@@ -110,19 +107,8 @@
 			.then((response) => response.json())
 			//.then(result => console.log(result))
 			.then((result) => {
-				//console.log('ok:'+new_user.error)
-
-				if (result[0].error) {
-					message = {
-						title: 'Error',
-						text: 'Error: ' + result[0].error,
-						class: 'message-red',
-						accion: ''
-					};
-					m_show = true;
-
-					console.error(result[0].error);
-				} else {
+				console.table(result)
+			
 					message = {
 						title: 'Guardar',
 						text: 'Se han guardado los datos',
@@ -135,11 +121,20 @@
 					product_list = result;
 					//new_user = result[0]
 					//cookie_update('user',JSON.stringify(new_user))
-					show_products = false;
-				}
+					///////show_products = false;
+			
 			})
 
-			.catch((error) => console.log(error.message));
+			.catch((error) => {
+				console.log('ju', error)
+				message = {
+						title: 'Error',
+						text: 'Error: ' + error,
+						class: 'message-red',
+						accion: ''
+					};
+					m_show = true;
+			});
 
 		//  });
 	};
@@ -198,6 +193,7 @@
 	let show_product: boolean = false;
 	let prod_position: number;
 	
+	$: console.log('pp',product_list)
 </script>
 
 <svelte:head>
